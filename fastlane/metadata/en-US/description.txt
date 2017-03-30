@@ -1,0 +1,18 @@
+React Native Flat App Theme
+
+Strap Flat App is a fascinating React Native starter kit with flat UI design, Redux and NativeBase components for your Android application.
+
+This app is basically a style of interface design emphasizing minimum use of stylistic elements. 
+It is focused on a minimalist use of simple elements, typography and flat colors. 
+Developers prefer flat design as it allows interface designs to be more streamlined and efficient. 
+It is easier to quickly convey information while still looking visually appealing and approachable. 
+
+Power-packed with Redux, CodePush, NativeBase, Navigation Experimental
+
+Fully customizable pages with everything you need from SignUp/Login, Feedback Form, Calendar, News Channels, Story View, Timeline, Profile, Custom widgets to Settings and rich collection of UI elements.
+
+Ready to use components built using NativeBase .
+
+One single file that helps you theme your app.
+
+Photo LightBox with carousel for images.
