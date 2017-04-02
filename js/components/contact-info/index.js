@@ -98,7 +98,7 @@ class ContactInfo extends Component {
               </Button>
             </Right>
           </Header>
-          <Content scrollEnabled={false}>
+          <Content scrollEnabled={false} style={{ marginBottom: 5 }}>
             <View style={styles.content}>
               <Text style={styles.title}>
                 CONTACT INFO

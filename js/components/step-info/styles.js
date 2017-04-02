@@ -11,10 +11,10 @@ export default {
     fontWeight: 'bold',
   },
   container: {
-    marginTop: 10,
+    paddingTop: 10,
     flexDirection: 'column',
     justifyContent: 'center',
-    marginBottom: 15,
+    paddingBottom: 10,
     backgroundColor: 'transparent',
   },
   draw: {

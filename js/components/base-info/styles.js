@@ -3,24 +3,26 @@
 const React = require('react-native');
 
 const { Platform, Dimensions, StyleSheet } = React;
-
+const deviceWidth = Dimensions.get('window').width;
 export default {
   header: {
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
     backgroundColor: 'transparent',
     borderBottomColor: 'transparent',
+    elevation: 0,
   },
   rowHeader: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'stretch',
-    paddingTop: Platform.OS === 'android' ? 5 : 0,
   },
   btnHeader: {
     alignSelf: 'center',
   },
   imageHeader: {
     height: 30,
+    alignSelf: 'center',
     resizeMode: 'contain',
   },
   container: {
@@ -34,13 +36,8 @@ export default {
     paddingRight: 20,
   },
   inputGrp: {
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
     marginBottom: 15,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderWidth: 1.5,
   },
   title: {
     fontWeight: 'bold',
@@ -63,12 +60,11 @@ export default {
   switchText: {
     color: '#fff',
     paddingLeft: 5,
+    paddingTop: Platform.OS === 'android' ? 3 : 0,
   },
   aswitchText: {
     color: '#222',
     fontWeight: 'bold',
-    paddingTop: 10,
-    paddingBottom: 10,
   },
   textContainer: {
     flex: 1,
@@ -80,15 +76,19 @@ export default {
     flexDirection: 'row',
   },
   switch: {
-    transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }],
+    transform: Platform.OS === 'android' ? undefined : [{ scaleX: 0.75 }, { scaleY: 0.75 }],
     alignSelf: 'flex-end',
-    marginTop: Platform.OS === 'android' ? -2 : -5,
-    paddingTop: Platform.OS === 'android' ? 25 : 10,
-    paddingBottom: Platform.OS === 'android' ? 0 : 10,
+    marginTop: -5,
+    paddingTop: Platform.OS === 'android' ? 0 : 10,
+    paddingBottom: 10,
   },
   switchOptionText: {
     fontSize: 11,
     paddingTop: 5,
     textAlignVertical: 'bottom',
+  },
+  switchGrid: {
+    height: 40,
+    paddingTop: Platform.OS === 'android' ? 10 : 0,
   },
 };

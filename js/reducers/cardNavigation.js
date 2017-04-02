@@ -12,5 +12,4 @@ const initialState = {
     },
   ],
 };
-
 module.exports = cardStackReducer(initialState);

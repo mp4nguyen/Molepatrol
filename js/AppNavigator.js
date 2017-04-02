@@ -4,7 +4,7 @@ import { BackAndroid, StatusBar, NavigationExperimental } from 'react-native';
 import { connect } from 'react-redux';
 import { Drawer } from 'native-base';
 import { actions } from 'react-native-navigation-redux-helpers';
-import Toaster from 'react-native-toaster';
+
 import { closeDrawer } from './actions/drawer';
 
 import Login from './components/login/';
@@ -181,7 +181,6 @@ class AppNavigator extends Component {
           backgroundColor={statusBarColor}
           barStyle="light-content"
         />
-        <Toaster duration={1000} message={this.props.toastMessage} />
         <NavigationCardStack
           navigationState={this.props.navigation}
           renderOverlay={this._renderOverlay}

@@ -23,7 +23,6 @@ export default {
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 70,
-    marginTop: (deviceHeight < 500) ? (Platform.OS === 'android' ? 20 : 0) : (Platform.OS === 'android' ? ((deviceHeight / 6) - 45) : ((deviceHeight / 6) - 10)),
   },
   addBtn: {
     marginTop: 10,
@@ -42,7 +41,7 @@ export default {
     fontWeight: 'bold',
   },
   mainText: {
-    fontWeight: 'normal',
-    fontSize: 16,
+    fontSize: 14,
+    marginBottom: Platform.OS === 'android' ? 10 : undefined,
   },
 };

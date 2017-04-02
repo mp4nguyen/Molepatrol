@@ -9,24 +9,27 @@ const deviceWidth = Dimensions.get('window').width;
 
 export default {
   header: {
-    width: Dimensions.get('window').width,
-    flexDirection: 'row',
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
     paddingLeft: 15,
     paddingRight: 15,
-    marginLeft: (Platform.OS === 'ios') ? undefined : -30,
     backgroundColor: 'transparent',
     borderBottomColor: 'transparent',
+    elevation: 0,
   },
   imageHeader: {
     height: 30,
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   rowHeader: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'stretch',
-    paddingTop: Platform.OS === 'android' ? 0 : 0,
+    paddingTop: 0,
+  },
+  headerimg: {
+    alignItems: 'center',
   },
   btnHeader: {
   },
@@ -46,22 +49,24 @@ export default {
   mainBtn: {
     marginTop: 10,
     height: 50,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 10,
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'flex-start',
     paddingLeft: 40,
+    elevation: 0,
   },
   mainText: {
-    lineHeight: 40,
     fontSize: 14,
+    marginBottom: Platform.OS === 'android' ? 10 : undefined,
   },
   otherBtn: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     backgroundColor: 'transparent',
     borderColor: '#fff',
     borderWidth: 1,
     height: 40,
+    elevation: 0,
   },
   otherContainer: {
     marginTop: 20,
@@ -72,12 +77,10 @@ export default {
     padding: 5,
     fontSize: 13,
     height: 40,
-    lineHeight: 18,
-    textAlignVertical: 'center',
+    alignItems: 'center',
+    marginBottom: Platform.OS === 'android' ? 10 : undefined,
   },
   mainIcon: {
-    lineHeight: 35,
-    height: 40,
     marginRight: 10,
   },
 };

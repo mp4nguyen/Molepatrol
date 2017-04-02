@@ -13,7 +13,7 @@ import HeaderContent from '../headerContent';
 import Camera from 'react-native-camera';
 import { setLesion } from '../../actions/request';
 const SignaturePad = require('react-native-signature-pad');
-const { PictureDir } = dirs;
+const { CacheDir } = dirs;
 const {
   popRoute,
   pushRoute,
@@ -55,7 +55,7 @@ class TakePicture extends Component {
     this.props.setValue({ isFront: !this.props.item.isFront });
   }
   saveImage() {
-    takeSnapshot(this.imgView, { path: `${PictureDir}/lesion_${new Date().getTime()}.png` })
+    takeSnapshot(this.refs['imageView'], { path: `${CacheDir}/lesion_${new Date().getTime()}.png` })
       .then(
       (uri) => {
         this.props.setValue({ lesion: uri });
@@ -102,8 +102,8 @@ class TakePicture extends Component {
               </Button>
             </Right>
           </Header>
-          <View>
-            <Content {...props} ref={(imgView) => { this.imgView = imgView; }} >
+          <View collapsable={false} ref='imageView' >
+            <Content {...props}>
               {!this.state.isReset &&
               <SignaturePad
                 penColor="red"
@@ -122,7 +122,7 @@ class TakePicture extends Component {
             onPress={this.switchImage}
           >
             <Icon name="refresh" style={{ color: '#000' }} />
-            <Text style={{ color: '#000', fontSize: 15 }}>Back / Front View</Text>
+            <Text style={styles.switchText}>Back / Front View</Text>
           </Button>
 
         </View>

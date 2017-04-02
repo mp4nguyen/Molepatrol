@@ -27,15 +27,6 @@ class NeedHelp extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-    };
-    this.constructor.childContextTypes = {
-      theme: React.PropTypes.object,
-    };
   }
 
   popRoute() {
@@ -46,8 +37,8 @@ class NeedHelp extends Component {
     return (
       <Container>
         <Image source={bg} style={styles.background} >
+          <HeaderContent />
           <Content scrollEnabled={false}>
-            <HeaderContent />
             <View style={styles.container}>
               <View style={styles.textContainer}>
                 <Text style={styles.textheader}>

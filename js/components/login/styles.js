@@ -7,7 +7,7 @@ const { StyleSheet, Dimensions, Platform } = React;
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
-console.log(deviceWidth);
+
 export default {
   logo: {
     flex: 1,
@@ -17,7 +17,7 @@ export default {
   },
   iosShadow: {
     resizeMode: 'contain',
-    width: deviceWidth < 350 ? 200 : deviceWidth,
+    width: (deviceWidth / 100) * 80,
   },
   inputGrp: {
     flexDirection: 'row',

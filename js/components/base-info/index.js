@@ -145,7 +145,7 @@ class BaseInfo extends Component {
                 />
               </Item>
               <Item rounded style={styles.inputGrp}>
-                <Grid>
+                <Grid style={styles.switchGrid}>
                   <Col style={styles.textContainer}>
                     <Icon name="male" style={styles.switchIcon} />
                     <Text style={styles.switchText}>Gender</Text>

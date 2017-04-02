@@ -66,9 +66,9 @@ export default {
     width: 90,
   },
   switch: {
-    transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }],
+    transform: Platform.OS === 'android' ? undefined : [{ scaleX: 0.75 }, { scaleY: 0.75 }],
     alignSelf: 'flex-start',
-    marginTop: -3,
+    marginTop: Platform.OS === 'android' ? 8 : -3,
   },
   grid: {
     marginBottom: 15,
@@ -101,8 +101,7 @@ export default {
     padding: 5,
     fontSize: 13,
     height: 40,
-    lineHeight: 18,
-    textAlignVertical: 'center',
+    lineHeight: 20,
   },
   yn: {
     fontSize: 10,
@@ -110,6 +109,7 @@ export default {
   },
   colwrap: {
     width: 20,
+    marginTop: Platform.OS === 'android' ? 8 : -2,
   },
   wrapper: {
     flex: 1,

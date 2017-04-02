@@ -3,18 +3,19 @@
 const React = require('react-native');
 
 const { Platform, Dimensions, StyleSheet } = React;
-
+const deviceWidth = Dimensions.get('window').width;
 export default {
   header: {
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
     backgroundColor: 'transparent',
     borderBottomColor: 'transparent',
+    elevation: 0,
   },
   rowHeader: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignSelf: 'stretch',
-    paddingTop: Platform.OS === 'android' ? 5 : 0,
   },
   btnHeader: {
     alignSelf: 'center',
@@ -22,6 +23,7 @@ export default {
   imageHeader: {
     height: 30,
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
@@ -36,13 +38,8 @@ export default {
     paddingRight: 20,
   },
   inputGrp: {
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
     marginBottom: 15,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderWidth: 1.5,
   },
   title: {
     fontWeight: 'bold',

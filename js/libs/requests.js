@@ -22,6 +22,7 @@ instance.interceptors.response.use(response => response.data, (error) => {
   if (error.response && error.response.status === 401) {
     
   }
+  console.log(error);
   return Promise.reject(error);
 });
 export const setToken = (token) => {

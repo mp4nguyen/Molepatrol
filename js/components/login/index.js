@@ -51,7 +51,7 @@ class Login extends Component {
     this.props.login(this.state).then(() => {
       this.replaceRoute('home');
     }).catch((e) => {
-      console.log(e);
+      
     });
   }
   render() {
@@ -115,6 +115,7 @@ class Login extends Component {
 
 function bindActions(dispatch) {
   return {
+    addToast: (message) => dispatch(addToast(message)),
     login: user => dispatch(login(user)),
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),

@@ -16,13 +16,13 @@ export default {
   preview: {
     alignItems: 'center',
     height: deviceHeight,
-    width: deviceWidth,
+    width: deviceWidth + 5,
   },
   control: {
     width: deviceWidth,
     position: 'absolute',
-    bottom: 10,
-    right: 0, 
+    bottom: Platform.OS === 'android' ? 50 : 10,
+    right: 0,
     left: 0,
     flexDirection: 'row',
     alignItems: 'center',

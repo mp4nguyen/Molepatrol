@@ -9,8 +9,6 @@ import { createUser } from '../../actions/user'
 import { Container, Content, Text, Button, Icon, Item, Input, View } from 'native-base';
 import { setBackRoute } from '../../actions/member';
 import styles from './styles';
-import { ToastStyles } from 'react-native-toaster';
-import { addToast } from '../../actions/toast';
 const bg = require('../../../images/BG.png');
 const logo = require('../../../images/logo.png');
 
@@ -71,10 +69,7 @@ class SignUp extends Component {
     this.props.createUser(this.state)
       .then(this.signUpSuccess.bind(this, 'signupbaseinfo'))
       .catch((error) => {
-        this.props.addToast({
-          text: 'Signup failed, check your infomation',
-          styles: ToastStyles.error,
-        });
+       
       });
   }
   render() {

@@ -67,7 +67,7 @@ class Summary extends Component {
             <View style={styles.wrapper}>
               <Swiper
                 height={130}
-                width={deviceWidth + resource.length}
+                width={(deviceWidth + 5) * resource.length}
                 loop
                 dot={<View style={styles.swiperDot} />}
                 activeDot={<View

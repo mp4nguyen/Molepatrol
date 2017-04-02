@@ -3,24 +3,20 @@
 const React = require('react-native');
 
 const { Platform, Dimensions, StyleSheet } = React;
-
+const deviceWidth = Dimensions.get('window').width;
 export default {
   header: {
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
     backgroundColor: 'transparent',
     borderBottomColor: 'transparent',
-  },
-  rowHeader: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'stretch',
-    paddingTop: Platform.OS === 'android' ? 5 : 0,
+    elevation: 0,
   },
   btnHeader: {
     alignSelf: 'center',
   },
   imageHeader: {
     height: 30,
+    alignSelf: 'center',
     resizeMode: 'contain',
   },
   container: {
@@ -36,13 +32,9 @@ export default {
     paddingRight: 20,
   },
   inputGrp: {
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
     marginBottom: 15,
-    borderWidth: 0,
-    borderColor: 'transparent',
-    borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderWidth: 1.5,
+    borderTopWidth: 0,
   },
   title: {
     fontWeight: 'bold',
@@ -55,12 +47,11 @@ export default {
     height: 40,
     color: '#FFF',
     lineHeight: 40,
-    textAlignVertical: 'bottom',
+    textAlignVertical: 'center',
   },
   background: {
     flex: 1,
-    width: null,
-    height: null,
+    width: deviceWidth + 5,
   },
   switchText: {
     color: '#fff',
@@ -86,9 +77,9 @@ export default {
   switch: {
     transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }],
     alignSelf: 'flex-end',
-    marginTop: Platform.OS === 'android' ? -2 : -5,
-    paddingTop: Platform.OS === 'android' ? 25 : 10,
-    paddingBottom: Platform.OS === 'android' ? 0 : 10,
+    marginTop: -5,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   switchOptionText: {
     fontSize: 11,

@@ -13,9 +13,7 @@ export function login(user): Action {
         type: USER_LOGIN,
         payload: response.account,
       });
-      console.log(response);
-      return new Promise.resolve();
-    }).catch(e=> console.log(e));
+    });
 }
 
 export function sendEmail(email): Action {

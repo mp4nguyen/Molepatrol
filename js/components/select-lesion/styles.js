@@ -31,10 +31,9 @@ export default {
     justifyContent: 'space-between',
   },
   header: {
-    width: Dimensions.get('window').width,
+    width: Dimensions.get('window').width + 5,
     paddingLeft: 15,
     paddingRight: 15,
-    marginLeft: (Platform.OS === 'ios') ? undefined : -30,
     backgroundColor: '#E79B61',
     borderBottomColor: 'transparent',
   },
@@ -51,8 +50,10 @@ export default {
   switchView: {
     height: 50,
     margin: 20,
+    marginTop: 5,
     borderWidth: 1,
     borderColor: '#000',
+    elevation: 0,
     backgroundColor: 'transparent',
   },
   headertext: {
@@ -73,6 +74,11 @@ export default {
   icon: {
     color: '#000',
     fontSize: 30,
+  },
+  switchText: {
+    color: '#000',
+    fontSize: 15,
+    lineHeight: 20,
   },
 };
 
