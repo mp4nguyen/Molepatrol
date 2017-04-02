@@ -1,7 +1,7 @@
 
 import type { PromiseAction } from './types';
 import { postRequest, getRequest } from '../libs/requests';
-
+import moment from 'moment'
 export const LIST_MEMBER = 'LIST_MEMBER';
 export const GET_MEMBER = 'GET_MEMBER';
 export const CREATE_MEMBER = 'CREATE_MEMBER';
@@ -25,7 +25,7 @@ const memberForm = {
     title: '',
     firstName: '',
     lastName: '',
-    dob: null,
+    dob: new moment().format('YYYY-MM-DD'),
     gender: false,
     occupation: '',
     email: '',

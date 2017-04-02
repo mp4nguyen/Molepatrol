@@ -7,7 +7,7 @@ import { Grid, Col } from 'react-native-easy-grid';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
-import { Container, Content, Text, Icon, Thumbnail, Item, Input, Left, Right, Button, Header, Body } from 'native-base';
+import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
 import { createMember, setInfo } from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import _ from 'lodash';
@@ -111,7 +111,7 @@ class GPInfo extends Component {
                 GP INFORMATION
             </Text>
 
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="GP Firstname"
@@ -120,8 +120,8 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="GP Lastname"
@@ -130,8 +130,8 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="Clinic Name/ Address"
@@ -140,8 +140,8 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Contact Number"
@@ -150,11 +150,11 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
+              </InputGroup>
               <Text style={styles.title}>
                 MEDICARE INFORMATION
             </Text>
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="star" />
                 <Input
                   placeholder="State *"
@@ -163,8 +163,8 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="mail" />
                 <Input
                   placeholder="Country *"
@@ -173,7 +173,7 @@ class GPInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
+              </InputGroup>
 
               <Button
                 rounded dark block large

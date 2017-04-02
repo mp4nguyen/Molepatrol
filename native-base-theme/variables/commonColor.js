@@ -138,7 +138,7 @@ export default {
   tabBarTextColor: '#8bb3f4',
   tabBarTextSize: (platform === 'ios') ? 14 : 11,
   activeTab: (platform === 'ios') ? '#007aff' : '#fff',
-  sTabBarActiveTextColor: '#007aff',
+  sTabBarActiveTextColor: '#fff',
   tabBarActiveTextColor: '#fff',
   tabActiveBgColor: (platform === 'ios') ? '#1569f4' : undefined,
 
@@ -177,7 +177,7 @@ export default {
 
     // InputGroup
   inputFontSize: 17,
-  inputBorderColor: '#D9D5DC',
+  inputBorderColor: '#fff',
   inputSuccessBorderColor: '#2b8339',
   inputErrorBorderColor: '#ed2f2f',
 

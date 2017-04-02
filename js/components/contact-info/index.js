@@ -7,7 +7,7 @@ import { Grid, Col } from 'react-native-easy-grid';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
-import { Container, Content, Text, Icon, Thumbnail, Item, Input, Left, Right, Button, Header, Body } from 'native-base';
+import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
 
 import HeaderContent from './../headerContent/';
 
@@ -104,7 +104,7 @@ class ContactInfo extends Component {
                 CONTACT INFO
             </Text>
 
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Mobile *"
@@ -113,8 +113,8 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="pin" />
                 <Input
                   placeholder="Address *"
@@ -123,8 +123,8 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="Suburb *"
@@ -133,8 +133,8 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="calendar" />
                 <Input
                   placeholder="Postcode *"
@@ -143,8 +143,8 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="star" />
                 <Input
                   placeholder="State *"
@@ -153,8 +153,8 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="mail" />
                 <Input
                   placeholder="Country *"
@@ -163,7 +163,7 @@ class ContactInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
+              </InputGroup>
             </View>
           </Content>
           <StepInfo text="CONTACT INFO" active="2" />

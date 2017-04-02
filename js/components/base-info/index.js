@@ -7,13 +7,14 @@ import { Grid, Col } from 'react-native-easy-grid';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
-import { Container, Content, Text, Icon, Thumbnail, Item, Input, Left, Right, Button, Header, Body } from 'native-base';
+import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
 import { setInfo } from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import StepInfo from '../step-info';
 import theme from '../../themes/base-theme';
 import styles from './styles';
-
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
 
@@ -47,7 +48,7 @@ class BaseInfo extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = { basic: { ...props.basic }};
+    this.state = { basic: { ...props.basic } };
     this.changeValue = this.changeValue.bind(this);
     this.submitBaseInfo = this.submitBaseInfo.bind(this);
   }
@@ -104,7 +105,7 @@ class BaseInfo extends Component {
                 BASIC INFO
               </Text>
 
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="document" />
                 <Input
                   placeholder="Title"
@@ -113,8 +114,8 @@ class BaseInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="Firstname"
@@ -123,8 +124,8 @@ class BaseInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="Lastname"
@@ -133,18 +134,37 @@ class BaseInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="calendar" />
-                <Input
+                <DatePicker
+                  style={{ width: 200, borderWidth: 0 }}
+                  date={moment(basic.dob).format('YYYY-MM-DD')}
+                  mode="date"
                   placeholder="Date Of Birth *"
-                  value={basic.dob}
-                  onChange={target => this.changeValue('dob', target.nativeEvent.text)}
-                  placeholderTextColor="#FFF"
-                  style={styles.input}
+                  format="YYYY-MM-DD"
+                  minDate="1900-05-01"
+                  maxDate={new moment().format('YYYY-MM-DD')}
+                  confirmBtnText="Select"
+                  cancelBtnText="Cancel"
+                  showIcon={false}
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0,
+                      marginLeft: 8,
+                      borderColor: undefined,
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                    },
+                    dateText: {
+                      fontSize: 15,
+                      color: '#fff',
+                    },
+                  }}
+                  onDateChange={(date) => { this.changeValue('dob', date); }}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Grid style={styles.switchGrid}>
                   <Col style={styles.textContainer}>
                     <Icon name="male" style={styles.switchIcon} />
@@ -170,8 +190,8 @@ class BaseInfo extends Component {
                     </Grid>
                   </Col>
                 </Grid>
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="star" />
                 <Input
                   placeholder="Occupation"
@@ -180,8 +200,8 @@ class BaseInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
+              </InputGroup>
+              <InputGroup underline style={styles.inputGrp}>
                 <Icon name="mail" />
                 <Input
                   placeholder="Email *"
@@ -190,7 +210,7 @@ class BaseInfo extends Component {
                   placeholderTextColor="#FFF"
                   style={styles.input}
                 />
-              </Item>
+              </InputGroup>
             </View>
           </Content>
           <StepInfo text="BASIC INFO" active="1" />

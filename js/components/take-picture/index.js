@@ -66,6 +66,7 @@ class TakePicture extends Component {
         },
       style: styles.preview,
       aspect: Camera.constants.Aspect.fill,
+      captureQuality: Camera.constants.CaptureQuality.low,
       captureTarget: Camera.constants.CaptureTarget.disk,
     };
     return (
