@@ -8,7 +8,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
 import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
-
+import _ from 'lodash';
 import HeaderContent from './../headerContent/';
 
 import theme from '../../themes/base-theme';
@@ -46,8 +46,19 @@ class ContactInfo extends Component {
     super(props);
     this.state = {
       contact: props.contact,
+      errors: {
+      },
     };
     this.changeValue = this.changeValue.bind(this);
+    this.validate = this.validate.bind(this);
+    this.validator = {
+      phone: value => !value || _.isEmpty(value),
+      address: value => !value || _.isEmpty(value),
+      suburb: value => !value || _.isEmpty(value),
+      postcode: value => !value ||  _.isEmpty(value),
+      state: value => !value || _.isEmpty(value),
+      country: value => !value || _.isEmpty(value),
+    };
     this.submitContactInfo = this.submitContactInfo.bind(this);
   }
   navigateTo(route) {
@@ -61,22 +72,41 @@ class ContactInfo extends Component {
   }
   changeValue(field, value) {
     this.setState({
+      ...this.state,
       contact: {
         ...this.state.contact,
         [field]: value,
       },
     });
   }
+  validate() {
+    const errors = {};
+    let count = 0;
+    _.each(_.keys(this.validator), (key) => {
+      if (this.validator[key](this.state.contact[key])) {
+        count += 1;
+        errors[key] = { error: true };
+      }
+    });
+    this.setState({
+      ...this.state,
+      errors,
+    });
+    if (count > 0) {
+      return Promise.reject('Error!');
+    }
+    return Promise.resolve();
+  }
   submitContactInfo() {
       
     const { submitContactInfo } = this.props;
     if (submitContactInfo) {
-      submitContactInfo({ contact: this.state.contact }).then(this.pushRoute.bind(this, 'gpinfo'));
+      this.validate().then(() => {
+        submitContactInfo({ contact: this.state.contact }).then(this.pushRoute.bind(this, 'gpinfo'));
+      }).catch(e=> alert(e))
     } else {
       this.pushRoute('gpinfo');
     }
-  
-    
   }
   render() {
     const { contact } = this.state
@@ -104,7 +134,7 @@ class ContactInfo extends Component {
                 CONTACT INFO
             </Text>
 
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.phone} underline style={styles.inputGrp}>
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Mobile *"
@@ -114,7 +144,7 @@ class ContactInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.address} underline style={styles.inputGrp}>
                 <Icon name="pin" />
                 <Input
                   placeholder="Address *"
@@ -124,7 +154,7 @@ class ContactInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.suburb} underline style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
                   placeholder="Suburb *"
@@ -134,7 +164,7 @@ class ContactInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.postcode} underline style={styles.inputGrp}>
                 <Icon name="calendar" />
                 <Input
                   placeholder="Postcode *"
@@ -144,7 +174,7 @@ class ContactInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.state} underline style={styles.inputGrp}>
                 <Icon name="star" />
                 <Input
                   placeholder="State *"
@@ -154,7 +184,7 @@ class ContactInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.country} underline style={styles.inputGrp}>
                 <Icon name="mail" />
                 <Input
                   placeholder="Country *"

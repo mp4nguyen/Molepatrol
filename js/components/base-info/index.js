@@ -15,9 +15,9 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
+import _ from 'lodash';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
-
 const {
   pushRoute,
   popRoute,
@@ -48,7 +48,15 @@ class BaseInfo extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = { basic: { ...props.basic } };
+    this.state = {
+      basic: { ...props.basic },
+      errors: {},
+    };
+    this.validate = this.validate.bind(this);
+    this.validator = {
+      dob: value => !value || _.isEmpty(value),
+      email: value => !value || _.isEmpty(value),
+    };
     this.changeValue = this.changeValue.bind(this);
     this.submitBaseInfo = this.submitBaseInfo.bind(this);
   }
@@ -63,18 +71,38 @@ class BaseInfo extends Component {
   }
   changeValue(field, value) {
     this.setState({
+      ...this.state,
       basic: {
         ...this.state.basic,
         [field]: value,
       },
     });
   }
+  validate() {
+    const errors = {};
+    let count = 0;
+    _.each(_.keys(this.validator), (key) => {
+      if (this.validator[key](this.state.basic[key])) {
+        count += 1;
+        errors[key] = { error: true };
+      }
+    });
+    this.setState({
+      ...this.state,
+      errors,
+    });
+    if (count > 0) {
+      return Promise.reject('Error!');
+    }
+    return Promise.resolve();
+  }
   submitBaseInfo() {
     const { submitBaseInfo } = this.props;
-
     if (submitBaseInfo) {
-      submitBaseInfo({ basic: this.state.basic })
+      this.validate().then(() => {
+        submitBaseInfo({ basic: this.state.basic })
         .then(this.pushRoute.bind(this, 'contactinfo'));
+      }).catch(e => alert(e));
     } else {
       this.pushRoute('contactinfo');
     }
@@ -135,7 +163,7 @@ class BaseInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.dob} underline style={styles.inputGrp}>
                 <Icon name="calendar" />
                 <DatePicker
                   style={{ width: 200, borderWidth: 0 }}
@@ -201,7 +229,7 @@ class BaseInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.email} underline style={styles.inputGrp}>
                 <Icon name="mail" />
                 <Input
                   placeholder="Email *"

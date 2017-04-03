@@ -51,7 +51,8 @@ export default {
   },
   background: {
     flex: 1,
-    width: deviceWidth + 5,
+    width: null,
+    height: null,
   },
   switchText: {
     color: '#fff',

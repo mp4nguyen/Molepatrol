@@ -14,6 +14,8 @@ import _ from 'lodash';
 import theme from '../../themes/base-theme';
 import styles from './styles';
 import StepInfo from '../step-info';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
 
@@ -30,8 +32,9 @@ class GPInfo extends Component {
       lastName: '',
       clinic: '',
       contactNumber: '',
-      state: '',
-      country: '',
+      medicareNo: '',
+      medicareRef: '',
+      medicareExpired: null,
     },
   }
   static propTypes = {
@@ -53,9 +56,13 @@ class GPInfo extends Component {
     super(props);
     this.state = {
       gp: props.gp,
+      errors: {},
     };
     this.changeValue = this.changeValue.bind(this);
     this.submitMember = this.submitMember.bind(this);
+    this.validate = this.validate.bind(this);
+    this.validator = {
+    };
   }
   resetRoute() {
     this.props.reset(this.props.navigation.key);
@@ -68,23 +75,46 @@ class GPInfo extends Component {
   }
   changeValue(field, value) {
     this.setState({
+      ...this.state,
       gp: {
         ...this.state.gp,
         [field]: value,
       },
     });
   }
+  validate() {
+    const errors = {};
+    let count = 0;
+    _.each(_.keys(this.validator), (key) => {
+      if (this.validator[key](this.state.gp[key])) {
+        count += 1;
+        errors[key] = { error: true };
+      }
+    });
+    this.setState({
+      ...this.state,
+      errors,
+    });
+    if (count > 0) {
+      return Promise.reject('Error!');
+    }
+    return Promise.resolve();
+  }
   submitMember() {
     const { setInfo, createMember, replaceAtIndex, navigation, member, backToRoute } = this.props;
     if (setInfo) {
       const index = _.findIndex(navigation.routes, { key: backToRoute });
-      createMember({ gp: this.state, ...member })
+      this.validate().then(() => {
+        createMember({ gp: this.state, ...member })
         .then(() => {
           for (let i = index; i < navigation.routes.length - 1; i++) {
             this.popRoute();
           }
         })
         .catch(err => window.alert(err));
+      }).catch((e) => {
+        alert(e);
+      });
     } else {
       reset(navigation.key);
     }
@@ -154,27 +184,56 @@ class GPInfo extends Component {
               <Text style={styles.title}>
                 MEDICARE INFORMATION
             </Text>
-              <InputGroup underline style={styles.inputGrp}>
-                <Icon name="star" />
-                <Input
-                  placeholder="State *"
-                  value={gp.state}
-                  onChange={target => this.changeValue('state', target.nativeEvent.text)}
-                  placeholderTextColor="#FFF"
-                  style={styles.input}
+              <Grid>
+                <Col style={{ marginRight: 10 }}>
+                  <InputGroup {...this.state.errors.state} underline style={styles.inputGrp}>
+                    <Input
+                      placeholder="Medicare No"
+                      value={gp.state}
+                      onChange={target => this.changeValue('medicareNo', target.nativeEvent.text)}
+                      placeholderTextColor="#FFF"
+                      style={styles.input}
+                    />
+                  </InputGroup>
+                </Col>
+                <Col style={{ marginLeft: 10 }}>
+                  <InputGroup {...this.state.errors.country} underline style={styles.inputGrp}>
+                    <Input
+                      placeholder="Medicare Ref"
+                      value={gp.country}
+                      onChange={target => this.changeValue('medicareRef', target.nativeEvent.text)}
+                      placeholderTextColor="#FFF"
+                      style={styles.input}
+                    />
+                  </InputGroup>
+                </Col>
+              </Grid>
+              <InputGroup {...this.state.errors.medicareExpired} underline style={styles.inputGrp}>
+                <DatePicker
+                  style={{ width: 200, borderWidth: 0 }}
+                  date={moment(gp.medicareExpired).format('YYYY-MM-DD')}
+                  mode="date"
+                  placeholder="Medicare Expired"
+                  format="YYYY-MM-DD"
+                  confirmBtnText="Select"
+                  cancelBtnText="Cancel"
+                  showIcon={false}
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0,
+                      marginLeft: 8,
+                      borderColor: undefined,
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                    },
+                    dateText: {
+                      fontSize: 15,
+                      color: '#fff',
+                    },
+                  }}
+                  onDateChange={(date) => { this.changeValue('medicareExpired', date); }}
                 />
               </InputGroup>
-              <InputGroup underline style={styles.inputGrp}>
-                <Icon name="mail" />
-                <Input
-                  placeholder="Country *"
-                  value={gp.country}
-                  onChange={target => this.changeValue('country', target.nativeEvent.text)}
-                  placeholderTextColor="#FFF"
-                  style={styles.input}
-                />
-              </InputGroup>
-
               <Button
                 rounded dark block large
                 style={styles.submitBtn}

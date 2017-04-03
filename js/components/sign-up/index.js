@@ -5,10 +5,11 @@ import { Image, TouchableOpacity, Platform } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actions } from 'react-native-navigation-redux-helpers';
-import { createUser } from '../../actions/user'
-import { Container, Content, Text, Button, Icon, Item, Input, View } from 'native-base';
+import { createUser } from '../../actions/user';
+import { Container, Content, Text, Button, Icon, InputGroup, Input, View } from 'native-base';
 import { setBackRoute } from '../../actions/member';
 import styles from './styles';
+import _ from 'lodash';
 const bg = require('../../../images/BG.png');
 const logo = require('../../../images/logo.png');
 
@@ -36,15 +37,23 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
-      email: '',
-    };
+      info: {
+        username: '',
+        password: '',
+        email: '',
+      },
+      errors: {} };
     this.constructor.childContextTypes = {
       theme: React.PropTypes.object,
     };
+    this.validator = {
+      username: value => !value || _.isEmpty(value),
+      password: value => !value || _.isEmpty(value),
+      email: value => !value || _.isEmpty(value),
+    };
     this.changeValue = this.changeValue.bind(this);
     this.submit = this.submit.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   resetRoute(route) {
@@ -61,16 +70,39 @@ class SignUp extends Component {
     return (target) => {
       that.setState({
         ...that.state,
-        [input]: target.nativeEvent.text,
+        info: {
+          ...that.state.info,
+          [input]: target.nativeEvent.text,
+        },
       });
     };
   }
-  submit () {
-    this.props.createUser(this.state)
-      .then(this.signUpSuccess.bind(this, 'signupbaseinfo'))
-      .catch((error) => {
-       
-      });
+  validate() {
+    const errors = {};
+    let count = 0;
+    _.each(_.keys(this.validator), (key) => {
+      if (this.validator[key](this.state.info[key])) {
+        count += 1;
+        errors[key] = { error: true };
+      }
+    });
+    this.setState({
+      ...this.state,
+      errors,
+    });
+    if (count > 0) {
+      return Promise.reject('Error!');
+    }
+    return Promise.resolve();
+  }
+  submit() {
+    this.validate().then(() => {
+      this.props.createUser(this.state.info)
+        .then(this.signUpSuccess.bind(this, 'signupbaseinfo'))
+        .catch((error) => {
+          alert('Failed');
+        });
+    }).catch(e => alert(e));
   }
   render() {
     return (
@@ -84,35 +116,35 @@ class SignUp extends Component {
               CREATE ACCOUNT
                                 </Text>
             <View >
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.username} rounded style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
-                  value={this.state.username}
+                  value={this.state.info.username}
                   onChange={this.changeValue('username')}
                   placeholder="Username" style={styles.input}
                   placeholderTextColor="#FFF"
                 />
-              </Item>
+              </InputGroup> 
 
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.email} rounded style={styles.inputGrp}>
                 <Icon name="mail-open" />
                 <Input
-                  value={this.state.email}
+                  value={this.state.info.email}
                   onChange={this.changeValue('email')}
                   placeholder="Email" style={styles.input}
                   placeholderTextColor="#FFF"
                 />
-              </Item>
+              </InputGroup> 
 
-              <Item rounded style={styles.inputGrp}>
+              <InputGroup {...this.state.errors.password} rounded style={styles.inputGrp}>
                 <Icon name="unlock" />
                 <Input
-                  value={this.state.password}
+                  value={this.state.info.password}
                   onChange={this.changeValue('password')}
                   placeholder="Password" secureTextEntry style={styles.input}
                   placeholderTextColor="#FFF"
                 />
-              </Item>
+              </InputGroup> 
             </View>
             <View>
               <Button
@@ -137,10 +169,10 @@ class SignUp extends Component {
 
 function bindAction(dispatch) {
   return {
-    addToast: (message) => dispatch(addToast(message)),
-    setBackRoute: (route) => dispatch(setBackRoute(route)),
+    addToast: message => dispatch(addToast(message)),
+    setBackRoute: route => dispatch(setBackRoute(route)),
     replaceAt: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
-    createUser: (user) => dispatch(createUser(user)),
+    createUser: user => dispatch(createUser(user)),
     pushToRoute: (route, key) => dispatch(pushRoute(route, key)),
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),
   };

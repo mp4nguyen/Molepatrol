@@ -46,7 +46,6 @@ export default {
     backgroundColor: 'rgba(255,255,255,0.2)',
     marginBottom: 20,
     borderWidth: 0,
-    borderColor: 'transparent',
   },
   input: {
     paddingLeft: 10,
