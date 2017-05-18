@@ -43,8 +43,8 @@ class SignUp extends Component {
   pushRoute(route) {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
-  
-  addMember () {
+
+  addMember() {
     this.props.setBackRoute('requestadvice');
     this.pushRoute('members');
   }
@@ -58,28 +58,28 @@ class SignUp extends Component {
 
           <View style={styles.container}>
             <View style={styles.wrapheader}>
-            <Text style={styles.header}>REQUEST ADVICE</Text>
-            <Text style={styles.user}>
-              {`${firstName} ${lastName}`}</Text>
+              <Text style={styles.header}>REQUEST ADVICE</Text>
+              <Text style={styles.user}>
+                {`${firstName} ${lastName}`}</Text>
             </View>
             <View style={styles.wrapbutton}>
-            <Button
-              rounded bordered block
-              onPress={this.addMember}
-              style={styles.addBtn}
-            >
-              <Text style={{ color: '#FFF', fontWeight: 'bold' }}> Change / Add Member 
+              <Button
+                rounded bordered block
+                onPress={this.addMember}
+                style={styles.addBtn}
+              >
+                <Text style={{ color: '#FFF', fontWeight: 'bold' }}> Change / Add Member
               </Text>
-              <Icon name='arrow-down' style={{ marginLeft: 10, fontSize: 20, marginTop: 5, color: '#fff' }} />
-            </Button>
+                <Icon name="arrow-dropdown-circle" style={{ marginLeft: 10, fontSize: 20, marginTop: 5, color: '#fff' }} />
+              </Button>
 
-            <Button
-              rounded bordered block
-              onPress={() => this.pushRoute('introduction')}
-              style={styles.nextBtn}
-            >
-              <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Next</Text>
-            </Button>
+              <Button
+                rounded bordered block
+                onPress={() => this.pushRoute('introduction')}
+                style={styles.nextBtn}
+              >
+                <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Next</Text>
+              </Button>
             </View>
           </View>
         </Image>
@@ -91,7 +91,7 @@ class SignUp extends Component {
 
 function bindAction(dispatch) {
   return {
-    setBackRoute: (route) => dispatch(setBackRoute(route)),
+    setBackRoute: route => dispatch(setBackRoute(route)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),
   };

@@ -15,23 +15,12 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
 import { setMember, getMembers, addMember, getMember } from '../../actions/member';
-const deviceWidth = Dimensions.get('window').width;
-const primary = require('../../themes/variable').brandPrimary;
+
 const bg = require('../../../images/BG.png');
 const {
   popRoute,
   pushRoute,
 } = actions;
-const renderPagination = (index, total, context) => (
-  <View style={{ position: 'absolute', bottom: -25, right: 10 }}>
-    <Text>
-      <Text style={{ color: '#007aff', fontSize: 20 }}>
-        {index + 1}
-      </Text>
-      /{total}
-    </Text>
-  </View>
-);
 
 class Member extends Component {
 

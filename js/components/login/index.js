@@ -50,9 +50,7 @@ class Login extends Component {
   login() {
     this.props.login(this.state).then(() => {
       this.replaceRoute('home');
-    }).catch((e) => {
-      
-    });
+    }).catch(alert);
   }
   render() {
     return (

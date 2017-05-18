@@ -118,7 +118,7 @@ class MyRequest extends Component {
           >
             <Text style={styles.mainText}>
               {`${firstName} ${lastName}`}</Text>
-              <Icon name='arrow-down' style={{ marginLeft: 10, fontSize: 20, marginTop: 5 }} />
+              <Icon name='arrow-dropdown-circle' style={{ marginLeft: 10, fontSize: 20, marginTop: 5 }} />
           </Button>
 
           <Content showsVerticalScrollIndicator={false} >

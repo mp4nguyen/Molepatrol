@@ -15,8 +15,7 @@ export default {
   background: {
     flex: 1,
     width: null,
-    height: deviceHeight,
-    backgroundColor: primary,
+    height: null,
   },
   bg: {
     flex: 1,

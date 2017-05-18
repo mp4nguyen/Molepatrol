@@ -20,15 +20,6 @@ export default {
   background: {
     flex: 1,
     width: null,
-    height: deviceHeight,
-    backgroundColor: primary,
-  },
-  bg: {
-    flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 70,
-    marginTop: (deviceHeight < 500) ? (Platform.OS === 'android' ? 20 : 0) : (Platform.OS === 'android' ? ((deviceHeight / 6) - 45) : ((deviceHeight / 6) - 10)),
   },
   textContainer: {
     alignItems: 'center',
