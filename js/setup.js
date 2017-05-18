@@ -6,16 +6,19 @@ import App from './App';
 import configureStore from './configureStore';
 import getTheme from '../native-base-theme/components';
 import variables from '../native-base-theme/variables/commonColor';
+import { setDispacher } from './libs/requests';
 
 function setup():React.Component {
   class Root extends Component {
 
     constructor() {
       super();
+      const store = configureStore(() => this.setState({ isLoading: false }))
       this.state = {
         isLoading: false,
-        store: configureStore(() => this.setState({ isLoading: false })),
+        store,
       };
+      setDispacher(store.dispatch);
     }
 
     render() {

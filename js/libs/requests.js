@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { config } from '../global';
 
+import { showSpinner, hideSpinner } from '../actions/spinner';
 const {
     baseURL,
 } = config;
@@ -8,25 +9,45 @@ const {
 const instance = axios.create({
   baseURL,
 });
+let dispatcher;
 
+const showLoading = () => !!dispatcher && dispatcher(showSpinner());
+const hideLoading = () => !!dispatcher && dispatcher(hideSpinner());
 
-instance.interceptors.request.use((config) => {
+const reqSuccess = (config) => {
   // if (TOKEN) {
   //   config.headers.Authorization = `Bearer ${TOKEN.access_token}`;
   // }
-  console.log(config);
+  showLoading();
   return config;
-}, error => Promise.reject(error));
-
-instance.interceptors.response.use(response => response.data, (error) => {
-  if (error.response && error.response.status === 401) {
-    
-  }
-  console.log(error);
+};
+const reqFailure = (error) => {
+  hideLoading();
   return Promise.reject(error);
-});
+};
+
+instance.interceptors.request.use(reqSuccess, reqFailure);
+
+const reSuccess = (response) => {
+  hideLoading();
+  return response.data;
+};
+
+const reFailure = (error) => {
+  // if (error.response && error.response.status === 401) {
+  // }
+  hideLoading();
+  return Promise.reject(error);
+};
+
+instance.interceptors.response.use(reSuccess, reFailure);
+
+export const setDispacher = (dispatch) => {
+  dispatcher = dispatch;
+};
+
 export const setToken = (token) => {
-  
+
 };
 
 export const postRequest = (url, data, options = {}) => instance.post(url, data, options);

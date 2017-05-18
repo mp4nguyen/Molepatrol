@@ -6,11 +6,12 @@ import user from './user';
 import cardNavigation from './cardNavigation';
 import request from './request';
 import member from './member';
-
+import spinner from './spinner';
 export default combineReducers({
   drawer,
   cardNavigation,
   request,
   user,
   member,
+  spinner,
 });

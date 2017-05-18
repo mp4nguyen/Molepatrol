@@ -33,7 +33,7 @@ import TakePicture from './components/take-picture';
 import SelectLesion from './components/select-lesion';
 
 import { statusBarColor } from './themes/base-theme';
-
+import SpinnerView from './components/spinner';
 const {
   popRoute,
 } = actions;
@@ -186,6 +186,7 @@ class AppNavigator extends Component {
           renderOverlay={this._renderOverlay}
           renderScene={this._renderScene}
         />
+        <SpinnerView />
       </Drawer>
     );
   }
