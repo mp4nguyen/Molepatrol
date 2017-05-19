@@ -9,7 +9,7 @@ export const SET_INFO = 'SET_INFO';
 export const SET_BACK_ROUTE = 'SET_BACK_ROUTE';
 export const ADD_MEMBER = 'ADD_MEMBER';
 export const SET_MEMBER = 'SET_MEMBER';
-
+export const CHANGE_VALUE_MEMBER = 'CHANGE_VALUE_MEMBER';
 
 const memberForm = {
   id: 0,
@@ -39,6 +39,19 @@ const memberForm = {
     country: '',
   },
 };
+
+export function changeValueMember(page,fieldName,value): Action {
+  var dispatchObject = {};
+  var valueObject = {}
+  valueObject[fieldName] = value
+  dispatchObject[page]= valueObject
+  console.log("actions.members.changeValueMember:...",dispatchObject);
+
+  //return dispatch => dispatch({type: ADD_MEMBER,payload: dispatchObject});
+
+  return {type: CHANGE_VALUE_MEMBER,payload: {page,fieldName,value}}
+
+}
 
 export function addMember(member): Action {
   return dispatch => new Promise((resolve) => {

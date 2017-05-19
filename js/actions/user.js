@@ -1,12 +1,17 @@
 
 import type { Action } from './types';
-import { postRequest } from '../libs/requests';
+import { postRequest,postRequest2 } from '../libs/requests';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_FORGOT_PASSWORD = 'USER_FORGOT_PASSWORD';
 export const CREATE_USER = 'CREATE_USER';
 
 export function login(user): Action {
+
+  postRequest2('/api/v1/loginAT',user).then(res=>{
+  	console.log("res = ",res.data);
+  });
+
   return dispatch => postRequest('BookingCtrls/login', user)
     .then((response) => {
       dispatch({

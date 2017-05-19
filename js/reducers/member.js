@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { LIST_MEMBER, SET_MEMBER, CREATE_MEMBER,ADD_MEMBER, GET_MEMBER, SET_INFO, SET_BACK_ROUTE } from '../actions/member';
+import { LIST_MEMBER, SET_MEMBER, CREATE_MEMBER,ADD_MEMBER, GET_MEMBER, SET_INFO, SET_BACK_ROUTE,CHANGE_VALUE_MEMBER } from '../actions/member';
 import { USER_LOGIN } from '../actions/user';
 export type State = {
     list: array,
@@ -10,11 +10,18 @@ export type State = {
 const initialState = {
   list: [],
   item: null,
-  member: {},
+  member: {
+            signup:{username:"",password:"",email:""},
+            baseinfo:{title:"",firstName:'',lastName:'',dob:'',gender:false,occupation:'',email:''},
+            contact:{phone:'',address:'',suburb:'',state:'',postcode:'',country:''},
+            gp:{firstName:'',lastName:'',clinic:'',contactNumber:'',medicareNo:'',medicareRef:'',medicareExpired:''}
+          },
   backToRoute: 'login',
 };
 
 export default function (state:State = initialState, action:Action): State {
+
+  console.log("reducers.member.js: action = ",action);
   if (action.type === LIST_MEMBER) {
     return {
       ...state,
@@ -29,6 +36,19 @@ export default function (state:State = initialState, action:Action): State {
     };
   }
 
+  if (action.type === CHANGE_VALUE_MEMBER) {
+    var valueObject = {};
+    var pageObject = {};
+
+    valueObject[action.payload.fieldName] = action.payload.value;
+
+    var newPageValue = Object.assign({},state.member[action.payload.page],valueObject);
+    pageObject[action.payload.page]=newPageValue
+    var newMember = Object.assign({},state.member,pageObject);
+
+    return Object.assign({},state,{member:newMember})
+  }
+
   if (action.type === SET_INFO) {
     return {
       ...state,
@@ -38,6 +58,7 @@ export default function (state:State = initialState, action:Action): State {
       },
     };
   }
+
   if (action.type === SET_BACK_ROUTE) {
     return {
       ...state,

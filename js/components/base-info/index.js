@@ -8,7 +8,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
 import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
-import { setInfo } from '../../actions/member';
+import { setInfo ,changeValueMember} from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import StepInfo from '../step-info';
 import theme from '../../themes/base-theme';
@@ -18,10 +18,12 @@ import moment from 'moment';
 import _ from 'lodash';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
+
 const {
   pushRoute,
   popRoute,
 } = actions;
+
 class BaseInfo extends Component {
   static defaultProps = {
     canBack: true,
@@ -70,19 +72,22 @@ class BaseInfo extends Component {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
   changeValue(field, value) {
-    this.setState({
-      ...this.state,
-      basic: {
-        ...this.state.basic,
-        [field]: value,
-      },
-    });
+
+    this.props.changeValueMember("baseinfo",field,value);
+
+    // this.setState({
+    //   ...this.state,
+    //   basic: {
+    //     ...this.state.basic,
+    //     [field]: value,
+    //   },
+    // });
   }
   validate() {
     const errors = {};
     let count = 0;
     _.each(_.keys(this.validator), (key) => {
-      if (this.validator[key](this.state.basic[key])) {
+      if (this.validator[key](this.props.baseinfo[key])) {
         count += 1;
         errors[key] = { error: true };
       }
@@ -98,15 +103,20 @@ class BaseInfo extends Component {
   }
   submitBaseInfo() {
     const { submitBaseInfo } = this.props;
-    if (submitBaseInfo) {
-      this.validate().then(() => {
-        submitBaseInfo({ basic: this.state.basic })
-        .then(this.pushRoute.bind(this, 'contactinfo'));
-      }).catch(e => alert(e));
-    } else {
-      this.pushRoute('contactinfo');
-    }
+    this.pushRoute('contactinfo')
+
+    // if (submitBaseInfo) {
+    //   this.validate().then(() => {
+    //     this.pushRoute('contactinfo')
+    //     //submitBaseInfo({ basic: this.state.basic }).then(this.pushRoute.bind(this, 'contactinfo'));
+    //   }).catch(e => alert(e));
+    // } else {
+    //   this.pushRoute('contactinfo');
+    // }
   }
+
+  //this.popRoute()
+
   render() {
     const { basic } = this.state;
     return (
@@ -114,9 +124,9 @@ class BaseInfo extends Component {
         <Image source={bg} style={styles.background} >
           <Header style={styles.header} >
             <Left>
-              {this.props.canBack && <Button transparent onPress={() => this.popRoute()}>
+              <Button transparent onPress={() => this.popRoute() }>
                 <Icon active name="arrow-back" />
-              </Button>}
+              </Button>
             </Left>
             <Body>
               <Image source={headerLogo} style={styles.imageHeader} />
@@ -137,7 +147,7 @@ class BaseInfo extends Component {
                 <Icon name="document" />
                 <Input
                   placeholder="Title"
-                  value={basic.title}
+                  value={this.props.baseinfo.title}
                   onChange={target => this.changeValue('title', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -147,7 +157,7 @@ class BaseInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="Firstname"
-                  value={basic.firstName}
+                  value={this.props.baseinfo.firstName}
                   onChange={target => this.changeValue('firstName', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -157,7 +167,7 @@ class BaseInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="Lastname"
-                  value={basic.lastName}
+                  value={this.props.baseinfo.lastName}
                   onChange={target => this.changeValue('lastName', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -167,7 +177,7 @@ class BaseInfo extends Component {
                 <Icon name="calendar" />
                 <DatePicker
                   style={{ width: 200, borderWidth: 0 }}
-                  date={moment(basic.dob).format('YYYY-MM-DD')}
+                  date={moment(this.props.baseinfo.dob).format('YYYY-MM-DD')}
                   mode="date"
                   placeholder="Date Of Birth *"
                   format="YYYY-MM-DD"
@@ -209,7 +219,7 @@ class BaseInfo extends Component {
                           style={styles.switch}
                           thumbTintColor="#ccc"
                           tintColor="#aaa"
-                          value={basic.gender}
+                          value={this.props.baseinfo.gender}
                         />
                       </Col>
                       <Col>
@@ -223,7 +233,7 @@ class BaseInfo extends Component {
                 <Icon name="star" />
                 <Input
                   placeholder="Occupation"
-                  value={basic.occupation}
+                  value={this.props.baseinfo.occupation}
                   onChange={target => this.changeValue('occupation', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -233,7 +243,7 @@ class BaseInfo extends Component {
                 <Icon name="mail" />
                 <Input
                   placeholder="Email *"
-                  value={basic.email}
+                  value={this.props.baseinfo.email}
                   onChange={target => this.changeValue('email', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -254,12 +264,13 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
+    changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  basic: state.member.member.basic,
+  baseinfo: state.member.member.baseinfo
 });
 
 export default connect(mapStateToProps, bindAction)(BaseInfo);

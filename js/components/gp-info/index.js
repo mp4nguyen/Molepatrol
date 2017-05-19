@@ -8,7 +8,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
 import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
-import { createMember, setInfo } from '../../actions/member';
+import { createMember, setInfo,changeValueMember } from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import _ from 'lodash';
 import theme from '../../themes/base-theme';
@@ -74,19 +74,20 @@ class GPInfo extends Component {
     this.props.popRoute(this.props.navigation.key);
   }
   changeValue(field, value) {
-    this.setState({
-      ...this.state,
-      gp: {
-        ...this.state.gp,
-        [field]: value,
-      },
-    });
+    this.props.changeValueMember("gp",field,value);
+    // this.setState({
+    //   ...this.state,
+    //   gp: {
+    //     ...this.state.gp,
+    //     [field]: value,
+    //   },
+    // });
   }
   validate() {
     const errors = {};
     let count = 0;
     _.each(_.keys(this.validator), (key) => {
-      if (this.validator[key](this.state.gp[key])) {
+      if (this.validator[key](this.props.gp[key])) {
         count += 1;
         errors[key] = { error: true };
       }
@@ -145,7 +146,7 @@ class GPInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="GP Firstname"
-                  value={gp.firstName}
+                  value={this.props.gp.firstName}
                   onChange={target => this.changeValue('firstName', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -155,7 +156,7 @@ class GPInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="GP Lastname"
-                  value={gp.lastName}
+                  value={this.props.gp.lastName}
                   onChange={target => this.changeValue('lastName', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -165,7 +166,7 @@ class GPInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="Clinic Name/ Address"
-                  value={gp.clinic}
+                  value={this.props.gp.clinic}
                   onChange={target => this.changeValue('clinic', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -175,7 +176,7 @@ class GPInfo extends Component {
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Contact Number"
-                  value={gp.contactNumber}
+                  value={this.props.gp.contactNumber}
                   onChange={target => this.changeValue('contactNumber', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -189,7 +190,7 @@ class GPInfo extends Component {
                   <InputGroup {...this.state.errors.state} underline style={styles.inputGrp}>
                     <Input
                       placeholder="Medicare No"
-                      value={gp.state}
+                      value={this.props.gp.medicareNo}
                       onChange={target => this.changeValue('medicareNo', target.nativeEvent.text)}
                       placeholderTextColor="#FFF"
                       style={styles.input}
@@ -200,7 +201,7 @@ class GPInfo extends Component {
                   <InputGroup {...this.state.errors.country} underline style={styles.inputGrp}>
                     <Input
                       placeholder="Medicare Ref"
-                      value={gp.country}
+                      value={this.props.gp.medicareRef}
                       onChange={target => this.changeValue('medicareRef', target.nativeEvent.text)}
                       placeholderTextColor="#FFF"
                       style={styles.input}
@@ -211,7 +212,7 @@ class GPInfo extends Component {
               <InputGroup {...this.state.errors.medicareExpired} underline style={styles.inputGrp}>
                 <DatePicker
                   style={{ width: 200, borderWidth: 0 }}
-                  date={moment(gp.medicareExpired).format('YYYY-MM-DD')}
+                  date={moment(this.props.gp.medicareExpired).format('YYYY-MM-DD')}
                   mode="date"
                   placeholder="Medicare Expired"
                   format="YYYY-MM-DD"
@@ -259,6 +260,7 @@ function bindAction(dispatch) {
     pushRoute: route => dispatch(pushRoute(route)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
+    changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
   };
 }
 

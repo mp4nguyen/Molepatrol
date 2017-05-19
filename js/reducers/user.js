@@ -13,6 +13,7 @@ const initialState = {
 };
 
 export default function (state:State = initialState, action:Action): State {
+  console.log("reducers.user.js action = ",action);
   if (action.type === USER_LOGIN) {
     return {
       ...state,

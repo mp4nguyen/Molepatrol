@@ -9,6 +9,12 @@ const {
 const instance = axios.create({
   baseURL,
 });
+
+const instance2 = axios.create({
+  baseURL:"https://7d362201.ngrok.io/onlinebooking/v1/"
+});
+
+
 let dispatcher;
 
 const showLoading = () => !!dispatcher && dispatcher(showSpinner());
@@ -57,6 +63,11 @@ export const getRequest = (url, params, options = {}) => instance.get(url, param
 export const putRequest = (url, data, options = {}) => instance.put(url, data, options);
 
 export const deleteRequest = (url, params, options = {}) => instance.delete(url, params, options);
+
+
+export const postRequest2 = (url, data, options = {}) => instance2.post(url, data, options);
+
+export const getRequest2 = (url, params, options = {}) => instance2.get(url, params, options);
 
 // export const uploadRequest = (flow) => {
 //   flow.opts.target = `${baseURL}upload`;

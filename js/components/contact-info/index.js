@@ -13,7 +13,7 @@ import HeaderContent from './../headerContent/';
 
 import theme from '../../themes/base-theme';
 import styles from './styles';
-import { setInfo } from '../../actions/member'
+import { setInfo ,changeValueMember} from '../../actions/member';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
 import StepInfo from '../step-info';
@@ -71,19 +71,21 @@ class ContactInfo extends Component {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
   changeValue(field, value) {
-    this.setState({
-      ...this.state,
-      contact: {
-        ...this.state.contact,
-        [field]: value,
-      },
-    });
+    this.props.changeValueMember("contact",field,value);
+
+    // this.setState({
+    //   ...this.state,
+    //   contact: {
+    //     ...this.state.contact,
+    //     [field]: value,
+    //   },
+    // });
   }
   validate() {
     const errors = {};
     let count = 0;
     _.each(_.keys(this.validator), (key) => {
-      if (this.validator[key](this.state.contact[key])) {
+      if (this.validator[key](this.props.contact[key])) {
         count += 1;
         errors[key] = { error: true };
       }
@@ -98,15 +100,17 @@ class ContactInfo extends Component {
     return Promise.resolve();
   }
   submitContactInfo() {
-      
-    const { submitContactInfo } = this.props;
-    if (submitContactInfo) {
-      this.validate().then(() => {
-        submitContactInfo({ contact: this.state.contact }).then(this.pushRoute.bind(this, 'gpinfo'));
-      }).catch(e=> alert(e))
-    } else {
-      this.pushRoute('gpinfo');
-    }
+    this.pushRoute('gpinfo');
+
+    // const { submitContactInfo } = this.props;
+    // if (submitContactInfo) {
+    //   this.validate().then(() => {
+    //     this.pushRoute('gpinfo');
+    //     //submitContactInfo({ contact: this.state.contact }).then(this.pushRoute.bind(this, 'gpinfo'));
+    //   }).catch(e=> alert(e))
+    // } else {
+    //   this.pushRoute('gpinfo');
+    // }
   }
   render() {
     const { contact } = this.state
@@ -138,7 +142,7 @@ class ContactInfo extends Component {
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Mobile *"
-                  value={contact.phone}
+                  value={this.props.contact.phone}
                   onChange={target => this.changeValue('phone', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -148,7 +152,7 @@ class ContactInfo extends Component {
                 <Icon name="pin" />
                 <Input
                   placeholder="Address *"
-                  value={contact.address}
+                  value={this.props.contact.address}
                   onChange={target => this.changeValue('address', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -158,7 +162,7 @@ class ContactInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="Suburb *"
-                  value={contact.suburb}
+                  value={this.props.contact.suburb}
                   onChange={target => this.changeValue('suburb', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -168,7 +172,7 @@ class ContactInfo extends Component {
                 <Icon name="calendar" />
                 <Input
                   placeholder="Postcode *"
-                  value={contact.postcode}
+                  value={this.props.contact.postcode}
                   onChange={target => this.changeValue('postcode', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -178,7 +182,7 @@ class ContactInfo extends Component {
                 <Icon name="star" />
                 <Input
                   placeholder="State *"
-                  value={contact.state}
+                  value={this.props.contact.state}
                   onChange={target => this.changeValue('state', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -188,7 +192,7 @@ class ContactInfo extends Component {
                 <Icon name="mail" />
                 <Input
                   placeholder="Country *"
-                  value={contact.country}
+                  value={this.props.contact.country}
                   onChange={target => this.changeValue('country', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
                   style={styles.input}
@@ -209,6 +213,7 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
+    changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
   };
 }
 
