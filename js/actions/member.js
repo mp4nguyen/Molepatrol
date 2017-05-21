@@ -1,6 +1,6 @@
 
 import type { PromiseAction } from './types';
-import { postRequest, getRequest } from '../libs/requests';
+import { postRequest, getRequest ,postRequest2} from '../libs/requests';
 import moment from 'moment'
 export const LIST_MEMBER = 'LIST_MEMBER';
 export const GET_MEMBER = 'GET_MEMBER';
@@ -64,14 +64,29 @@ export function addMember(member): Action {
 }
 
 
-export function createMember(member): Action {
-  return dispatch => postRequest('BookingCtrls/createMember', member)
-    .then((response) => {
-      dispatch({
-        type: CREATE_MEMBER,
-        payload: response.member,
+export function createMember(): Action {
+  return (dispatch,getState) => {
+    let state = getState();
+    console.log("state = ",state);
+
+    return new Promise((resolve) => {
+      postRequest2('api/v1/createMember', state.member.member).then((response) => {
+          // dispatch({
+          //   type: CREATE_MEMBER,
+          //   payload: response.member,
+          // });
       });
+      resolve("OK");
     });
+
+
+    // postRequest('BookingCtrls/createMember', member).then((response) => {
+    //     dispatch({
+    //       type: CREATE_MEMBER,
+    //       payload: response.member,
+    //     });
+    //   });
+  }
 }
 
 

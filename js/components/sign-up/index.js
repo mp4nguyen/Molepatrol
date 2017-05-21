@@ -13,7 +13,7 @@ import { setBackRoute } from '../../actions/member';
 import styles from './styles';
 import _ from 'lodash';
 const bg = require('../../../images/BG.png');
-const logo = require('../../../images/logo.png');
+const logo = require('../../../images/header-logo.png');
 
 const {
   reset,
@@ -54,6 +54,7 @@ class SignUp extends Component {
     this.validator = {
       username: value => !value || _.isEmpty(value),
       password: value => !value || _.isEmpty(value),
+      repassword: value => !value || _.isEmpty(value),
       email: value => !value || _.isEmpty(value),
     };
     this.changeValue = this.changeValue.bind(this);
@@ -94,14 +95,14 @@ class SignUp extends Component {
       errors,
     });
     if (count > 0) {
-      return Promise.reject('Error!');
+      return Promise.reject('Please enter all required fields !');
     }
     return Promise.resolve();
   }
   submit() {
     console.log("submit.........");
 
-    this.signUpSuccess('signupbaseinfo')
+this.signUpSuccess('signupbaseinfo')
     // this.validate().then(() => {
     //     this.signUpSuccess('signupbaseinfo')
     // }).catch(e => alert(e));
@@ -133,7 +134,7 @@ class SignUp extends Component {
                 <Input
                   value={this.props.member.signup.username}
                   onChange={this.changeValue('username')}
-                  placeholder="Username" style={styles.input}
+                  placeholder="Username *" style={styles.input}
                   placeholderTextColor="#FFF"
                 />
               </InputGroup>
@@ -143,7 +144,7 @@ class SignUp extends Component {
                 <Input
                   value={this.props.member.signup.email}
                   onChange={this.changeValue('email')}
-                  placeholder="Email" style={styles.input}
+                  placeholder="Email *" style={styles.input}
                   placeholderTextColor="#FFF"
                 />
               </InputGroup>
@@ -153,7 +154,16 @@ class SignUp extends Component {
                 <Input
                   value={this.props.member.signup.password}
                   onChange={this.changeValue('password')}
-                  placeholder="Password" secureTextEntry style={styles.input}
+                  placeholder="Password *" secureTextEntry style={styles.input}
+                  placeholderTextColor="#FFF"
+                />
+              </InputGroup>
+              <InputGroup {...this.state.errors.repassword} rounded style={styles.inputGrp}>
+                <Icon name="unlock" />
+                <Input
+                  value={this.props.member.signup.repassword}
+                  onChange={this.changeValue('repassword')}
+                  placeholder="Re-password *" secureTextEntry style={styles.input}
                   placeholderTextColor="#FFF"
                 />
               </InputGroup>

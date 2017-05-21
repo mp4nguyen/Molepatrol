@@ -7,7 +7,9 @@ import { Grid, Col } from 'react-native-easy-grid';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
-import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
+import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body ,Picker,Item} from 'native-base';
+
+
 import { setInfo ,changeValueMember} from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import StepInfo from '../step-info';
@@ -18,6 +20,8 @@ import moment from 'moment';
 import _ from 'lodash';
 const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
+
+
 
 const {
   pushRoute,
@@ -115,7 +119,15 @@ class BaseInfo extends Component {
     // }
   }
 
-  //this.popRoute()
+  onValueChange (value: string) {
+        console.log(" value = ",value);
+  }
+
+
+
+
+
+
 
   render() {
     const { basic } = this.state;
@@ -142,7 +154,6 @@ class BaseInfo extends Component {
               <Text style={styles.title}>
                 BASIC INFO
               </Text>
-
               <InputGroup underline style={styles.inputGrp}>
                 <Icon name="document" />
                 <Input

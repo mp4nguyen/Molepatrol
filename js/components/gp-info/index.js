@@ -25,6 +25,7 @@ const {
   pushRoute,
   popRoute,
 } = actions;
+
 class GPInfo extends Component {
   static defaultProps = {
     gp: {
@@ -73,6 +74,10 @@ class GPInfo extends Component {
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
+  pushRoute(route) {
+
+    this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
+  }
   changeValue(field, value) {
     this.props.changeValueMember("gp",field,value);
     // this.setState({
@@ -104,15 +109,22 @@ class GPInfo extends Component {
   submitMember() {
     const { setInfo, createMember, replaceAtIndex, navigation, member, backToRoute } = this.props;
     if (setInfo) {
-      const index = _.findIndex(navigation.routes, { key: backToRoute });
+      //const index = _.findIndex(navigation.routes, { key: backToRoute });
+
+
+      createMember().then(() => {
+        this.pushRoute('home')
+      }).catch(err => window.alert(err));
+
       this.validate().then(() => {
-        createMember({ gp: this.state, ...member })
-        .then(() => {
-          for (let i = index; i < navigation.routes.length - 1; i++) {
-            this.popRoute();
-          }
-        })
-        .catch(err => window.alert(err));
+        //this.pushRoute('home')
+        //this.popRoute();
+        // createMember({ gp: this.state, ...member }).then(() => {
+        //   for (let i = index; i < navigation.routes.length - 1; i++) {
+        //     this.popRoute();
+        //   }
+        // }).catch(err => window.alert(err));
+
       }).catch((e) => {
         alert(e);
       });
@@ -257,7 +269,7 @@ function bindAction(dispatch) {
     setInfo: info => dispatch(setInfo(info)),
     createMember: member => dispatch(createMember(member)),
     reset: (key, route) => dispatch(reset([{ key: route }], key, 0)),
-    pushRoute: route => dispatch(pushRoute(route)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
     changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
