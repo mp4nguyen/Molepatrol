@@ -5,7 +5,7 @@ import { Image, TouchableOpacity, Platform } from 'react-native';
 import { connect } from 'react-redux';
 
 import { actions } from 'react-native-navigation-redux-helpers';
-import { createUser } from '../../actions/user';
+import { createUser,checkAvailableAccount } from '../../actions/user';
 import { changeValueMember } from '../../actions/member';
 
 import { Container, Content, Text, Button, Icon, InputGroup, Input, View } from 'native-base';
@@ -85,7 +85,7 @@ class SignUp extends Component {
     const errors = {};
     let count = 0;
     _.each(_.keys(this.validator), (key) => {
-      if (this.validator[key](this.props.member.signup[key])) {
+      if (this.validator[key](this.props.signup[key])) {
         count += 1;
         errors[key] = { error: true };
       }
@@ -102,10 +102,12 @@ class SignUp extends Component {
   submit() {
     console.log("submit.........");
 
-this.signUpSuccess('signupbaseinfo')
-    // this.validate().then(() => {
-    //     this.signUpSuccess('signupbaseinfo')
-    // }).catch(e => alert(e));
+
+    this.validate().then(() => {
+
+        this.props.checkAvailableAccount(this.props.signup).then(res=>{this.signUpSuccess('signupbaseinfo')},err=>alert(err))
+
+    }).catch(e => alert(e));
 
     // this.validate().then(() => {
     //   this.props.createUser(this.state.info)
@@ -132,7 +134,7 @@ this.signUpSuccess('signupbaseinfo')
               <InputGroup {...this.state.errors.username} rounded style={styles.inputGrp}>
                 <Icon name="person" />
                 <Input
-                  value={this.props.member.signup.username}
+                  value={this.props.signup.username}
                   onChange={this.changeValue('username')}
                   placeholder="Username *" style={styles.input}
                   placeholderTextColor="#FFF"
@@ -142,7 +144,7 @@ this.signUpSuccess('signupbaseinfo')
               <InputGroup {...this.state.errors.email} rounded style={styles.inputGrp}>
                 <Icon name="mail-open" />
                 <Input
-                  value={this.props.member.signup.email}
+                  value={this.props.signup.email}
                   onChange={this.changeValue('email')}
                   placeholder="Email *" style={styles.input}
                   placeholderTextColor="#FFF"
@@ -152,7 +154,7 @@ this.signUpSuccess('signupbaseinfo')
               <InputGroup {...this.state.errors.password} rounded style={styles.inputGrp}>
                 <Icon name="unlock" />
                 <Input
-                  value={this.props.member.signup.password}
+                  value={this.props.signup.password}
                   onChange={this.changeValue('password')}
                   placeholder="Password *" secureTextEntry style={styles.input}
                   placeholderTextColor="#FFF"
@@ -161,7 +163,7 @@ this.signUpSuccess('signupbaseinfo')
               <InputGroup {...this.state.errors.repassword} rounded style={styles.inputGrp}>
                 <Icon name="unlock" />
                 <Input
-                  value={this.props.member.signup.repassword}
+                  value={this.props.signup.repassword}
                   onChange={this.changeValue('repassword')}
                   placeholder="Re-password *" secureTextEntry style={styles.input}
                   placeholderTextColor="#FFF"
@@ -204,6 +206,7 @@ function bindAction(dispatch) {
     popRoute: key => dispatch(popRoute(key)),
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),
     changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
+    checkAvailableAccount:(accountInfo) => dispatch(checkAvailableAccount(accountInfo)),
 
   };
 }
@@ -213,7 +216,7 @@ function bindAction(dispatch) {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  member: state.member.member
+  signup: state.member.member.signup
 });
 
 export default connect(mapStateToProps, bindAction)(SignUp);

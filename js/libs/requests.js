@@ -27,12 +27,14 @@ const reqSuccess = (config) => {
   showLoading();
   return config;
 };
+
 const reqFailure = (error) => {
   hideLoading();
   return Promise.reject(error);
 };
 
 instance.interceptors.request.use(reqSuccess, reqFailure);
+instance2.interceptors.request.use(reqSuccess, reqFailure);
 
 const reSuccess = (response) => {
   hideLoading();
@@ -47,6 +49,7 @@ const reFailure = (error) => {
 };
 
 instance.interceptors.response.use(reSuccess, reFailure);
+instance2.interceptors.response.use(reSuccess, reFailure);
 
 export const setDispacher = (dispatch) => {
   dispatcher = dispatch;
