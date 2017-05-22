@@ -69,7 +69,6 @@ export default {
   textContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 5,
   },
   switchContainer: {
     flex: 1,
@@ -80,7 +79,6 @@ export default {
     alignSelf: 'flex-end',
     marginTop: -5,
     paddingTop: Platform.OS === 'android' ? 0 : 10,
-    paddingBottom: 10,
   },
   switchOptionText: {
     fontSize: 11,
@@ -89,6 +87,15 @@ export default {
   },
   switchGrid: {
     height: 40,
-    paddingTop: Platform.OS === 'android' ? 10 : 0,
+    marginTop: 10,
+  },
+  picker: {
+    width: deviceWidth - 80,
+  },
+  pickerText: {
+    color: '#fff',
+  },
+  itemTextStyle: {
+    color: '#000',
   },
 };

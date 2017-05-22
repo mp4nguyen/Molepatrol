@@ -7,10 +7,10 @@ import { Grid, Col } from 'react-native-easy-grid';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
-import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body ,Picker,Item} from 'native-base';
+import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body, Picker, Item } from 'native-base';
 
 
-import { setInfo ,changeValueMember} from '../../actions/member';
+import { setInfo, changeValueMember } from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import StepInfo from '../step-info';
 import theme from '../../themes/base-theme';
@@ -22,7 +22,6 @@ const bg = require('../../../images/BG.png');
 const headerLogo = require('../../../images/header-logo.png');
 
 
-
 const {
   pushRoute,
   popRoute,
@@ -32,7 +31,7 @@ class BaseInfo extends Component {
   static defaultProps = {
     canBack: true,
     basic: {
-      title: '',
+      title: 'Mr',
       firstName: '',
       lastName: '',
       dob: null,
@@ -76,8 +75,7 @@ class BaseInfo extends Component {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
   changeValue(field, value) {
-
-    this.props.changeValueMember("baseinfo",field,value);
+    this.props.changeValueMember('baseinfo', field, value);
 
     // this.setState({
     //   ...this.state,
@@ -107,7 +105,7 @@ class BaseInfo extends Component {
   }
   submitBaseInfo() {
     const { submitBaseInfo } = this.props;
-    this.pushRoute('contactinfo')
+    this.pushRoute('contactinfo');
 
     // if (submitBaseInfo) {
     //   this.validate().then(() => {
@@ -119,16 +117,9 @@ class BaseInfo extends Component {
     // }
   }
 
-  onValueChange (value: string) {
-        console.log(" value = ",value);
+  onValueChange(value: string) {
+    console.log(' value = ', value);
   }
-
-
-
-
-
-
-
   render() {
     const { basic } = this.state;
     return (
@@ -136,7 +127,7 @@ class BaseInfo extends Component {
         <Image source={bg} style={styles.background} >
           <Header style={styles.header} >
             <Left>
-              <Button transparent onPress={() => this.popRoute() }>
+              <Button transparent onPress={() => this.popRoute()}>
                 <Icon active name="arrow-back" />
               </Button>
             </Left>
@@ -156,13 +147,21 @@ class BaseInfo extends Component {
               </Text>
               <InputGroup underline style={styles.inputGrp}>
                 <Icon name="document" />
-                <Input
-                  placeholder="Title"
-                  value={this.props.baseinfo.title}
-                  onChange={target => this.changeValue('title', target.nativeEvent.text)}
-                  placeholderTextColor="#FFF"
-                  style={styles.input}
-                />
+                <Picker
+                  supportedOrientations={['portrait', 'landscape']}
+                  iosHeader="Title"
+                  mode="dropdown"
+                  selectedValue={this.props.baseinfo.title}
+                  style={styles.picker}
+                  textStyle={styles.pickerText}
+                  itemTextStyle={styles.itemTextStyle}
+                  onValueChange={value => this.changeValue('title', value)}
+                >
+                  <Item label="Mr" value="Mr" />
+                  <Item label="Mrs" value="Mrs" />
+                  <Item label="Ms" value="ms" />
+                  <Item label="Miss" value="Miss" />
+                </Picker>
               </InputGroup>
               <InputGroup underline style={styles.inputGrp}>
                 <Icon name="person" />
@@ -275,13 +274,13 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
-    changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
+    changeValueMember: (page, fieldName, value) => dispatch(changeValueMember(page, fieldName, value)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  baseinfo: state.member.member.baseinfo
+  baseinfo: state.member.member.baseinfo,
 });
 
 export default connect(mapStateToProps, bindAction)(BaseInfo);
