@@ -102,11 +102,9 @@ class SignUp extends Component {
   submit() {
     console.log("submit.........");
 
-
-    this.validate().then(() => {
-
+    //this.signUpSuccess('signupbaseinfo')
+    this.validate().then(() => {    
         this.props.checkAvailableAccount(this.props.signup).then(res=>{this.signUpSuccess('signupbaseinfo')},err=>alert(err))
-
     }).catch(e => alert(e));
 
     // this.validate().then(() => {

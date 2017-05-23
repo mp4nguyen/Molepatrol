@@ -12,9 +12,9 @@ const initialState = {
   item: null,
   member: {
     signup: { username: '', password: '', email: '' },
-    baseinfo: { title: 'Mr', firstName: '', lastName: '', dob: '', gender: false, occupation: '', email: '' },
+    baseinfo: { title: 'Mr', firstName: '', lastName: '', dob: null, gender: 'MALE', occupation: '', email: '' },
     contact: { phone: '', address: '', suburb: '', state: '', postcode: '', country: '' },
-    gp: { firstName: '', lastName: '', clinic: '', contactNumber: '', medicareNo: '', medicareRef: '', medicareExpired: '' },
+    gp: { firstName: '', lastName: '', clinic: '', contactNumber: '', medicareNo: '', medicareRef: '', medicareExpired: null},
   },
   backToRoute: 'login',
 };

@@ -60,7 +60,9 @@ class BaseInfo extends Component {
     this.validate = this.validate.bind(this);
     this.validator = {
       dob: value => !value || _.isEmpty(value),
-      email: value => !value || _.isEmpty(value),
+      title: value => !value || _.isEmpty(value),
+      firstName: value => !value || _.isEmpty(value),
+      lastName: value => !value || _.isEmpty(value),
     };
     this.changeValue = this.changeValue.bind(this);
     this.submitBaseInfo = this.submitBaseInfo.bind(this);
@@ -122,6 +124,19 @@ class BaseInfo extends Component {
   }
   render() {
     const { basic } = this.state;
+
+    let dobValue,genderValue;
+    if(this.props.baseinfo.dob){
+        dobValue = this.props.baseinfo.dob.format('DD/MM/YYYY');
+    }
+
+    if(this.props.baseinfo.gender=='MALE'){
+      genderValue = false
+    }else if (this.props.baseinfo.gender=='FEMALE'){
+      genderValue = true
+    }
+    console.log("Dob = ",dobValue,' this.props.baseinfo.dob = ',this.props.baseinfo.dob,moment(this.props.baseinfo.dob).format('DD/MM/YYYY'));
+
     return (
       <Container>
         <Image source={bg} style={styles.background} >
@@ -159,7 +174,7 @@ class BaseInfo extends Component {
                 >
                   <Item label="Mr" value="Mr" />
                   <Item label="Mrs" value="Mrs" />
-                  <Item label="Ms" value="ms" />
+                  <Item label="Ms" value="Ms" />
                   <Item label="Miss" value="Miss" />
                 </Picker>
               </InputGroup>
@@ -187,12 +202,12 @@ class BaseInfo extends Component {
                 <Icon name="calendar" />
                 <DatePicker
                   style={{ width: 200, borderWidth: 0 }}
-                  date={moment(this.props.baseinfo.dob).format('YYYY-MM-DD')}
+                  date={dobValue}
                   mode="date"
                   placeholder="Date Of Birth *"
-                  format="YYYY-MM-DD"
-                  minDate="1900-05-01"
-                  maxDate={new moment().format('YYYY-MM-DD')}
+                  format="DD/MM/YYYY"
+                  minDate="01/05/1900"
+                  maxDate={new moment().format('DD/MM/YYYY')}
                   confirmBtnText="Select"
                   cancelBtnText="Cancel"
                   showIcon={false}
@@ -209,7 +224,7 @@ class BaseInfo extends Component {
                       color: '#fff',
                     },
                   }}
-                  onDateChange={(date) => { this.changeValue('dob', date); }}
+                  onDateChange={(date) => { this.changeValue('dob', moment(date,'DD/MM/YYYY')); }}
                 />
               </InputGroup>
               <InputGroup underline style={styles.inputGrp}>
@@ -225,11 +240,11 @@ class BaseInfo extends Component {
                       </Col>
                       <Col>
                         <Switch
-                          onValueChange={value => this.changeValue('gender', value)}
+                          onValueChange={value => this.changeValue('gender', value?'FEMALE':'MALE')}
                           style={styles.switch}
                           thumbTintColor="#ccc"
                           tintColor="#aaa"
-                          value={this.props.baseinfo.gender}
+                          value={genderValue}
                         />
                       </Col>
                       <Col>
@@ -249,16 +264,7 @@ class BaseInfo extends Component {
                   style={styles.input}
                 />
               </InputGroup>
-              <InputGroup {...this.state.errors.email} underline style={styles.inputGrp}>
-                <Icon name="mail" />
-                <Input
-                  placeholder="Email *"
-                  value={this.props.baseinfo.email}
-                  onChange={target => this.changeValue('email', target.nativeEvent.text)}
-                  placeholderTextColor="#FFF"
-                  style={styles.input}
-                />
-              </InputGroup>
+
             </View>
           </Content>
           <StepInfo text="BASIC INFO" active="1" />

@@ -755,8 +755,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = T2R5GPN879;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = UA7AB584U5;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -1251,10 +1251,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = T2R5GPN879;
+				DEVELOPMENT_TEAM = UA7AB584U5;
 				INFOPLIST_FILE = SkinApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1262,10 +1262,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = au.com.redimed.personal.skinapp;
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.redimed.molepatrol;
 				PRODUCT_NAME = SkinApp;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "55c5ad2d-05d9-4e98-8968-327ac8488475";
+				PROVISIONING_PROFILE_SPECIFIER = "Mole Patrol";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1277,9 +1277,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T2R5GPN879;
+				DEVELOPMENT_TEAM = UA7AB584U5;
 				INFOPLIST_FILE = SkinApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1287,10 +1287,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = au.com.redimed.personal.skinapp;
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.redimed.molepatrol;
 				PRODUCT_NAME = SkinApp;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "463e1630-98d0-4854-9964-da8879d29582";
+				PROVISIONING_PROFILE_SPECIFIER = "Mole Patrol";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

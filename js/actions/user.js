@@ -25,7 +25,7 @@ export function checkAvailableAccount(accountInfo): Action {
 export function login(user): Action {
 
   postRequest2('/api/v1/loginAT',user).then(res=>{
-  	console.log("res = ",res.data);
+  	console.log("res = ",res);
   });
 
   return dispatch => postRequest('BookingCtrls/login', user)

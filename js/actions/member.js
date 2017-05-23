@@ -64,6 +64,32 @@ export function addMember(member): Action {
 }
 
 
+export function signupAndCreateMember(): Action {
+  return (dispatch,getState) => {
+    let state = getState();
+    console.log("state = ",state);
+
+    return new Promise((resolve) => {
+      postRequest2('api/v1/signup', state.member.member).then((response) => {
+          // dispatch({
+          //   type: CREATE_MEMBER,
+          //   payload: response.member,
+          // });
+      });
+      resolve("OK");
+    });
+
+
+    // postRequest('BookingCtrls/createMember', member).then((response) => {
+    //     dispatch({
+    //       type: CREATE_MEMBER,
+    //       payload: response.member,
+    //     });
+    //   });
+  }
+}
+
+
 export function createMember(): Action {
   return (dispatch,getState) => {
     let state = getState();
