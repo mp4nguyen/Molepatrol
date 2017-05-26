@@ -142,6 +142,7 @@ class ContactInfo extends Component {
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Mobile *"
+                  keyboardType = 'numeric'
                   value={this.props.contact.phone}
                   onChange={target => this.changeValue('phone', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
@@ -162,6 +163,7 @@ class ContactInfo extends Component {
                 <Icon name="person" />
                 <Input
                   placeholder="Suburb *"
+                  keyboardType = 'numeric'
                   value={this.props.contact.suburb}
                   onChange={target => this.changeValue('suburb', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"

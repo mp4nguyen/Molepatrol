@@ -8,7 +8,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { openDrawer } from '../../actions/drawer';
 import navigateTo from '../../actions/sideBarNav';
 import { Container, Content, Text, Icon, Thumbnail, InputGroup, Input, Left, Right, Button, Header, Body } from 'native-base';
-import { signupAndCreateMember, setInfo,changeValueMember } from '../../actions/member';
+import { signupOrCreateMemberOrUpdateMember, setInfo,changeValueMember } from '../../actions/member';
 import HeaderContent from './../headerContent/';
 import _ from 'lodash';
 import theme from '../../themes/base-theme';
@@ -97,12 +97,12 @@ class GPInfo extends Component {
     return Promise.resolve();
   }
   submitMember() {
-    const { setInfo, signupAndCreateMember, replaceAtIndex, navigation, member, backToRoute } = this.props;
+    const { setInfo,signupOrCreateMemberOrUpdateMember, replaceAtIndex, navigation, member, backToRoute } = this.props;
     if (setInfo) {
       //const index = _.findIndex(navigation.routes, { key: backToRoute });
 
 
-      signupAndCreateMember().then(() => {
+      signupOrCreateMemberOrUpdateMember().then(() => {
         //this.pushRoute('home')
       }).catch(err => window.alert(err));
 
@@ -124,6 +124,13 @@ class GPInfo extends Component {
   }
   render() {
     const { gp } = this.state;
+
+    let medicalExp;
+    if(this.props.gp.medicareExpired){
+        medicalExp = this.props.gp.medicareExpired.format('MM-YYYY');
+    }
+
+
     return (
       <Container>
         <Image source={bg} style={styles.background} >
@@ -178,6 +185,7 @@ class GPInfo extends Component {
                 <Icon name="phone-portrait" />
                 <Input
                   placeholder="Contact Number"
+                  keyboardType = 'numeric'
                   value={this.props.gp.contactNumber}
                   onChange={target => this.changeValue('contactNumber', target.nativeEvent.text)}
                   placeholderTextColor="#FFF"
@@ -192,6 +200,7 @@ class GPInfo extends Component {
                   <InputGroup {...this.state.errors.state} underline style={styles.inputGrp}>
                     <Input
                       placeholder="Medicare No"
+                      keyboardType = 'numeric'
                       value={this.props.gp.medicareNo}
                       onChange={target => this.changeValue('medicareNo', target.nativeEvent.text)}
                       placeholderTextColor="#FFF"
@@ -203,6 +212,7 @@ class GPInfo extends Component {
                   <InputGroup {...this.state.errors.country} underline style={styles.inputGrp}>
                     <Input
                       placeholder="Medicare Ref"
+                      keyboardType = 'numeric'
                       value={this.props.gp.medicareRef}
                       onChange={target => this.changeValue('medicareRef', target.nativeEvent.text)}
                       placeholderTextColor="#FFF"
@@ -214,12 +224,14 @@ class GPInfo extends Component {
               <InputGroup {...this.state.errors.medicareExpired} underline style={styles.inputGrp}>
                 <DatePicker
                   style={{ width: 200, borderWidth: 0 }}
-                  date={this.props.gp.medicareExpired}
+                  date={medicalExp}
                   mode="date"
                   placeholder="Medicare Expired"
                   format="MM-YYYY"
                   confirmBtnText="Select"
                   cancelBtnText="Cancel"
+                  minDate={new moment().format('MM-YYYY')}
+                  maxDate={new moment().add(10,'years').format('DD/MM/YYYY')}
                   showIcon={false}
                   customStyles={{
                     dateInput: {
@@ -234,7 +246,7 @@ class GPInfo extends Component {
                       color: '#fff',
                     },
                   }}
-                  onDateChange={(date) => { this.changeValue('medicareExpired', date); }}
+                  onDateChange={(date) => { this.changeValue('medicareExpired', moment(date,'MM-YYYY')); }}
                 />
               </InputGroup>
               <Button
@@ -257,7 +269,7 @@ function bindAction(dispatch) {
   return {
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
     setInfo: info => dispatch(setInfo(info)),
-    signupAndCreateMember: () => dispatch(signupAndCreateMember()),
+     signupOrCreateMemberOrUpdateMember: () => dispatch(signupOrCreateMemberOrUpdateMember()),
     reset: (key, route) => dispatch(reset([{ key: route }], key, 0)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),

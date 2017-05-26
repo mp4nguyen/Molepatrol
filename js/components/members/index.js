@@ -14,7 +14,7 @@ import { openDrawer } from '../../actions/drawer';
 import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
-import { setMember, getMembers, addMember, getMember } from '../../actions/member';
+import { setMember, createMember, getMember } from '../../actions/member';
 
 const bg = require('../../../images/BG.png');
 const {
@@ -42,7 +42,7 @@ class Member extends Component {
     this.select = this.select.bind(this);
   }
   componentWillMount() {
-    this.props.getList && this.props.getList();
+
   }
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
@@ -54,11 +54,13 @@ class Member extends Component {
   select(member) {
     const { editMember } = this.props;
     this.props.setMember(member).then(() => {
-      if (editMember) {
-        this.props.getMember(member.id).then(this.pushRoute.bind(this, 'baseinfo'));
-      } else {
-        this.popRoute();
-      }
+      console.log('setmember has done..........');
+      this.pushRoute('baseinfo')
+      // if (editMember) {
+      //   this.props.getMember(member.id).then(this.pushRoute.bind(this, 'baseinfo'));
+      // } else {
+      //   this.popRoute();
+      // }
     });
   }
   addMember() {
@@ -68,7 +70,7 @@ class Member extends Component {
   }
   render() {
     const items = this.props.list.map(x => (
-      <View key={x.id}>
+      <View key={x.personId}>
         <TouchableOpacity onPress={() => this.select(x)}>
           <View style={styles.item}>
             <Text numberOfLines={2} style={styles.name}>
@@ -103,13 +105,12 @@ class Member extends Component {
 
 function bindAction(dispatch) {
   return {
-    getList: () => dispatch(getMembers()),
     getMember: (id) => dispatch(getMember(id)),
     setMember: member => dispatch(setMember(member)),
     openDrawer: () => dispatch(openDrawer()),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
-    addNewMember: (member) => dispatch(addMember(member)),
+    addNewMember: (member) => dispatch(createMember()),
   };
 }
 

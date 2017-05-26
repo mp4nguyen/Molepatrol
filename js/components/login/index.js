@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
-import { Container, Content, Text, Item, Input, Button, Icon, View, Left, Right } from 'native-base';
+import { Container, Content, Text, Item, Input, Button, Icon, View, Left, Right,InputGroup } from 'native-base';
 import { login } from '../../actions/user';
 import styles from './styles';
 import theme from '../../themes/base-theme';
@@ -29,13 +29,38 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '1',
-      password: '1',
+      username: 'phuong_thql',
+      password: '1234',
+      errors: {}
     };
     this.constructor.childContextTypes = {
       theme: React.PropTypes.object,
     };
     this.login = this.login.bind(this);
+
+    this.validator = {
+      username: value => !value || _.isEmpty(value),
+      password: value => !value || _.isEmpty(value)
+    };
+    this.validate = this.validate.bind(this)
+  }
+
+  validate() {
+    const errors = {};
+    let count = 0;
+    _.each(_.keys(this.validator), (key) => {
+      if (this.validator[key](this.state[key])) {
+        count += 1;
+        errors[key] = { error: true };
+      }
+    });
+
+    this.setState({...this.state,errors,});
+
+    if (count > 0) {
+      return Promise.reject('Please enter all required fields !');
+    }
+    return Promise.resolve();
   }
 
   replaceRoute(route) {
@@ -48,9 +73,13 @@ class Login extends Component {
   }
 
   login() {
-    this.props.login(this.state).then(() => {
-      this.replaceRoute('home');
-    }).catch(alert);
+      this.validate().then(() => {
+          this.props.login(this.state).then(() => {
+              this.replaceRoute('home');
+          },(err)=>{
+              alert(err);
+          }).catch(alert);
+      }).catch(e => alert(e));
   }
   render() {
     return (
@@ -60,7 +89,8 @@ class Login extends Component {
             <Image source={logo} style={styles.iosShadow} />
           </View>
           <View style={styles.signinContainer}>
-            <Item rounded style={styles.inputGrp}>
+
+            <InputGroup {...this.state.errors.username} rounded style={styles.inputGrp}>
               <Icon name="person" />
               <Input
                 placeholder="Username"
@@ -69,9 +99,9 @@ class Login extends Component {
                 placeholderTextColor="#FFF"
                 style={styles.input}
               />
-            </Item>
+            </InputGroup>
 
-            <Item rounded style={styles.inputGrp}>
+            <InputGroup {...this.state.errors.password} rounded style={styles.inputGrp}>
               <Icon name="unlock" />
               <Input
                 placeholder="Password"
@@ -81,7 +111,7 @@ class Login extends Component {
                 onChangeText={password => this.setState({ password })}
                 style={styles.input}
               />
-            </Item>
+            </InputGroup>
 
             <Button
               rounded dark block large

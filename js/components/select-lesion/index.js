@@ -81,7 +81,7 @@ class TakePicture extends Component {
     const { isFront, gender } = item;
     const Content = Image;
     const props = {
-      source: isFront ? (gender ? require('../../../images/body-front.jpg') : require('../../../images/boy_body-front.jpg')) : (gender ? require('../../../images/body-back.jpg') : require('../../../images/boy_body-back.jpg')),
+      source: isFront ? (gender == 'FEMALE'? require('../../../images/body-front.jpg') : require('../../../images/boy_body-front.jpg')) : (gender =='FEMALE'? require('../../../images/body-back.jpg') : require('../../../images/boy_body-back.jpg')),
       style: styles.preview,
     };
     return (

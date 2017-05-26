@@ -9,15 +9,16 @@ export type State = {
 
 const initialState = {
   user: null,
-  token: null,
+  accessToken: null,
 };
 
 export default function (state:State = initialState, action:Action): State {
-  console.log("reducers.user.js action = ",action);
+
   if (action.type === USER_LOGIN) {
     return {
       ...state,
-      user: action.payload,
+      user: action.payload.account,
+      accessToken: action.payload.accessToken
     };
   }
 

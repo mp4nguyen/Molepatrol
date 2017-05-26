@@ -1,6 +1,8 @@
 
 import type { Action } from './types';
 import { postRequest,postRequest2 } from '../libs/requests';
+import {LIST_MEMBER,SET_MEMBER,SET_FATHER_MEMBER} from './member';
+
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_FORGOT_PASSWORD = 'USER_FORGOT_PASSWORD';
@@ -24,17 +26,51 @@ export function checkAvailableAccount(accountInfo): Action {
 
 export function login(user): Action {
 
-  postRequest2('/api/v1/loginAT',user).then(res=>{
-  	console.log("res = ",res);
-  });
+  return dispatch => new Promise((resolve,reject)=>{
 
-  return dispatch => postRequest('BookingCtrls/login', user)
-    .then((response) => {
-      dispatch({
-        type: USER_LOGIN,
-        payload: response.account,
-      });
+    // postRequest('BookingCtrls/login', user).then((response) => {
+    //     dispatch({
+    //       type: USER_LOGIN,
+    //       payload: response.account,
+    //     });
+    //   });
+
+    postRequest2('/api/v1/loginAT',user).then(res=>{
+    	console.log("/api/v1/loginAT = ",res);
+      if(res.isLogin){
+
+        dispatch({
+          type: USER_LOGIN,
+          payload: res,
+        });
+
+        dispatch({
+          type: LIST_MEMBER,
+          payload: res.account.profile,
+        });
+
+        dispatch({
+          type: SET_MEMBER,
+          payload: res.account.profile,
+        });
+
+        dispatch({
+          type: SET_FATHER_MEMBER,
+          payload: res.account.personId,
+        });
+
+        resolve('OK')
+      }else{
+        reject(res.reason)
+      }
+
     });
+
+  })
+
+
+
+
 }
 
 export function sendEmail(email): Action {

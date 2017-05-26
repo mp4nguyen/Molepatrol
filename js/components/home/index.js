@@ -4,7 +4,7 @@ import { Image, View, TouchableOpacity, Platform, Dimensions } from 'react-nativ
 import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Header, Content, Text, Button, Icon, Card, Left, Body, Right } from 'native-base';
-import { setBackRoute, addMember } from '../../actions/member';
+import { setBackRoute, createMember } from '../../actions/member';
 import { Grid, Col } from 'react-native-easy-grid';
 import Swiper from 'react-native-swiper';
 import { openDrawer } from '../../actions/drawer';
@@ -47,14 +47,14 @@ class Home extends Component {
   pushRoute(route) {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
-  addMember() {
+  addNewMember() {
     this.props.addNewMember();
     this.props.setBackRoute('home');
     this.pushRoute('baseinfo');
   }
   addRequest() {
-    const { id, gender } = this.props.member;
-    this.props.newRequest(id, gender).then(this.pushRoute.bind(this, 'requestadvice'))
+    const { personId, gender } = this.props.member;
+    this.props.newRequest(personId, gender).then(this.pushRoute.bind(this, 'requestadvice'))
   }
   render() {
     return (
@@ -102,7 +102,7 @@ class Home extends Component {
                   TRACK MY REQUEST</Text>
               </Button>
               <Button
-                onPress={() => this.addMember()}
+                onPress={() => this.addNewMember()}
                 rounded dark block large
                 style={styles.mainBtn}
               >
@@ -147,7 +147,7 @@ function bindAction(dispatch) {
     openDrawer: () => dispatch(openDrawer()),
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
-    addNewMember: () => dispatch(addMember()),
+    addNewMember: () => dispatch(createMember()),
   };
 }
 
