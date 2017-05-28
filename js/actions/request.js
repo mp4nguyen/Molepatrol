@@ -2,7 +2,7 @@
 import type { Action } from './types';
 import { config } from '../global';
 import _ from 'lodash';
-import { postRequest, getRequest } from '../libs/requests';
+import { postRequest, getRequest ,postRequest2} from '../libs/requests';
 
 export const LIST_REQUEST = 'LIST_REQUEST';
 export const CREATE_REQUEST = 'CREATE_REQUEST';
@@ -58,7 +58,7 @@ const processItem = item => new Promise((resolve) => {
     });
     task.push(uploadFile(item, data, 'resource', index));
   });
-  
+
   Promise.all(task)
     .then(() => {
       resolve(item);
@@ -125,6 +125,22 @@ export function newLesion(id, gender): Action {
 
 export function setLesion(value, finish): Action {
   return dispatch => new Promise((resolve) => {
+    console.log(value,finish);
+    const file = {
+      uri:value[0],             // e.g. 'file:///path/to/file/image123.jpg'
+      name:"test.jpg",            // e.g. 'image123.jpg',
+      type:'image/jpg'             // e.g. 'image/jpg'
+    }
+
+    const body = new FormData()
+    body.append('file', file)
+
+
+    postRequest2('/api/v1/uploadPhoto',body).then(res=>{
+      console.log("uploadPhoto = ",res);
+
+    });
+
     dispatch({
       type: SET_REQUEST_VALUE,
       payload: { value, finish },
