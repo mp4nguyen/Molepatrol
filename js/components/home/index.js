@@ -53,8 +53,9 @@ class Home extends Component {
     this.pushRoute('baseinfo');
   }
   addRequest() {
+    //requestadvice
     const { personId, gender } = this.props.member;
-    this.props.newRequest(personId, gender).then(this.pushRoute.bind(this, 'requestadvice'))
+    this.props.newRequest(personId, gender).then(this.pushRoute.bind(this, 'takepicture'))
   }
   render() {
     return (

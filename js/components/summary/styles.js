@@ -10,6 +10,26 @@ const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 export default {
+  header: {
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
+    backgroundColor: 'transparent',
+    borderBottomColor: 'transparent',
+    elevation: 0,
+  },
+  rowHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'stretch',
+  },
+  btnHeader: {
+    alignSelf: 'center',
+  },
+  imageHeader: {
+    height: 30,
+    alignSelf: 'center',
+    resizeMode: 'contain',
+  },
   container: {
     flex: 1,
     paddingLeft: 20,
@@ -122,5 +142,16 @@ export default {
     width: null,
     flex: 1,
   },
+  channelImg: {
+    height: (deviceHeight / 4) + 10,
+    width: (deviceWidth / 2) + 2,
+  },
+  bodyImg: {
+    height: (deviceHeight),
+    width: deviceWidth,
+  },
+  tabView:{
+    height: deviceHeight*0.8,
+    width: deviceWidth,
+  }
 };
-

@@ -5,7 +5,7 @@ import { Image, TouchableOpacity, Platform, ImagePickerIOS } from 'react-native'
 import { connect } from 'react-redux';
 
 import { actions } from 'react-native-navigation-redux-helpers';
-import { setLesion } from '../../actions/request';
+import { setPhoto } from '../../actions/request';
 import { Container, Content, Text, Button, Icon, Item, Input, View, Header, Left, Right, Body } from 'native-base';
 import theme from '../../themes/base-theme';
 import styles from './styles';
@@ -39,6 +39,7 @@ class TakePicture extends Component {
     };
     this.takePicture = this.takePicture.bind(this);
     this.selectImage = this.selectImage.bind(this);
+    this.finishImage = this.finishImage.bind(this);
   }
   pushRoute(route) {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
@@ -53,6 +54,11 @@ class TakePicture extends Component {
   }
   selectImage() {
     this.props.setValue({ resource: [...this.props.resource, this.state.image.path] });
+    this.setState({ image: null })
+  }
+  finishImage() {
+    this.props.setValue({ resource: [...this.props.resource, this.state.image.path] });
+    this.setState({ image: null });
     this.pushRoute('selectlesion');
   }
   render() {
@@ -78,21 +84,28 @@ class TakePicture extends Component {
               <Left>
                 {this.state.image &&
                   <Button transparent onPress={() => this.setState({ image: null })} >
-                    <Icon name="reverse-camera" style={styles.icon} />
+                    <Icon name="refresh" style={styles.icon} />
                   </Button>
                 }
               </Left>
               <Body>
-                {!this.state.image &&
-                  <Button transparent style={{ alignSelf: 'center' }} onPress={this.takePicture} >
-                    <Icon name="camera" style={styles.icon} />
-                  </Button>
+                {
+                  !this.state.image &&
+                      <Button transparent style={{ alignSelf: 'center' }} onPress={this.takePicture} >
+                        <Icon name="camera" style={styles.icon} />
+                      </Button>
+                }
+                {
+                  this.state.image &&
+                      <Button transparent style={{ alignSelf: 'center' }} onPress={this.finishImage} >
+                        <Icon name="checkmark" style={styles.icon} />
+                      </Button>
                 }
               </Body>
               <Right>
                 {this.state.image &&
                   <Button transparent onPress={this.selectImage} >
-                    <Icon name="checkmark" style={styles.icon} />
+                    <Icon name="add" style={styles.icon} />
                   </Button>
                 }
               </Right>
@@ -106,7 +119,7 @@ class TakePicture extends Component {
 
 function bindAction(dispatch) {
   return {
-    setValue: value => dispatch(setLesion(value)),
+    setValue: value => dispatch(setPhoto(value)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
   };

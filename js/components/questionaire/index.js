@@ -13,7 +13,7 @@ import { Grid, Col } from 'react-native-easy-grid';
 import navigateTo from '../../actions/sideBarNav';
 import { popToRoute } from '../../actions/route';
 const bg = require('../../../images/BG.png');
-import { setLesion, addAnotherLesion } from '../../actions/request';
+import { setLesion, addAnotherLesion,changeValueLesion } from '../../actions/request';
 const primary = require('../../themes/variable').brandPrimary;
 const {
   pushRoute,
@@ -22,9 +22,10 @@ const {
 class FundInformation extends Component {
 
   static propTypes = {
+    changeValueLesion:React.PropTypes.func,
     item: React.PropTypes.object,
     addNew: React.PropTypes.func,
-    setValue: React.PropTypes.func,
+    setLesion: React.PropTypes.func,
     submitLesson: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
@@ -36,18 +37,10 @@ class FundInformation extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      isNew: false,
-      isGrowing: false,
-      isShapeOrChangeColor: false,
-      isItchyOrBleeding: false,
-      isTenderOrPainful: false,
-      doesItComeAndGo: false,
-    };
     this.changeValue = this.changeValue.bind(this);
     this.newLesion = this.newLesion.bind(this);
-    this.submitLesson = this.submitLesson.bind(this);
-    
+    this.submitLesion = this.submitLesion.bind(this);
+
   }
   pushRoute(route) {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
@@ -62,15 +55,17 @@ class FundInformation extends Component {
     this.props.popToRoute(route);
   }
   changeValue(field, value) {
-    this.setState({
-      ...this.state,
-      [field]: value,
-    });
+    //console.log("this.props.changeValueLesion = ",this.props.changeValueLesion);
+    this.props.changeValueLesion(field, value);
+    // this.setState({
+    //   ...this.state,
+    //   [field]: value,
+    // });
   }
-  submitLesson() {
-    const { setValue } = this.props;
-    if (setValue) {
-    setValue(this.state, true).then(this.pushRoute.bind(this, 'requestsummary'));
+  submitLesion() {
+    const { setLesion } = this.props;
+    if (setLesion) {
+    setLesion().then(this.pushRoute.bind(this, 'requestsummary'));
     } else {
       this.pushRoute('requestsummary');
     }
@@ -79,24 +74,36 @@ class FundInformation extends Component {
     const { navigation, item } = this.props;
     this.props.addNew({ ...item, ...this.state })
       .then(() => {
-        const index = _.findIndex(navigation.routes, { key: 'introduction' });
+        const index = _.findIndex(navigation.routes, { key: 'takepicture' });
         for (let i = index; i < navigation.routes.length - 1; i++) {
           this.popRoute();
         }
+        //this.pushRoute('takepicture');
       })
       .catch(err => window.alert(err));
   }
   render() {
+    const {item } = this.props;
     return (
       <Container>
         <Image source={bg} style={styles.background} >
           <Content scrollEnabled={false}>
-            <HeaderContent />
-            <View style={styles.textContainer}>
-              <Text style={styles.textheader}>
-                QUESTIONAIRE
-                                </Text>
-            </View>
+            <Header style={styles.header} >
+              <Left>
+                <Button transparent onPress={() => this.popRoute()}>
+                  <Icon active name="arrow-back" />
+                </Button>
+              </Left>
+              <Body>
+                <Text style={styles.textheader}>QUESTIONAIRE</Text>
+              </Body>
+              <Right>
+                <Button transparent >
+                  <Icon active name="arrow-forward" />
+                </Button>
+              </Right>
+            </Header>
+
             <View style={styles.container}>
               <Grid style={styles.grid}>
                 <Col>
@@ -114,7 +121,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.isNew}
+                        value={item.isNew}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -139,7 +146,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.isGrowing}
+                        value={item.isGrowing}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -167,7 +174,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.isShapeOrChangeColor}
+                        value={item.isShapeOrChangeColor}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -192,7 +199,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.isItchyOrBleeding}
+                        value={item.isItchyOrBleeding}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -217,7 +224,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.isTenderOrPainful}
+                        value={item.isTenderOrPainful}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -242,7 +249,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        value={this.state.doesItComeAndGo}
+                        value={item.doesItComeAndGo}
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -260,14 +267,14 @@ class FundInformation extends Component {
                   style={styles.otherBtn}
                 >
                   <Text style={styles.otherText}>
-                    Another Lesson</Text>
+                    Another Lesion</Text>
                 </Button>
               </Left>
               <Right style={{ marginLeft: 5 }}>
                 <Button
                   rounded dark block large
                   style={styles.otherBtn}
-                  onPress={this.submitLesson}
+                  onPress={this.submitLesion}
                 >
                   <Text style={styles.otherText}>
                     Finish</Text>
@@ -283,8 +290,9 @@ class FundInformation extends Component {
 
 function bindAction(dispatch) {
   return {
+    changeValueLesion:(fieldName, value) => dispatch(changeValueLesion(fieldName, value)),
     addNew: lesion => dispatch(addAnotherLesion(lesion)),
-    setValue: (value, finish) => dispatch(setLesion(value, finish)),
+    setLesion: (value, finish) => dispatch(setLesion(value, finish)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popToRoute: route => dispatch(popToRoute(route)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),

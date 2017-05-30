@@ -42,11 +42,11 @@ const memberForm = {
 };
 
 export function changeValueMember(page,fieldName,value): Action {
-  var dispatchObject = {};
-  var valueObject = {}
-  valueObject[fieldName] = value
-  dispatchObject[page]= valueObject
-  console.log("actions.members.changeValueMember:...",dispatchObject);
+  // var dispatchObject = {};
+  // var valueObject = {}
+  // valueObject[fieldName] = value
+  // dispatchObject[page]= valueObject
+  //console.log("actions.members.changeValueMember:...",dispatchObject);
 
   //return dispatch => dispatch({type: ADD_MEMBER,payload: dispatchObject});
 

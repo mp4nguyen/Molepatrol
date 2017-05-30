@@ -10,6 +10,26 @@ const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
 export default {
+  header: {
+    width: Platform.OS === 'android' ? deviceWidth + 5 : undefined,
+    backgroundColor: 'transparent',
+    borderBottomColor: 'transparent',
+    elevation: 0,
+  },
+  rowHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'stretch',
+  },
+  btnHeader: {
+    alignSelf: 'center',
+  },
+  imageHeader: {
+    height: 30,
+    alignSelf: 'center',
+    resizeMode: 'contain',
+  },
   container: {
     flex: 1,
     paddingLeft: 20,
@@ -35,7 +55,7 @@ export default {
     margin: 30,
   },
   textheader: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   bold: {
@@ -113,4 +133,3 @@ export default {
     marginTop: Platform.OS === 'android' ? 8 : -2,
   },
 };
-

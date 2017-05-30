@@ -3,15 +3,22 @@ import type { Action } from './types';
 import { config } from '../global';
 import _ from 'lodash';
 import { postRequest, getRequest ,postRequest2} from '../libs/requests';
+import {NativeModules} from 'react-native'
+import RNFS from 'react-native-fs'
 
 export const LIST_REQUEST = 'LIST_REQUEST';
 export const CREATE_REQUEST = 'CREATE_REQUEST';
 export const GET_REQUEST = 'GET_REQUEST';
-export const SET_REQUEST_VALUE = 'SET_REQUEST_VALUE';
+export const SET_OR_UPDATE_LESION = 'SET_OR_UPDATE_LESION';
 export const ADD_ANOTHER_LESION = 'ADD_ANOTHER_LESION';
+export const CHANGE_VALUE_LESION = 'CHANGE_VALUE_LESION';
+export const SET_PHOTO_VALUE = 'SET_PHOTO_VALUE';
+
 
 export const lesionForm = {
-  userId: 0,
+  lesionId:0,
+  personId: 0,
+  gender: "",
   resource: [],
   lesion: null,
   isFront: true,
@@ -117,35 +124,87 @@ export function newLesion(id, gender): Action {
   return dispatch => new Promise((resolve) => {
     dispatch({
       type: CREATE_REQUEST,
-      payload: { ...lesionForm, userId: id, gender },
+      payload: { ...lesionForm, personId: id, gender },
     });
     resolve();
   });
 }
 
-export function setLesion(value, finish): Action {
-  return dispatch => new Promise((resolve) => {
-    console.log(value,finish);
-    const file = {
-      uri:value[0],             // e.g. 'file:///path/to/file/image123.jpg'
-      name:"test.jpg",            // e.g. 'image123.jpg',
-      type:'image/jpg'             // e.g. 'image/jpg'
-    }
-
-    const body = new FormData()
-    body.append('file', file)
-
-
-    postRequest2('/api/v1/uploadPhoto',body).then(res=>{
-      console.log("uploadPhoto = ",res);
-
+function _generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
     });
+    return uuid;
+};
 
+export function changeValueLesion(fieldName,value): Action {
+
+    return {type: CHANGE_VALUE_LESION,payload: {fieldName,value}}
+}
+
+export function setPhoto(value): Action {
+  return dispatch => new Promise((resolve) => {
     dispatch({
-      type: SET_REQUEST_VALUE,
-      payload: { value, finish },
+      type: SET_PHOTO_VALUE,
+      payload: {value},
     });
     resolve();
+  });
+}
+
+export function setLesion(): Action {
+  return dispatch => new Promise((resolve) => {
+    //console.log("setLesion............value = ",value," finish = ",finish);
+    dispatch({
+      type: SET_OR_UPDATE_LESION
+    });
+    resolve();
+  });
+}
+
+export function submitPhotos(value, finish): Action {
+  return dispatch => new Promise((resolve) => {
+    console.log(value,finish);
+    const body = new FormData()
+    //body.append('company','Redimed')
+    let files = []
+    let file = {}
+    for(var i=0;i<value.resource.length;i++){
+      let res = value.resource[i]
+      console.log("res = ",res);
+      file = {
+        uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
+        name:`lesion_${i}_${new Date().getTime()}.jpg`,            // e.g. 'image123.jpg',
+        type:'image/jpg'             // e.g. 'image/jpg'
+      }
+      //files.push(file)
+      body.append(`lesion_${i}_${new Date().getTime()}`, file)
+    }
+
+    // if(value.resource.length > 0){
+    //   RNFS.readFile(value.resource[0], "base64").then(image => {
+    //     console.log("base64 = ",image)
+    //
+    //     postRequest2('/api/v1/uploadPhoto',{image}).then(res=>{
+    //       console.log("uploadPhoto = ",res);
+    //
+    //     });
+    //   })
+    // }
+
+    console.log("send body to server = ",body);
+    const config = {
+          headers: { 'content-type': 'multipart/form-data' }
+      }
+
+    postRequest2('/api/v1/uploadPhoto',body,config).then(res=>{
+      console.log("uploadPhoto = ",res);
+      resolve();
+    });
+
   });
 }
 
@@ -153,7 +212,7 @@ export function addAnotherLesion(lesion): Action {
   return dispatch => new Promise((resolve) => {
     dispatch({
       type: ADD_ANOTHER_LESION,
-      payload: { lesion, newLesion: { ...lesionForm, userId: lesion.userId, gender: lesion.gender } },
+      payload: { lesion, newLesion: { ...lesionForm, personId: lesion.personId, gender: lesion.gender ,lesionId: (lesion.lesionId + 1)} },
     });
     resolve();
   });

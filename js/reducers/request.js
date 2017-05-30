@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_REQUEST_VALUE, CREATE_REQUEST, GET_REQUEST, lesion } from '../actions/request';
+import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_OR_UPDATE_LESION, CREATE_REQUEST, GET_REQUEST, lesion,CHANGE_VALUE_LESION ,SET_PHOTO_VALUE} from '../actions/request';
 
 export type State = {
     list: array,
@@ -29,7 +29,9 @@ export default function (state:State = initialState, action:Action): State {
       item: action.payload,
     };
   }
-  if (action.type === SET_REQUEST_VALUE) {
+  SET_PHOTO_VALUE
+
+  if (action.type === SET_PHOTO_VALUE) {
     const newState = {
       ...state,
       item: {
@@ -37,13 +39,44 @@ export default function (state:State = initialState, action:Action): State {
         ...action.payload.value,
       },
     };
-    if (action.payload.finish) {
+    return newState;
+  }
+
+  if (action.type === SET_OR_UPDATE_LESION) {
+    var isFind = false;
+    var newItems = [...state.items];
+    for(var i=0;i<newItems.length;i++){
+      itemInArray = newItems[i]
+      console.log("itemInArray = ",itemInArray);
+      if(itemInArray.lesionId == state.item.lesionId){
+        isFind = true;
+        itemInArray = {...state.item}
+      }
+    }
+
+    if(!isFind){
       return {
-        ...newState,
-        items: [...newState.items, newState.item],
+        ...state,
+        items: [...state.items, state.item],
+      };
+    }else{
+      return {
+        ...state,
+        items: [...newItems],
       };
     }
-    return newState;
+  }
+  if (action.type === CHANGE_VALUE_LESION) {
+    // const valueObject = {};
+    // valueObject[action.payload.fieldName] = action.payload.value;
+
+    return {
+      ...state,
+      item: {
+        ...state.item,
+        [action.payload.fieldName]: action.payload.value
+      }
+    };
   }
   if (action.type === ADD_ANOTHER_LESION) {
     return {
