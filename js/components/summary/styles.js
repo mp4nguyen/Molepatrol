@@ -30,6 +30,11 @@ export default {
     alignSelf: 'center',
     resizeMode: 'contain',
   },
+  buttonsContainer: {
+    marginTop: 2,
+    padding: 10,
+    flexDirection: 'row',
+  },
   container: {
     flex: 1,
     paddingLeft: 20,
@@ -104,6 +109,21 @@ export default {
   ifYesText: {
     fontSize: 13,
   },
+  CancelAndSubmitBtn: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    borderColor: '#fff',
+    borderWidth: 1,
+    height: 40,
+    elevation: 0,
+  },
+  CancelAndSubmitText: {
+    padding: 5,
+    fontSize: 13,
+    height: 40,
+    alignItems: 'center',
+    marginBottom: Platform.OS === 'android' ? 10 : undefined,
+  },
   otherBtn: {
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
@@ -153,5 +173,46 @@ export default {
   tabView:{
     height: deviceHeight*0.8,
     width: deviceWidth,
-  }
+  },
+
+  swiperTextContent: {
+    flex: 1,
+    padding:10,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+
+  newsPosterTypeView: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#666',
+    alignSelf: 'flex-end',
+  },
+  newsPosterTypeText: {
+    opacity: 0.8,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  contentIconsContainer: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  roundedButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+  },
+  roundedCustomButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+  },
 };

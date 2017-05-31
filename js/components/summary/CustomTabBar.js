@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 
-import { Text, View } from 'native-base';
+import { Text, View ,Icon} from 'native-base';
 
 
 const deviceWidth = require('Dimensions').get('window').width;
@@ -23,12 +23,23 @@ class CustomTabBar extends Component {
   }
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
+    //console.log("======> tabName = ",name);
+    if(name=="+"){
+      //will render icon
+      return (
+        <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab, { borderWidth: isTabActive ? 2 : 0, borderColor: isTabActive ? '#FFF' : 'transparent', borderRadius: isTabActive ? 30 : undefined }]}>
+          <Icon active name="add" />
+        </TouchableOpacity>
+      );
+    }else{
+      // render text
+      return (
+        <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab, { borderWidth: isTabActive ? 2 : 0, borderColor: isTabActive ? '#FFF' : 'transparent', borderRadius: isTabActive ? 30 : undefined }]}>
+          <Text style={{ color: '#fff', fontWeight: isTabActive ? '900' : '500' }}>{name}</Text>
+        </TouchableOpacity>
+      );
+    }
 
-    return (
-      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab, { borderWidth: isTabActive ? 2 : 0, borderColor: isTabActive ? '#FFF' : 'transparent', borderRadius: isTabActive ? 30 : undefined }]}>
-        <Text style={{ color: '#fff', fontWeight: isTabActive ? '900' : '500' }}>{name}</Text>
-      </TouchableOpacity>
-    );
   }
 
   render() {

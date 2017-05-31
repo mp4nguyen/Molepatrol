@@ -1,6 +1,6 @@
 
 import type { Action } from '../actions/types';
-import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_OR_UPDATE_LESION, CREATE_REQUEST, GET_REQUEST, lesion,CHANGE_VALUE_LESION ,SET_PHOTO_VALUE} from '../actions/request';
+import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_OR_UPDATE_LESION, CREATE_REQUEST, GET_REQUEST, lesion,CHANGE_VALUE_LESION ,SET_PHOTO_VALUE,SET_CURRENT_LESION,REMOVE_PHOTO_FROM_LESION} from '../actions/request';
 
 export type State = {
     list: array,
@@ -42,18 +42,55 @@ export default function (state:State = initialState, action:Action): State {
     return newState;
   }
 
+
+  if (action.type === SET_CURRENT_LESION) {
+    return {
+      ...state,
+      item: {...state.items[action.payload.lesionId]},
+    };
+  }
+
+
+  if (action.type === REMOVE_PHOTO_FROM_LESION) {
+    // console.log("will remove resource = ",action.payload);
+    // console.log(" state.item = ",state.item);
+    var newItem = {...state.item}
+    var newItems = [...state.items];
+    newItem.resource.splice(action.payload.resourceIndex,1);
+    //console.log("after remove = ",newItem);
+    for(var i=0;i<newItems.length;i++){
+      itemInArray = newItems[i]
+      //console.log("itemInArray = ",itemInArray);
+      if(itemInArray.lesionId == newItem.lesionId){
+        //console.log("found ",state.item);
+        newItems[i] = {...newItem}
+        //console.log("after itemInArray = ",itemInArray);
+      }
+    }
+
+    return {
+      ...state,
+      items: [...newItems],
+      item: {...newItem}
+    };
+
+  }
+
   if (action.type === SET_OR_UPDATE_LESION) {
     var isFind = false;
     var newItems = [...state.items];
     for(var i=0;i<newItems.length;i++){
       itemInArray = newItems[i]
-      console.log("itemInArray = ",itemInArray);
+      //console.log("itemInArray = ",itemInArray);
       if(itemInArray.lesionId == state.item.lesionId){
         isFind = true;
-        itemInArray = {...state.item}
+        //console.log("found ",state.item);
+        newItems[i] = {...state.item}
+        //console.log("after itemInArray = ",itemInArray);
       }
     }
 
+    //console.log("newItems = ",newItems);
     if(!isFind){
       return {
         ...state,
@@ -78,11 +115,14 @@ export default function (state:State = initialState, action:Action): State {
       }
     };
   }
+
   if (action.type === ADD_ANOTHER_LESION) {
+    action.payload.newLesion.lesionId = state.items.length;
+    console.log(" action.payload.newLesion = ",action.payload.newLesion);
     return {
       ...state,
-      items: [...state.items, action.payload.lesion],
-      item: action.payload.newLesion,
+      items: [...state.items, action.payload.newLesion],
+      item: {...action.payload.newLesion},
     };
   }
   return state;

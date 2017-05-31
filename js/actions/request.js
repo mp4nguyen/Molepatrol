@@ -13,6 +13,8 @@ export const SET_OR_UPDATE_LESION = 'SET_OR_UPDATE_LESION';
 export const ADD_ANOTHER_LESION = 'ADD_ANOTHER_LESION';
 export const CHANGE_VALUE_LESION = 'CHANGE_VALUE_LESION';
 export const SET_PHOTO_VALUE = 'SET_PHOTO_VALUE';
+export const SET_CURRENT_LESION = 'SET_CURRENT_LESION';
+export const REMOVE_PHOTO_FROM_LESION = 'REMOVE_PHOTO_FROM_LESION';
 
 
 export const lesionForm = {
@@ -165,6 +167,20 @@ export function setLesion(): Action {
   });
 }
 
+export function removePhotoFromLesion(lesionId,resourceIndex):Action{
+  return({
+    type: REMOVE_PHOTO_FROM_LESION,
+    payload:{lesionId,resourceIndex}
+  });
+}
+
+export function setCurrentLesion(lesionId): Action{
+  return({
+    type: SET_CURRENT_LESION,
+    payload:{lesionId}
+  });
+}
+
 export function submitPhotos(value, finish): Action {
   return dispatch => new Promise((resolve) => {
     console.log(value,finish);
@@ -212,7 +228,7 @@ export function addAnotherLesion(lesion): Action {
   return dispatch => new Promise((resolve) => {
     dispatch({
       type: ADD_ANOTHER_LESION,
-      payload: { lesion, newLesion: { ...lesionForm, personId: lesion.personId, gender: lesion.gender ,lesionId: (lesion.lesionId + 1)} },
+      payload: { newLesion: { ...lesionForm, personId: lesion.personId, gender: lesion.gender} },
     });
     resolve();
   });
