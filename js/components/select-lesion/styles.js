@@ -80,5 +80,9 @@ export default {
     fontSize: 15,
     lineHeight: 20,
   },
+  lesionImg:{
+    height: deviceHeight - 140,
+    width: deviceWidth,
+    backgroundColor: 'transparent',
+  }
 };
-

@@ -14,7 +14,8 @@ import Swiper from 'react-native-swiper';
 import HeaderContent from '../headerContent';
 import { Grid, Col } from 'react-native-easy-grid';
 
-import {setCurrentLesion,removePhotoFromLesion,addAnotherLesion} from '../../actions/request'
+import {setCurrentLesion,removePhotoFromLesion,addAnotherLesion,setLesion,submitRequest} from '../../actions/request';
+import {setNextPageForAll,goToPage,resetSetPage} from '../../actions/nextPage';
 import Lesion from './lesion';
 import CustomTabBar from './CustomTabBar';
 
@@ -25,6 +26,7 @@ const primary = require('../../themes/variable').brandPrimary;
 const {
   reset,
   popRoute,
+  pushRoute
 } = actions;
 
 class Summary extends Component {
@@ -35,33 +37,38 @@ class Summary extends Component {
     item: React.PropTypes.object,
     readOnly: React.PropTypes.bool,
     reset: React.PropTypes.func,
-    createRequest: React.PropTypes.func,
+    submitRequest: React.PropTypes.func,
     openDrawer: React.PropTypes.func,
     popRoute: React.PropTypes.func,
+    pushRoute: React.PropTypes.func,
+    goToPage: React.PropTypes.func,
+    resetSetPage: React.PropTypes.func,
     setCurrentLesion: React.PropTypes.func,
+    setNextPageForAll: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
   }
   constructor(props) {
     super(props);
-    this.sendToRedimed = this.sendToRedimed.bind(this);
+    this.submit = this.submit.bind(this);
     this.cancel = this.cancel.bind(this);
     this.removePhoto = this.removePhoto.bind(this);
     //this.goToPage = this.goToPage.bind(this);
+  }
+
+  componentWillMount(){
+    console.log("summary.js: componentWillMount is running .................");
+    this.props.setLesion();
+    this.props.setNextPageForAll();
   }
 
   popRoute() {
     this.props.popRoute(this.props.navigation.key);
   }
 
-  goToPage(page){
-    console.log("will go to page = ",page," props = ",this.props);
-    const { navigation } = this.props;
-    const index = _.findIndex(navigation.routes, { key: page });
-    for (let i = index; i < navigation.routes.length - 1; i++) {
-      this.popRoute();
-    }
+  pushRoute(route) {
+    this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
 
   onLesionChange(tab){
@@ -71,9 +78,10 @@ class Summary extends Component {
       this.props.setCurrentLesion(tab.i);
     }else{
       console.log("new lesion.....");
-      const { item } = this.props;
+      const { item,resetSetPage } = this.props;
+      resetSetPage();
       this.props.addNew({ ...item}).then(() => {
-        this.goToPage('takepicture');
+        this.props.goToPage('takepicture');
       }).catch(err => window.alert(err));
     }
 
@@ -83,9 +91,9 @@ class Summary extends Component {
     this.props.removePhotoFromLesion(item.lesionId,item.resourceIndex);
 
   }
-  sendToRedimed() {
-    const { createRequest, items, reset, navigation } = this.props;
-    createRequest(items).then(() => {
+  submit() {
+    const { submitRequest, items, reset, navigation } = this.props;
+    submitRequest(items).then(() => {
       reset(navigation.key);
     }).catch(e => console.log(e));
   }
@@ -97,14 +105,6 @@ class Summary extends Component {
     }
   }
   render() {
-    var lesions = [
-      {
-        name: "Lesion 1"
-      },
-      {
-        name: "Lesion 2"
-      }
-    ];
 
     const { item } = this.props;
     const { resource } = item;
@@ -141,7 +141,7 @@ class Summary extends Component {
               <ScrollableTabView style={styles.tabView} onChangeTab={this.onLesionChange.bind(this)}  >
                 {
                   this.props.items.map((item,index)=>{
-                    return <Lesion key={index} tabLabel={"Lesion "+ (index+1)} lesion = {item} removePhoto={this.removePhoto} goToPage={this.goToPage.bind(this)}/>
+                    return <Lesion key={index} tabLabel={"Lesion "+ (index+1)} lesion = {item} removePhoto={this.removePhoto} goToPage={this.props.goToPage.bind(this)}/>
                   })
                 }
                 <Container tabLabel="+"/>
@@ -160,7 +160,7 @@ class Summary extends Component {
               <Right style={{ marginLeft: 5 }}>
                 <Button
                   rounded dark block large
-                  onPress={this.sendToRedimed}
+                  onPress={this.submit}
                   style={styles.CancelAndSubmitBtn}
                 >
                   <Text style={styles.CancelAndSubmitText}>Submit</Text>
@@ -179,8 +179,14 @@ function bindAction(dispatch) {
     addNew: lesion => dispatch(addAnotherLesion(lesion)),
     reset: (key, route) => dispatch(reset([{ key: 'home' }], key, 0)),
     popRoute: key => dispatch(popRoute(key)),
+    pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     setCurrentLesion: lesionId => dispatch(setCurrentLesion(lesionId)),
-    removePhotoFromLesion: (lesionId,resourceIndex) => dispatch(removePhotoFromLesion(lesionId,resourceIndex))
+    removePhotoFromLesion: (lesionId,resourceIndex) => dispatch(removePhotoFromLesion(lesionId,resourceIndex)),
+    setNextPageForAll: () => dispatch(setNextPageForAll('requestsummary')),
+    goToPage: (page) => dispatch(goToPage(page)),
+    resetSetPage: () => dispatch(resetSetPage()),
+    setLesion: () => dispatch(setLesion()),
+    submitRequest: (items) => dispatch(submitRequest(items))
   };
 }
 

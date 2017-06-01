@@ -7,6 +7,7 @@ import cardNavigation from './cardNavigation';
 import request from './request';
 import member from './member';
 import spinner from './spinner';
+import nextPage from './nextPage';
 
 export default combineReducers({
   drawer,
@@ -15,4 +16,5 @@ export default combineReducers({
   user,
   member,
   spinner,
+  nextPage
 });

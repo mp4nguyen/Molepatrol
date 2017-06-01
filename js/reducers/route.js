@@ -13,8 +13,6 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
 
-  console.log("=====>reducers.route.js: state = ",state.routes);
-
   if (action.type === PUSH_NEW_ROUTE) {
     globalNav.navigator.push({ id: action.route, passProps: action.passProps });
     return {

@@ -14,6 +14,7 @@ import navigateTo from '../../actions/sideBarNav';
 import { popToRoute } from '../../actions/route';
 const bg = require('../../../images/BG.png');
 import { setLesion, addAnotherLesion,changeValueLesion } from '../../actions/request';
+import {goToPage} from '../../actions/nextPage';
 const primary = require('../../themes/variable').brandPrimary;
 const {
   pushRoute,
@@ -29,11 +30,13 @@ class FundInformation extends Component {
     submitLesson: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
+    goToPage: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     popToRoute: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
+    nextPage: React.PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -63,12 +66,9 @@ class FundInformation extends Component {
     // });
   }
   submitLesion() {
-    const { setLesion } = this.props;
-    if (setLesion) {
-    setLesion().then(this.pushRoute.bind(this, 'requestsummary'));
-    } else {
-      this.pushRoute('requestsummary');
-    }
+    // const { setLesion } = this.props;
+    // setLesion().then(this.pushRoute.bind(this, this.props.nextPage));    
+    this.props.goToPage(this.props.nextPage);
   }
   newLesion() {
     const { navigation, item } = this.props;
@@ -292,17 +292,19 @@ function bindAction(dispatch) {
   return {
     changeValueLesion:(fieldName, value) => dispatch(changeValueLesion(fieldName, value)),
     addNew: lesion => dispatch(addAnotherLesion(lesion)),
-    setLesion: (value, finish) => dispatch(setLesion(value, finish)),
+    setLesion: () => dispatch(setLesion()),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     popToRoute: route => dispatch(popToRoute(route)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
+    goToPage: (page) => dispatch(goToPage(page)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   item: state.request.item,
+  nextPage: state.nextPage.questionaire
 });
 
 export default connect(mapStateToProps, bindAction)(FundInformation);

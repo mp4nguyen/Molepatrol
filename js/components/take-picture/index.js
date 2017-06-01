@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import { actions } from 'react-native-navigation-redux-helpers';
 import { setPhoto } from '../../actions/request';
+import {goToPage} from '../../actions/nextPage';
 import { Container, Content, Text, Button, Icon, Item, Input, View, Header, Left, Right, Body } from 'native-base';
 import theme from '../../themes/base-theme';
 import styles from './styles';
@@ -25,9 +26,11 @@ class TakePicture extends Component {
     setValue: React.PropTypes.func,
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
+    goToPage: React.PropTypes.func,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
+    nextPage: React.PropTypes.string,
   }
   state = {
     image: null,
@@ -59,7 +62,8 @@ class TakePicture extends Component {
   finishImage() {
     this.props.setValue({ resource: [...this.props.resource, this.state.image.path] });
     this.setState({ image: null });
-    this.pushRoute('selectlesion');
+    //this.pushRoute(this.props.nextPage);
+    this.props.goToPage(this.props.nextPage)
   }
   render() {
     const Content = this.state.image ? Image : Camera;
@@ -122,12 +126,14 @@ function bindAction(dispatch) {
     setValue: value => dispatch(setPhoto(value)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
+    goToPage: (page) => dispatch(goToPage(page)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   resource: state.request.item.resource,
+  nextPage: state.nextPage.takepicture
 });
 
 export default connect(mapStateToProps, bindAction)(TakePicture);

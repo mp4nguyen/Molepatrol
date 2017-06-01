@@ -181,24 +181,37 @@ export function setCurrentLesion(lesionId): Action{
   });
 }
 
-export function submitPhotos(value, finish): Action {
+export function submitRequest(items): Action {
   return dispatch => new Promise((resolve) => {
-    console.log(value,finish);
+
     const body = new FormData()
     //body.append('company','Redimed')
     let files = []
     let file = {}
-    for(var i=0;i<value.resource.length;i++){
-      let res = value.resource[i]
-      console.log("res = ",res);
-      file = {
-        uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
-        name:`lesion_${i}_${new Date().getTime()}.jpg`,            // e.g. 'image123.jpg',
-        type:'image/jpg'             // e.g. 'image/jpg'
-      }
-      //files.push(file)
-      body.append(`lesion_${i}_${new Date().getTime()}`, file)
-    }
+    items.forEach((item,itemIndex)=>{
+      item.resource.forEach((res,resId)=>{
+        res.imageId = 'lesion_' + itemIndex + '_'+resId+'_' + (new Date().getTime());
+        file = {
+          uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
+          name:`${res.imageId}.jpg`,            // e.g. 'image123.jpg',
+          type:'image/jpg'             // e.g. 'image/jpg'
+        }
+        body.append(res.imageId, file)
+      })
+    });
+
+    body.append(items, items)
+    // for(var i=0;i<value.resource.length;i++){
+    //   let res = value.resource[i]
+    //   console.log("res = ",res);
+    //   file = {
+    //     uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
+    //     name:`lesion_${i}_${new Date().getTime()}.jpg`,            // e.g. 'image123.jpg',
+    //     type:'image/jpg'             // e.g. 'image/jpg'
+    //   }
+    //   //files.push(file)
+    //   body.append(`lesion_${i}_${new Date().getTime()}`, file)
+    // }
 
     // if(value.resource.length > 0){
     //   RNFS.readFile(value.resource[0], "base64").then(image => {
