@@ -49,6 +49,8 @@ export function login(user): Action {
           payload: res.account.profile,
         });
 
+        res.account.profile.patientId = res.account.patientId;
+
         dispatch({
           type: SET_MEMBER,
           payload: res.account.profile,

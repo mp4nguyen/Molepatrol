@@ -56,9 +56,9 @@ class Home extends Component {
   }
   addRequest() {
     //requestadvice
-    const { personId, gender } = this.props.member;
+    const { personId,patientId, gender } = this.props.member;
     resetSetPage();
-    this.props.newRequest(personId, gender).then(this.pushRoute.bind(this, 'takepicture'))
+    this.props.newRequest(personId, patientId,gender).then(this.pushRoute.bind(this, 'takepicture'))
   }
   render() {
     return (
@@ -145,7 +145,7 @@ class Home extends Component {
 
 function bindAction(dispatch) {
   return {
-    newRequest: (id, gender) => dispatch(newLesion(id, gender)),
+    newRequest: (personId,patientId, gender) => dispatch(newLesion(personId, patientId,gender)),
     setBackRoute: (route) => dispatch(setBackRoute(route)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     openDrawer: () => dispatch(openDrawer()),

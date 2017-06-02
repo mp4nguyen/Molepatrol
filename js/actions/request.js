@@ -19,6 +19,7 @@ export const REMOVE_PHOTO_FROM_LESION = 'REMOVE_PHOTO_FROM_LESION';
 
 export const lesionForm = {
   lesionId:0,
+  patientId:0,
   personId: 0,
   gender: "",
   resource: [],
@@ -31,74 +32,6 @@ export const lesionForm = {
   isTenderOrPainful: false,
   doesItComeAndGo: false,
 };
-const uploadFile = (item, data, type, index) => new Promise((resolve) => {
-  postRequest('containers/requests/upload', data)
-    .then((res) => {
-      console.log(console.log(data));
-      const file = _.first(res.result.files.file);
-      const fileUrl = `${config.resourceURL}${file.container}/download/${file.name}`;
-      if (type === 'lesion') {
-        item.lesion = fileUrl;
-      } else {
-        item.resource[index] = fileUrl;
-      }
-      resolve(item);
-    }).catch(x => console.log(x));
-});
-
-const processItem = item => new Promise((resolve) => {
-  const task = [];
-  if (item.lesion) {
-    const data = new FormData();
-    data.append('file', {
-      uri: item.lesion,
-      type: 'image/jpeg',
-      name: `lesion_${new Date().getTime()}.png`,
-    });
-    task.push(uploadFile(item, data, 'lesion'));
-  }
-  _.each(item.resource, (x, index) => {
-    const data = new FormData();
-    console.log(index, '---- ', x);
-    data.append('file', {
-      uri: x,
-      type: 'image/jpeg',
-      name: `photo_${new Date().getTime()}.png`,
-    });
-    task.push(uploadFile(item, data, 'resource', index));
-  });
-
-  Promise.all(task)
-    .then(() => {
-      resolve(item);
-    });
-});
-
-export function createRequest(items): Action {
-  return dispatch => new Promise((resolve) => {
-    const task = [];
-    _.each(items, (item) => {
-      task.push(processItem(item));
-    });
-    Promise.all(task).then((listItems) => {
-      const request = {
-        listItems,
-        type: 0,
-        isPending: true,
-        completedDate: null,
-      };
-      postRequest('BookingCtrls/createRequest', request)
-        .then((response) => {
-          dispatch({
-            type: CREATE_REQUEST,
-            payload: response.request.listItems[0],
-          });
-          resolve();
-        })
-        .catch(e => console.log('error', e));
-    });
-  });
-}
 
 
 export function getList(): Action {
@@ -122,25 +55,16 @@ export function getItem(id): Action {
 }
 
 
-export function newLesion(id, gender): Action {
+export function newLesion(personId,patientId, gender): Action {
   return dispatch => new Promise((resolve) => {
     dispatch({
       type: CREATE_REQUEST,
-      payload: { ...lesionForm, personId: id, gender },
+      payload: { ...lesionForm, personId,patientId, gender },
     });
     resolve();
   });
 }
 
-function _generateUUID() {
-    var d = new Date().getTime();
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-    });
-    return uuid;
-};
 
 export function changeValueLesion(fieldName,value): Action {
 
@@ -183,68 +107,79 @@ export function setCurrentLesion(lesionId): Action{
 
 export function submitRequest(items): Action {
   return dispatch => new Promise((resolve) => {
-
-    const body = new FormData()
-    //body.append('company','Redimed')
-    let files = []
-    let file = {}
-    items.forEach((item,itemIndex)=>{
-
-      if(item.lesion){
-        var imageId = `lesion_${item.personId}_${itemIndex}_body_${new Date().getTime()}`;
-        file = {
-          uri:item.lesion,             // e.g. 'file:///path/to/file/image123.jpg'
-          name:`${imageId}.jpg`,            // e.g. 'image123.jpg',
-          type:'image/jpg'             // e.g. 'image/jpg'
+    if(items.length > 0){
+        /////////////////////
+        var submitMoles = {
+          personId : items[0].personId,
+          patientId : items[0].patientId,
+          lesions : []
         }
-        body.append(imageId, file)
-      }
+        const body = new FormData()
+        //body.append('company','Redimed')
+        let file = {}
+        items.forEach((item,itemIndex)=>{
+          let lesion = {
+            lesionId:0,
+            photos: [],
+            lesion: null,
+            isFront: item.isFront,
+            isNew: item.isNew,
+            isGrowing: item.isGrowing,
+            isShapeOrChangeColor: item.isShapeOrChangeColor,
+            isItchyOrBleeding: item.isItchyOrBleeding,
+            isTenderOrPainful: item.isTenderOrPainful,
+            doesItComeAndGo: item.doesItComeAndGo,
+          };
 
-      item.resource.forEach((res,resId)=>{
-        var imageId = `lesion_${item.personId}_${itemIndex}_${resId}_${new Date().getTime()}`;
-        file = {
-          uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
-          name:`${imageId}.jpg`,            // e.g. 'image123.jpg',
-          type:'image/jpg'             // e.g. 'image/jpg'
-        }
-        body.append(imageId, file)
-      })
-    });
+          if(item.lesion){
+            var imageId = `lesion_${item.personId}_${itemIndex}_body_${new Date().getTime()}`;
+            var imageFile = `${imageId}.jpg`
+            file = {
+              uri:item.lesion,             // e.g. 'file:///path/to/file/image123.jpg'
+              name:imageFile,       // e.g. 'image123.jpg',
+              type:'image/jpg'             // e.g. 'image/jpg'
+            }
+            body.append(imageId, file)
+            lesion.lesion = imageFile;
+          }
 
-    body.append('items', JSON.stringify(items) )
-    // for(var i=0;i<value.resource.length;i++){
-    //   let res = value.resource[i]
-    //   console.log("res = ",res);
-    //   file = {
-    //     uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
-    //     name:`lesion_${i}_${new Date().getTime()}.jpg`,            // e.g. 'image123.jpg',
-    //     type:'image/jpg'             // e.g. 'image/jpg'
-    //   }
-    //   //files.push(file)
-    //   body.append(`lesion_${i}_${new Date().getTime()}`, file)
-    // }
+          item.resource.forEach((res,resId)=>{
+            var imageId = `lesion_${item.personId}_${itemIndex}_${resId}_${new Date().getTime()}`;
+            var imageFile = `${imageId}.jpg`
+            file = {
+              uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
+              name:imageFile,            // e.g. 'image123.jpg',
+              type:'image/jpg'             // e.g. 'image/jpg'
+            }
+            body.append(imageId, file)
+            lesion.photos.push(imageFile);
+          })
 
-    // if(value.resource.length > 0){
-    //   RNFS.readFile(value.resource[0], "base64").then(image => {
-    //     console.log("base64 = ",image)
-    //
-    //     postRequest2('/api/v1/uploadPhoto',{image}).then(res=>{
-    //       console.log("uploadPhoto = ",res);
-    //
-    //     });
-    //   })
-    // }
+          submitMoles.lesions.push(lesion);
+        });
 
-    console.log("send body to server = ",body);
-    const config = {
-          headers: { 'content-type': 'multipart/form-data' }
-      }
+        body.append('items', JSON.stringify(submitMoles))
+        // if(value.resource.length > 0){
+        //   RNFS.readFile(value.resource[0], "base64").then(image => {
+        //     console.log("base64 = ",image)
+        //
+        //     postRequest2('/api/v1/uploadPhoto',{image}).then(res=>{
+        //       console.log("uploadPhoto = ",res);
+        //
+        //     });
+        //   })
+        // }
+        console.log("send body to server = ",body);
+        const config = {
+              headers: { 'content-type': 'multipart/form-data' }
+          }
 
-    postRequest2('/api/v1/uploadPhoto',body,config).then(res=>{
-      console.log("uploadPhoto = ",res);
-      resolve();
-    });
-
+        postRequest2('/api/v1/uploadPhoto',body,config).then(res=>{
+          console.log("uploadPhoto = ",res);
+          resolve();
+        });
+        /////////////////////
+    }
   });
 }
 
@@ -252,7 +187,7 @@ export function addAnotherLesion(lesion): Action {
   return dispatch => new Promise((resolve) => {
     dispatch({
       type: ADD_ANOTHER_LESION,
-      payload: { newLesion: { ...lesionForm, personId: lesion.personId, gender: lesion.gender} },
+      payload: { newLesion: { ...lesionForm, personId: lesion.personId,patientId: lesion.patientId, gender: lesion.gender} },
     });
     resolve();
   });
