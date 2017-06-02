@@ -94,7 +94,7 @@ class Summary extends Component {
   submit() {
     const { submitRequest, items, reset, navigation } = this.props;
     submitRequest(items).then(() => {
-      reset(navigation.key);
+      //reset(navigation.key);
     }).catch(e => console.log(e));
   }
   cancel(){

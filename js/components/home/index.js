@@ -12,6 +12,7 @@ import styles from './styles';
 import navigateTo from '../../actions/sideBarNav';
 const bg = require('../../../images/BG.png');
 import { newLesion } from '../../actions/request';
+import {resetSetPage} from '../../actions/nextPage';
 const {
   reset,
   pushRoute,
@@ -30,6 +31,7 @@ class Home extends Component {
     reset: React.PropTypes.func,
     addNewMember: React.PropTypes.func,
     setBackRoute: React.PropTypes.func,
+    resetSetPage: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     navigation: React.PropTypes.shape({
@@ -55,6 +57,7 @@ class Home extends Component {
   addRequest() {
     //requestadvice
     const { personId, gender } = this.props.member;
+    resetSetPage();
     this.props.newRequest(personId, gender).then(this.pushRoute.bind(this, 'takepicture'))
   }
   render() {
@@ -149,6 +152,8 @@ function bindAction(dispatch) {
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewMember: () => dispatch(createMember()),
+    resetSetPage: () => dispatch(resetSetPage()),
+
   };
 }
 

@@ -189,18 +189,29 @@ export function submitRequest(items): Action {
     let files = []
     let file = {}
     items.forEach((item,itemIndex)=>{
-      item.resource.forEach((res,resId)=>{
-        res.imageId = 'lesion_' + itemIndex + '_'+resId+'_' + (new Date().getTime());
+
+      if(item.lesion){
+        var imageId = `lesion_${item.personId}_${itemIndex}_body_${new Date().getTime()}`;
         file = {
-          uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
-          name:`${res.imageId}.jpg`,            // e.g. 'image123.jpg',
+          uri:item.lesion,             // e.g. 'file:///path/to/file/image123.jpg'
+          name:`${imageId}.jpg`,            // e.g. 'image123.jpg',
           type:'image/jpg'             // e.g. 'image/jpg'
         }
-        body.append(res.imageId, file)
+        body.append(imageId, file)
+      }
+
+      item.resource.forEach((res,resId)=>{
+        var imageId = `lesion_${item.personId}_${itemIndex}_${resId}_${new Date().getTime()}`;
+        file = {
+          uri:res,             // e.g. 'file:///path/to/file/image123.jpg'
+          name:`${imageId}.jpg`,            // e.g. 'image123.jpg',
+          type:'image/jpg'             // e.g. 'image/jpg'
+        }
+        body.append(imageId, file)
       })
     });
 
-    body.append(items, items)
+    body.append('items', JSON.stringify(items) )
     // for(var i=0;i<value.resource.length;i++){
     //   let res = value.resource[i]
     //   console.log("res = ",res);
