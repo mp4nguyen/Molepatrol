@@ -7,6 +7,8 @@ const {
   pushRoute
 } = actions;
 
+export const SET_FOR_MEMBERS = 'SET_FOR_MEMBERS';
+
 export const SET_FOR_TAKEPICTURE = 'SET_FOR_TAKEPICTURE';
 export const SET_FOR_SELECTLESION = 'SET_FOR_SELECTLESION';
 export const SET_FOR_QUESTIONARE = 'SET_FOR_QUESTIONARE';
@@ -38,6 +40,10 @@ export function goToPage(nextPage) {
   }
 }
 
+
+export function setNextPageForMembers(nextPage): Action {
+  return ({type:SET_FOR_MEMBERS,payload:nextPage})
+}
 
 export function setNextPageForTakePicture(nextPage): Action {
   return ({type:SET_FOR_TAKEPICTURE,payload:nextPage})

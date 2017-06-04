@@ -11,7 +11,9 @@ import { closeDrawer } from '../../actions/drawer';
 
 import navigateTo from '../../actions/sideBarNav';
 import styles from './style';
-import { setBackRoute } from '../../actions/member';
+import { setNextPageForMembers } from '../../actions/nextPage';
+
+
 
 const {
   reset,
@@ -21,7 +23,7 @@ class SideBar extends Component {
 
   static propTypes = {
     member: React.PropTypes.object,
-    setBackRoute: React.PropTypes.func,
+    setNextPageForMembers: React.PropTypes.func,
     reset: React.PropTypes.func,
     navigateTo: React.PropTypes.func,
     navigation: React.PropTypes.shape({
@@ -46,7 +48,11 @@ class SideBar extends Component {
                 <Text style={styles.welcomeText}>Welcome</Text>
                 <Text style={styles.username}> {`${firstName} ${lastName}`}</Text>
               </View>
-              <ListItem button onPress={() => { this.props.setBackRoute('profiles'); this.navigateTo('profiles'); }} iconLeft style={styles.links} >
+              <ListItem button onPress={() => { this.navigateTo('home'); }} iconLeft style={styles.links} >
+                <Icon name="ios-home-outline" />
+                <Text style={styles.linkText}> HOME</Text>
+              </ListItem>
+              <ListItem button onPress={() => { this.props.setNextPageForMembers(); this.navigateTo('profiles'); }} iconLeft style={styles.links} >
                 <Icon name="ios-person-outline" />
                 <Text style={styles.linkText}> MEMBER PROFILE</Text>
               </ListItem>
@@ -72,7 +78,7 @@ class SideBar extends Component {
 
 function bindAction(dispatch) {
   return {
-    setBackRoute: route => dispatch(setBackRoute(route)),
+    setNextPageForMembers: () => dispatch(setNextPageForMembers('baseinfo')),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     reset: key => dispatch(closeDrawer(), reset([{ key: 'login' }], key, 0)),
   };

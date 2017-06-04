@@ -34,12 +34,15 @@ export const lesionForm = {
 };
 
 
-export function getList(): Action {
-  return dispatch => getRequest('BookingCtrls/getRequests')
+export function getList(member): Action {
+  console.log(" will getAppointment for member = ",member);
+  return dispatch => postRequest2('/api/v1/getAppointment',member)
     .then((response) => {
+      console.log(" /api/v1/getAppointment = ",response);
+
       dispatch({
         type: LIST_REQUEST,
-        payload: response.requests,
+        payload: response.appointments||[],
       });
     });
 }

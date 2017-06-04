@@ -15,7 +15,7 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
 import { setMember, createMember, getMember } from '../../actions/member';
-
+import {goToPage} from '../../actions/nextPage';
 const bg = require('../../../images/BG.png');
 const {
   popRoute,
@@ -32,6 +32,8 @@ class Member extends Component {
     popRoute: React.PropTypes.func,
     pushRoute: React.PropTypes.func,
     addNewMember: React.PropTypes.func,
+    goToPage: React.PropTypes.func,
+    nextPage: React.PropTypes.string,
     navigation: React.PropTypes.shape({
       key: React.PropTypes.string,
     }),
@@ -55,7 +57,8 @@ class Member extends Component {
     const { editMember } = this.props;
     this.props.setMember(member).then(() => {
       console.log('setmember has done..........');
-      this.pushRoute('baseinfo')
+      this.props.goToPage(this.props.nextPage);
+      //this.pushRoute('baseinfo')
       // if (editMember) {
       //   this.props.getMember(member.id).then(this.pushRoute.bind(this, 'baseinfo'));
       // } else {
@@ -111,12 +114,14 @@ function bindAction(dispatch) {
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewMember: (member) => dispatch(createMember()),
+    goToPage: (page)=>dispatch(goToPage(page)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   list: state.member.list,
+  nextPage: state.nextPage.members
 });
 
 export default connect(mapStateToProps, bindAction)(Member);

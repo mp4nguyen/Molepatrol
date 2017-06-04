@@ -13,7 +13,6 @@ import SignUp from './components/sign-up/';
 import SideBar from './components/sideBar';
 import NeedHelp from './components/needhelp';
 import BaseInfo from './components/base-info';
-import SignUpBaseInfo from './containers/signUpBaseInfo';
 import ContactInfo from './components/contact-info';
 import GPInfo from './components/gp-info';
 import ChangePassword from './components/change-password';
@@ -21,20 +20,24 @@ import RequestAdvice from './components/request-advice';
 import AboutUs from './components/about-us';
 import Introduction from './components/introduction';
 import Members from './components/members';
-import Profiles from './containers/profiles';
-import MyRequest from './containers/myRequest';
-import TreatmentAdvice from './containers/treatmentAdvice';
 import FundInformation from './components/fund-information';
 import Questionaire from './components/questionaire';
 import SplashPage from './components/splashscreen/';
 import ViewSummary from './components/summary';
-import RequestSummary from './containers/requestSummary';
 import TakePicture from './components/take-picture';
 import SelectLesion from './components/select-lesion';
 import Channel from './components/channel';
 import Channels from './components/channels';
 import { statusBarColor } from './themes/base-theme';
 import SpinnerView from './components/spinner';
+
+import SignUpBaseInfo from './containers/signUpBaseInfo';
+import Profiles from './containers/profiles';
+//import MyRequest from './containers/myRequest';
+import MyRequest from './components/my-requests';
+import TreatmentAdvice from './containers/treatmentAdvice';
+import RequestSummary from './containers/requestSummary';
+
 const {
   popRoute,
 } = actions;

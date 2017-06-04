@@ -23,6 +23,8 @@ const initialState = {
 
 export default function (state:State = initialState, action:Action): State {
 
+
+
   if (action.type === SET_FATHER_MEMBER) {
     return {
       ...state,
@@ -34,9 +36,9 @@ export default function (state:State = initialState, action:Action): State {
     let members = [action.payload]
     // console.log("1 members = ",members);
     // console.log("1 will more to members = ",action.payload.relationshipss);
-    if(action.payload.relationshipss && action.payload.relationshipss[0].personId){
+    if(action.payload.relationships && action.payload.relationships[0].personId){
       //console.log("1 add more to members = ",members,action.payload.relationshipss);
-      members = [...members,...action.payload.relationshipss]
+      members = [...members,...action.payload.relationships]
     }
     return {
       ...state,

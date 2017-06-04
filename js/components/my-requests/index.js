@@ -18,7 +18,9 @@ import HeaderContent from '../headerContent';
 const deviceWidth = Dimensions.get('window').width;
 const primary = require('../../themes/variable').brandPrimary;
 const bg = require('../../../images/BG.png');
-import { setBackRoute } from '../../actions/member';
+import { setNextPageForMembers } from '../../actions/nextPage';
+import { getList, getItem } from '../../actions/request';
+
 const {
   popRoute,
   pushRoute,
@@ -30,7 +32,7 @@ class MyRequest extends Component {
   }
   static propTypes = {
     member: React.PropTypes.object,
-    setBackRoute: React.PropTypes.func,
+    setNextPageForMembers: React.PropTypes.func,
     getList: React.PropTypes.func,
     getItem: React.PropTypes.func,
     popRoute: React.PropTypes.func,
@@ -51,11 +53,11 @@ class MyRequest extends Component {
   }
   componentWillMount() {
     const { getList, member } = this.props;
-    getList && getList(member && member.id);
+    getList({personId:member.personId});
   }
   componentWillReceiveProps (nextProps) {
-    if (nextProps.member.id != this.props.member.id) {
-      this.props.getList && this.props.getList(nextProps.member.id);
+    if (nextProps.member.personId != this.props.member.personId) {
+      this.props.getList({personId:nextProps.member.personId});
     }
   }
   popRoute() {
@@ -71,16 +73,16 @@ class MyRequest extends Component {
   }
   selectMember() {
     const { navigation } = this.props;
-    this.props.setBackRoute('myrequest');
+    this.props.setNextPageForMembers();
     this.props.pushRoute({ key: 'members', index: 1 }, navigation.key);
   }
-  
+
   render() {
     const types = ['ios-copy-outline', 'ios-chatboxes-outline', 'ios-archive-outline'];
     const texts = ['Request Sent', 'Reviewed By Dr', 'Treatment Advice'];
     const routes = ['summary', '', 'treatmentadvice'];
     const items = this.props.list.map((x, index) => (
-      <View key={x.id}>
+      <View key={index}>
         <TouchableOpacity onPress={() => _.isEmpty(routes[x.type]) ? {} : this.pushToRoute(routes[x.type], x.type)} >
           <View style={styles.timelineView}>
             <View style={index === 0 ? styles.borderNone : styles.timelineContent}>
@@ -132,15 +134,18 @@ class MyRequest extends Component {
 
 function bindAction(dispatch) {
   return {
-    setBackRoute: (route) => dispatch(setBackRoute(route)),
+    setNextPageForMembers: () => dispatch(setNextPageForMembers('myrequest')),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
+    getList: (member) => dispatch(getList(member)),
+    getItem: (id) => dispatch(getItem(id)),
   };
 }
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   member: state.member.item,
+  list: state.request.list,
 });
 
 export default connect(mapStateToProps, bindAction)(MyRequest);
