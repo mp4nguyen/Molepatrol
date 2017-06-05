@@ -48,10 +48,12 @@ class Lesion extends Component {
           <Row key={rowIndex}>
             {
               row.map((item,itemIndex)=>{
+                var base64Icon = 'data:image/png;base64,'+item.uri;
+                //item.uri
                 return (
                   <Col key ={itemIndex}>
                     <TouchableOpacity >
-                      <Image source={{uri:item.uri}} style={styles.channelImg}>
+                      <Image source={{uri:base64Icon}} style={styles.channelImg}>
                         <View style={styles.swiperTextContent}>
                           <TouchableOpacity style={styles.newsPosterTypeView} onPress={() => this.props.removePhoto(item)}>
                             <Icon active  name="delete" style={{ fontSize: 30, width: 30, color: '#FFF' }}/>

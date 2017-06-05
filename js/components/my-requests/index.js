@@ -18,7 +18,7 @@ import HeaderContent from '../headerContent';
 const deviceWidth = Dimensions.get('window').width;
 const primary = require('../../themes/variable').brandPrimary;
 const bg = require('../../../images/BG.png');
-import { setNextPageForMembers } from '../../actions/nextPage';
+import { setNextPageForMembers,setNextPageForSummary,goToPage } from '../../actions/nextPage';
 import { getList, getItem } from '../../actions/request';
 
 const {
@@ -50,6 +50,8 @@ class MyRequest extends Component {
       value: 0,
     };
     this.selectMember = this.selectMember.bind(this);
+    this.requestSummary = this.requestSummary.bind(this);
+
   }
   componentWillMount() {
     const { getList, member } = this.props;
@@ -76,31 +78,36 @@ class MyRequest extends Component {
     this.props.setNextPageForMembers();
     this.props.pushRoute({ key: 'members', index: 1 }, navigation.key);
   }
-
+  requestSummary(apptId){
+    console.log("will go to detail.....");
+    this.props.getItem(apptId).then(()=>{
+      this.props.setNextPageForSummary();
+      this.props.goToPage('summary');
+    });
+  }
   render() {
     const types = ['ios-copy-outline', 'ios-chatboxes-outline', 'ios-archive-outline'];
     const texts = ['Request Sent', 'Reviewed By Dr', 'Treatment Advice'];
     const routes = ['summary', '', 'treatmentadvice'];
     const items = this.props.list.map((x, index) => (
       <View key={index}>
-        <TouchableOpacity onPress={() => _.isEmpty(routes[x.type]) ? {} : this.pushToRoute(routes[x.type], x.type)} >
-          <View style={styles.timelineView}>
-            <View style={index === 0 ? styles.borderNone : styles.timelineContent}>
-              <Text />
-            </View>
+        <View style={styles.timelineView}>
+          <View style={index === 0 ? styles.borderNone : styles.timelineContent}>
+            <Text />
           </View>
-
+        </View>
+        <TouchableOpacity onPress={() => {this.requestSummary(x.apptId)}}>
           <View style={styles.contentContainer}>
             <Grid>
               <Col style={{ flexDirection: 'row' }} size={70}>
-                <Icon name={types[x.type]} style={{ marginLeft: 2 }} />
+                <Icon name='ios-send-outline' style={{ marginLeft: 2 }} />
                 <View style={{ paddingLeft: 15 }}>
                   <Text style={styles.timelineContentHeading}>{texts[x.type]}</Text>
                 </View>
               </Col>
-              <Col size={30}>
+              <Col size={50}>
                 <View style={styles.newsTypeView}>
-                  <Text style={styles.status}>{x.isPending ? 'Pending' : moment(x.completedDate).format('YYYY/MM/DD') }</Text>
+                  <Text style={styles.status}>{x.isPending ? 'Pending' : moment.utc(x.apptDate).local().format('HH:mm DD/MM/YYYY') }</Text>
                 </View>
               </Col>
             </Grid>
@@ -135,6 +142,8 @@ class MyRequest extends Component {
 function bindAction(dispatch) {
   return {
     setNextPageForMembers: () => dispatch(setNextPageForMembers('myrequest')),
+    setNextPageForSummary: () => dispatch(setNextPageForSummary('myrequest')),
+    goToPage: (page) => dispatch(goToPage(page)),
     popRoute: key => dispatch(popRoute(key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     getList: (member) => dispatch(getList(member)),

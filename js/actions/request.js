@@ -35,10 +35,10 @@ export const lesionForm = {
 
 
 export function getList(member): Action {
-  console.log(" will getAppointment for member = ",member);
-  return dispatch => postRequest2('/api/v1/getAppointment',member)
+  console.log(" ====> getList.member = ",member);
+  return dispatch => postRequest2('/api/v1/getAppointments',member)
     .then((response) => {
-      console.log(" /api/v1/getAppointment = ",response);
+      console.log(" /api/v1/getAppointments = ",response);
 
       dispatch({
         type: LIST_REQUEST,
@@ -47,14 +47,28 @@ export function getList(member): Action {
     });
 }
 
-export function getItem(id): Action {
-  return dispatch => getRequest(`BookingCtrls/getRequest/${id}`)
-    .then((response) => {
+export function getItem(apptId): Action {
+  console.log(" ======> getItem.apptId = ",apptId);
+  return dispatch => new Promise((resolve) => {
+    postRequest2('/api/v1/getAppointment',{apptId}).then((response) => {
+      console.log(" /api/v1/getAppointment = ",response);
       dispatch({
         type: GET_REQUEST,
-        payload: response.request,
+        payload: response,
       });
+      resolve();
     });
+  });
+
+
+
+  // return dispatch => getRequest(`BookingCtrls/getRequest/${id}`)
+  //   .then((response) => {
+  //     dispatch({
+  //       type: GET_REQUEST,
+  //       payload: response.request,
+  //     });
+  //   });
 }
 
 

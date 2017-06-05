@@ -14,7 +14,7 @@ import navigateTo from '../../actions/sideBarNav';
 import { popToRoute } from '../../actions/route';
 const bg = require('../../../images/BG.png');
 import { setLesion, addAnotherLesion,changeValueLesion } from '../../actions/request';
-import {goToPage} from '../../actions/nextPage';
+import {goToPage,setNextPageForSummary} from '../../actions/nextPage';
 const primary = require('../../themes/variable').brandPrimary;
 const {
   pushRoute,
@@ -67,7 +67,8 @@ class FundInformation extends Component {
   }
   submitLesion() {
     // const { setLesion } = this.props;
-    // setLesion().then(this.pushRoute.bind(this, this.props.nextPage));    
+    // setLesion().then(this.pushRoute.bind(this, this.props.nextPage));
+    this.props.setNextPageForSummary();
     this.props.goToPage(this.props.nextPage);
   }
   newLesion() {
@@ -298,6 +299,7 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     goToPage: (page) => dispatch(goToPage(page)),
+    setNextPageForSummary: ()=> dispatch(setNextPageForSummary('home')),
   };
 }
 

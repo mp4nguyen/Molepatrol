@@ -98,11 +98,7 @@ class Summary extends Component {
     }).catch(e => console.log(e));
   }
   cancel(){
-    const { navigation } = this.props;
-    const index = _.findIndex(navigation.routes, { key: 'home' });
-    for (let i = index; i < navigation.routes.length - 1; i++) {
-      this.popRoute();
-    }
+    this.props.goToPage(this.props.nextPage)
   }
   render() {
 
@@ -114,20 +110,6 @@ class Summary extends Component {
       </View>
     ));
 
-    //renderTabBar={() => <CustomTabBar someProp={'here'} />}
-    /*
-    <Left>
-      <Button transparent onPress={() => this.popRoute()}>
-        <Icon active name="arrow-back" />
-      </Button>
-    </Left>
-
-    <Right>
-      <Button transparent >
-        <Icon active name="arrow-forward" />
-      </Button>
-    </Right>
-    */
     return (
       <Container>
         <Image source={bg} style={styles.background} >
@@ -194,6 +176,7 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   item: state.request.item,
   items: state.request.items,
+  nextPage: state.nextPage.summary
 });
 
 export default connect(mapStateToProps, bindAction)(Summary);

@@ -22,14 +22,31 @@ export default function (state:State = initialState, action:Action): State {
     };
   }
 
-  if (action.type === CREATE_REQUEST || action.type === GET_REQUEST) {
+  if ( action.type === GET_REQUEST) {
+    if(action.payload && action.payload.lesions.length>0){
+      return {
+        ...state,
+        item: action.payload.lesions[0],
+        items: action.payload.lesions,
+      };
+    }else {
+      return {
+        ...state,
+        item: {},
+        items: [],
+      };
+    }
+  }
+
+
+  if (action.type === CREATE_REQUEST ) {
     return {
       ...state,
       items: [],
       item: action.payload,
     };
   }
-  SET_PHOTO_VALUE
+
 
   if (action.type === SET_PHOTO_VALUE) {
     const newState = {

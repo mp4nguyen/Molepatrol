@@ -14,6 +14,7 @@ export const SET_FOR_SELECTLESION = 'SET_FOR_SELECTLESION';
 export const SET_FOR_QUESTIONARE = 'SET_FOR_QUESTIONARE';
 export const SET_FOR_ALL = 'SET_FOR_ALL';
 export const RESET = 'RESET';
+export const SET_FOR_SUMMARY = 'SET_FOR_SUMMARY';
 
 
 function myPushRoute(route,key) {
@@ -40,6 +41,9 @@ export function goToPage(nextPage) {
   }
 }
 
+export function setNextPageForSummary(nextPage): Action {
+  return ({type:SET_FOR_SUMMARY,payload:nextPage})
+}
 
 export function setNextPageForMembers(nextPage): Action {
   return ({type:SET_FOR_MEMBERS,payload:nextPage})
