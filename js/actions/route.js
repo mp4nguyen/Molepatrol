@@ -10,7 +10,7 @@ export const RESET_ROUTE = 'RESET_ROUTE';
 export const POP_TO_ROUTE = 'POP_TO_ROUTE';
 
 export function replaceRoute(route:string, passProps:any):Action {
-  console.log("actions.route.js.replaceRoute: route = ",route," passProps = ",passProps);
+  //console.log("actions.route.js.replaceRoute: route = ",route," passProps = ",passProps);
   return {
     type: REPLACE_ROUTE,
     route,
@@ -19,7 +19,7 @@ export function replaceRoute(route:string, passProps:any):Action {
 }
 
 export function pushNewRoute(route:string, passProps:any):Action {
-  console.log("actions.route.js.pushNewRoute: route = ",route," passProps = ",passProps);
+  //console.log("actions.route.js.pushNewRoute: route = ",route," passProps = ",passProps);
   return {
     type: PUSH_NEW_ROUTE,
     route,
@@ -28,7 +28,7 @@ export function pushNewRoute(route:string, passProps:any):Action {
 }
 
 export function replaceOrPushRoute(route:string, passProps:any):Action {
-  console.log("actions.route.js.replaceOrPushRoute: route = ",route," passProps = ",passProps);
+  //console.log("actions.route.js.replaceOrPushRoute: route = ",route," passProps = ",passProps);
   return {
     type: REPLACE_OR_PUSH_ROUTE,
     route,
@@ -37,7 +37,7 @@ export function replaceOrPushRoute(route:string, passProps:any):Action {
 }
 
 export function popRoute(passProps:any):Action {
-  console.log("actions.route.js.popRoute:  passProps = ",passProps);
+  //console.log("actions.route.js.popRoute:  passProps = ",passProps);
   return {
     type: POP_ROUTE,
     passProps,
@@ -45,7 +45,7 @@ export function popRoute(passProps:any):Action {
 }
 
 export function popToRoute(route:string, passProps:any):Action {
-  console.log("actions.route.js.popToRoute: route = ",route," passProps = ",passProps);
+  //console.log("actions.route.js.popToRoute: route = ",route," passProps = ",passProps);
   return {
     type: POP_TO_ROUTE,
     route,
@@ -54,7 +54,7 @@ export function popToRoute(route:string, passProps:any):Action {
 }
 
 export function resetRoute():Action {
-  console.log("actions.route.js.resetRoute:");
+  //console.log("actions.route.js.resetRoute:");
   return {
     type: RESET_ROUTE,
   };

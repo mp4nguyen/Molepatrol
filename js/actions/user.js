@@ -9,11 +9,11 @@ export const USER_FORGOT_PASSWORD = 'USER_FORGOT_PASSWORD';
 export const CREATE_USER = 'CREATE_USER';
 
 export function checkAvailableAccount(accountInfo): Action {
-  console.log("checkAvailableAccount: will check accunt = ",accountInfo);
+  //console.log("checkAvailableAccount: will check accunt = ",accountInfo);
   return (dispatch,getState) => {
     return new Promise((resolve,reject) => {
       postRequest2('/api/v1/checkAvailableAccount',accountInfo).then(res=>{
-        console.log("checkAvailableAccount = ",res);
+        //console.log("checkAvailableAccount = ",res);
         if (res.isAvailable == false){
           reject(res.reason)
         }else{
@@ -34,9 +34,9 @@ export function login(user): Action {
     //       payload: response.account,
     //     });
     //   });
-
+    //console.log("will call /api/v1/loginAT", user);
     postRequest2('/api/v1/loginAT',user).then(res=>{
-    	console.log("/api/v1/loginAT = ",res);
+    	//console.log("/api/v1/loginAT = ",res);
       if(res.isLogin){
 
         dispatch({
@@ -66,6 +66,8 @@ export function login(user): Action {
         reject(res.reason)
       }
 
+    },err=>{
+      console.log("Error during connect to server ",err);
     });
 
   })

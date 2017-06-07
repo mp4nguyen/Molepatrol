@@ -11,8 +11,8 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
 import { Grid, Col } from 'react-native-easy-grid';
-const bg = require('../../../images/BG.png');
-const headerLogo = require('../../../images/header-logo.png');
+
+import {bg,headerLogo} from '../../libs/images';
 
 const primary = require('../../themes/variable').brandPrimary;
 const {
@@ -90,7 +90,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        
+
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -118,7 +118,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        
+
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -143,7 +143,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        
+
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -168,7 +168,7 @@ class FundInformation extends Component {
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        
+
                       />
                     </Col>
                     <Col style={styles.colwrap}>
@@ -189,12 +189,12 @@ class FundInformation extends Component {
                     <Col>
                       <Switch
                         disabled={true}
-                        
+
                         onTintColor={primary}
                         style={styles.switch}
                         thumbTintColor="#ccc"
                         tintColor="#aaa"
-                        
+
                       />
                     </Col>
                     <Col style={styles.colwrap}>

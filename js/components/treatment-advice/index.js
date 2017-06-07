@@ -11,8 +11,8 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
 
-const bg = require('../../../images/BG.png');
-const headerLogo = require('../../../images/header-logo.png');
+import {bg,headerLogo} from '../../libs/images';
+
 
 const {
   popRoute,

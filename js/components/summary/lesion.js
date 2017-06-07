@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Image, View, TouchableOpacity, Platform ,Switch,Dimensions} from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Content, Text, Button, Item, Input, Header, Left, Right, Body } from 'native-base';
+import {Icon, Container, Content, Text, Button, Item, Input, Header, Left, Right, Body } from 'native-base';
 import { Grid, Col, Row } from 'react-native-easy-grid';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+//import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const primary = require('../../themes/variable').brandPrimary;
 
 class Lesion extends Component {
 
   static propTypes = {
+    nextPage:React.PropTypes.string,
     goToPage: React.PropTypes.func,
     removePhoto: React.PropTypes.func,
     lesion: React.PropTypes.object,
@@ -24,7 +25,22 @@ class Lesion extends Component {
   }
 
   componentWillMount(){
-    console.log("lesion.js.componentWillMount: lesion = ",this.props.lesion);
+  }
+
+  renderImageBehavious(){
+    if(this.props.nextPage=='home'){
+      return(
+        <View style={styles.swiperTextContent}>
+          <TouchableOpacity style={styles.newsPosterTypeView} onPress={() => this.props.removePhoto(item)}>
+            <Icon active  name="ios-trash-outline" style={{ fontSize: 30, width: 30, color: '#FFF' }}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }else{
+      return null
+    }
+
+
   }
 
   renderPhotos(){
@@ -49,16 +65,17 @@ class Lesion extends Component {
             {
               row.map((item,itemIndex)=>{
                 var base64Icon = 'data:image/png;base64,'+item.uri;
+                if(this.props.nextPage=='home'){
+                  var base64Icon = item.uri;
+                }
                 //item.uri
                 return (
                   <Col key ={itemIndex}>
                     <TouchableOpacity >
                       <Image source={{uri:base64Icon}} style={styles.channelImg}>
-                        <View style={styles.swiperTextContent}>
-                          <TouchableOpacity style={styles.newsPosterTypeView} onPress={() => this.props.removePhoto(item)}>
-                            <Icon active  name="delete" style={{ fontSize: 30, width: 30, color: '#FFF' }}/>
-                          </TouchableOpacity>
-                        </View>
+                        {
+                          this.renderImageBehavious()
+                        }
                       </Image>
                     </TouchableOpacity>
                   </Col>
@@ -71,29 +88,53 @@ class Lesion extends Component {
   }
 
   //<Image source={{ uri: this.props.lesion.lesion }} style={styles.bodyImg}/>
+  renderButtons(){
+    if(this.props.nextPage=='home'){
+      return(
+        <Grid>
+          <Col>
+            <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'takepicture')}>
+              <Icon name="ios-camera-outline" style={{ fontSize: 30, width: 30, color: '#FFF' }} />
+            </Button>
+          </Col>
+          <Col>
+            <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'selectlesion')}>
+              <Icon name="ios-body-outline" style={{ fontSize: 30,width:30 }} />
+            </Button>
+          </Col>
+          <Col>
+            <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'questionaire')}>
+              <Icon name="ios-text-outline" style={{ fontSize: 28, width: 30, color: '#FFF' }} />
+            </Button>
+          </Col>
+        </Grid>
+      )
+    }else{
+      return(
+        <Grid>
+          <Col>
+            <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'selectlesion')}>
+              <Icon name="ios-body-outline" style={{ fontSize: 30,width:30 }} />
+            </Button>
+          </Col>
+          <Col>
+            <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'questionaire')}>
+              <Icon name="ios-text-outline" style={{ fontSize: 28, width: 30, color: '#FFF' }} />
+            </Button>
+          </Col>
+        </Grid>
+      )
+    }
 
+  }
   render() {
     return (
       <Container>
         <Content showsVerticalScrollIndicator={false}>
           <View style={styles.contentIconsContainer}>
-            <Grid>
-              <Col>
-                <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'takepicture')}>
-                  <Icon name="add-a-photo" style={{ fontSize: 30, width: 30, color: '#FFF' }} />
-                </Button>
-              </Col>
-              <Col>
-                <Button transparent style={styles.roundedCustomButton} onPress={this.goToPage.bind(this,'selectlesion')}>
-                  <Icon name="person" style={{ fontSize: 30,width:30 }} />
-                </Button>
-              </Col>
-              <Col>
-                <Button transparent style={styles.roundedButton} onPress={this.goToPage.bind(this,'questionaire')}>
-                  <Icon name="question-answer" style={{ fontSize: 28, width: 30, color: '#FFF' }} />
-                </Button>
-              </Col>
-            </Grid>
+            {
+              this.renderButtons()
+            }
           </View>
           <View>
             <Grid>
@@ -110,6 +151,7 @@ class Lesion extends Component {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
+  nextPage: state.nextPage.summary
 });
 
 export default connect(mapStateToProps)(Lesion);

@@ -18,7 +18,9 @@ import styles from './styles';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import _ from 'lodash';
-const bg = require('../../../images/BG.png');
+
+import {bg,logo} from '../../libs/images';
+
 const headerLogo = require('../../../images/header-logo.png');
 
 

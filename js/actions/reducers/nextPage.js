@@ -1,5 +1,5 @@
 
-import {SET_FOR_TAKEPICTURE,SET_FOR_SELECTLESION ,SET_FOR_QUESTIONARE,SET_FOR_ALL ,RESET,SET_FOR_MEMBERS,SET_FOR_SUMMARY} from '../actions/nextPage';
+import {SET_FOR_TAKEPICTURE,SET_FOR_SELECTLESION ,SET_FOR_QUESTIONARE,SET_FOR_ALL ,RESET,SET_FOR_MEMBERS,SET_FOR_SUMMARY} from '../nextPage';
 
 const initialState = {
   takepicture: 'selectlesion',
@@ -24,9 +24,9 @@ export default function reducer(state = initialState, action) {
   }else if(action.type == RESET){
     return {...initialState}
   }else if(action.type == SET_FOR_MEMBERS){
-    return {...initialState,members:action.payload}
+    return {...state,members:action.payload}
   }else if(action.type == SET_FOR_SUMMARY){
-    return {...initialState,summary:action.payload}
+    return {...state,summary:action.payload}
   }else{
     return state;
   }

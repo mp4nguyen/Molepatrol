@@ -16,8 +16,9 @@ import styles from './styles';
 import StepInfo from '../step-info';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
-const bg = require('../../../images/BG.png');
-const headerLogo = require('../../../images/header-logo.png');
+import {goToPage} from '../../actions/nextPage';
+
+import {bg,headerLogo} from '../../libs/images';
 
 const {
   reset,
@@ -102,12 +103,12 @@ class GPInfo extends Component {
       //const index = _.findIndex(navigation.routes, { key: backToRoute });
 
 
-      signupOrCreateMemberOrUpdateMember().then(() => {
-        //this.pushRoute('home')
-      }).catch(err => window.alert(err));
 
       this.validate().then(() => {
-        //this.pushRoute('home')
+        signupOrCreateMemberOrUpdateMember().then(() => {
+          this.props.goToHome()
+        }).catch(err => window.alert(err));
+
         //this.popRoute();
         // createMember({ gp: this.state, ...member }).then(() => {
         //   for (let i = index; i < navigation.routes.length - 1; i++) {
@@ -269,12 +270,13 @@ function bindAction(dispatch) {
   return {
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
     setInfo: info => dispatch(setInfo(info)),
-     signupOrCreateMemberOrUpdateMember: () => dispatch(signupOrCreateMemberOrUpdateMember()),
+    signupOrCreateMemberOrUpdateMember: () => dispatch(signupOrCreateMemberOrUpdateMember()),
     reset: (key, route) => dispatch(reset([{ key: route }], key, 0)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
     changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
+    goToHome: () => dispatch(goToPage('home')),
   };
 }
 

@@ -26,8 +26,6 @@ import SplashPage from './components/splashscreen/';
 import ViewSummary from './components/summary';
 import TakePicture from './components/take-picture';
 import SelectLesion from './components/select-lesion';
-import Channel from './components/channel';
-import Channels from './components/channels';
 import { statusBarColor } from './themes/base-theme';
 import SpinnerView from './components/spinner';
 
@@ -147,8 +145,6 @@ class AppNavigator extends Component {
         return <Questionaire />;
       case 'profiles':
         return <Profiles />;
-      case 'channel':
-        return <Channels />;
       default:
         return <SplashPage />;
     }

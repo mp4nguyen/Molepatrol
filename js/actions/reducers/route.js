@@ -1,7 +1,7 @@
 
-import type { Action } from '../actions/types';
-import { globalNav } from '../AppNavigator';
-import { PUSH_NEW_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE, REHYDRATE } from '../actions/route';
+import type { Action } from '../types';
+import { globalNav } from '../../AppNavigator';
+import { PUSH_NEW_ROUTE, POP_ROUTE, POP_TO_ROUTE, REPLACE_ROUTE, REPLACE_OR_PUSH_ROUTE, REHYDRATE } from '../route';
 
 export type State = {
     routes: Array<string>

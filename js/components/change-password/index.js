@@ -11,7 +11,8 @@ import theme from '../../themes/base-theme';
 import styles from './styles';
 import HeaderContent from '../headerContent';
 
-const bg = require('../../../images/BG.png');
+
+import {bg} from '../../libs/images';
 
 const {
   popRoute,

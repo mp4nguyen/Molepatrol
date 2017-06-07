@@ -16,7 +16,7 @@ import styles from './styles';
 import HeaderContent from '../headerContent';
 import { setMember, createMember, getMember } from '../../actions/member';
 import {goToPage} from '../../actions/nextPage';
-const bg = require('../../../images/BG.png');
+import {bg,headerLogo} from '../../libs/images';
 const {
   popRoute,
   pushRoute,
@@ -56,7 +56,7 @@ class Member extends Component {
   select(member) {
     const { editMember } = this.props;
     this.props.setMember(member).then(() => {
-      console.log('setmember has done..........');
+      //console.log('setmember has done..........');
       this.props.goToPage(this.props.nextPage);
       //this.pushRoute('baseinfo')
       // if (editMember) {

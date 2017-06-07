@@ -8,6 +8,7 @@ import request from './request';
 import member from './member';
 import spinner from './spinner';
 import nextPage from './nextPage';
+import pageControl from './pageControl';
 
 export default combineReducers({
   drawer,
@@ -16,5 +17,6 @@ export default combineReducers({
   user,
   member,
   spinner,
-  nextPage
+  nextPage,
+  pageControl
 });

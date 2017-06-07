@@ -17,7 +17,9 @@ import styles from './styles';
 import HeaderContent from '../headerContent';
 const deviceWidth = Dimensions.get('window').width;
 const primary = require('../../themes/variable').brandPrimary;
-const bg = require('../../../images/BG.png');
+
+import {bg,headerLogo} from '../../libs/images';
+
 import { setNextPageForMembers,setNextPageForSummary,goToPage } from '../../actions/nextPage';
 import { getList, getItem } from '../../actions/request';
 
@@ -102,7 +104,7 @@ class MyRequest extends Component {
               <Col style={{ flexDirection: 'row' }} size={70}>
                 <Icon name='ios-send-outline' style={{ marginLeft: 2 }} />
                 <View style={{ paddingLeft: 15 }}>
-                  <Text style={styles.timelineContentHeading}>{texts[x.type]}</Text>
+                  <Text style={styles.timelineContentHeading}>Request sent</Text>
                 </View>
               </Col>
               <Col size={50}>

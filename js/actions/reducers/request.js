@@ -1,6 +1,6 @@
 
-import type { Action } from '../actions/types';
-import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_OR_UPDATE_LESION, CREATE_REQUEST, GET_REQUEST, lesion,CHANGE_VALUE_LESION ,SET_PHOTO_VALUE,SET_CURRENT_LESION,REMOVE_PHOTO_FROM_LESION} from '../actions/request';
+import type { Action } from '../types';
+import { LIST_REQUEST, ADD_ANOTHER_LESION, SET_OR_UPDATE_LESION, CREATE_REQUEST, GET_REQUEST, lesion,CHANGE_VALUE_LESION ,SET_PHOTO_VALUE,SET_CURRENT_LESION,REMOVE_PHOTO_FROM_LESION} from '../request';
 
 export type State = {
     list: array,
@@ -135,7 +135,7 @@ export default function (state:State = initialState, action:Action): State {
 
   if (action.type === ADD_ANOTHER_LESION) {
     action.payload.newLesion.lesionId = state.items.length;
-    console.log(" action.payload.newLesion = ",action.payload.newLesion);
+    //console.log(" action.payload.newLesion = ",action.payload.newLesion);
     return {
       ...state,
       items: [...state.items, action.payload.newLesion],

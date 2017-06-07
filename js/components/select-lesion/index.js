@@ -95,22 +95,28 @@ class TakePicture extends Component {
         <View style={styles.container}>
           <Header style={styles.header}>
             <Left style={{ flex: 0.2 }}>
-              <Button transparent onPress={() => this.popRoute()}>
-                <Icon active name="arrow-back" />
-              </Button>
+              {
+                this.props.pageControl.isBack &&
+                <Button transparent onPress={() => this.popRoute()}>
+                  <Icon active name="arrow-back" />
+                </Button>
+              }
             </Left>
             <Body style={styles.headertext}>
               <Text>Draw the cross to show us where the lesion is</Text>
             </Body>
             <Right style={{ flex: 0.2 }}>
-              <Button transparent onPress={this.saveImage} >
-                <Icon active name="arrow-forward" />
-              </Button>
+              {
+                this.props.pageControl.isNext &&
+                <Button transparent onPress={this.saveImage} >
+                  <Icon active name="arrow-forward" />
+                </Button>                
+              }
             </Right>
           </Header>
           <View collapsable={false} ref='imageView' >
             { item.lesion &&
-              <Image source={{uri:item.lesion}} style={styles.lesionImg} >
+              <Image source={{uri:item.lesion.length > 200 ? 'data:image/png;base64,'+item.lesion : item.lesion}} style={styles.lesionImg} >
               </Image>
             }
             {
@@ -157,7 +163,8 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   item: state.request.item,
-  nextPage: state.nextPage.selectlesion
+  nextPage: state.nextPage.selectlesion,
+  pageControl: state.pageControl.selectlesion,
 });
 
 export default connect(mapStateToProps, bindAction)(TakePicture);

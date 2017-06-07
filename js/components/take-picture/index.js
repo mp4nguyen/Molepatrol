@@ -62,7 +62,6 @@ class TakePicture extends Component {
   finishImage() {
     this.props.setValue({ resource: [...this.props.resource, this.state.image.path] });
     this.setState({ image: null });
-    //this.pushRoute(this.props.nextPage);
     this.props.goToPage(this.props.nextPage)
   }
   render() {

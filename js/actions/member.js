@@ -11,6 +11,9 @@ export const ADD_MEMBER = 'ADD_MEMBER';
 export const SET_MEMBER = 'SET_MEMBER';
 export const CHANGE_VALUE_MEMBER = 'CHANGE_VALUE_MEMBER';
 export const SET_FATHER_MEMBER = 'SET_FATHER_MEMBER';
+export const RESET_MEMBER_TO_ZERO_FOR_CREATE = 'RESET_MEMBER_TO_ZERO_FOR_CREATE';
+
+import {USER_LOGIN} from './user'
 
 const memberForm = {
   id: 0,
@@ -42,27 +45,29 @@ const memberForm = {
 };
 
 export function changeValueMember(page,fieldName,value): Action {
-  // var dispatchObject = {};
-  // var valueObject = {}
-  // valueObject[fieldName] = value
-  // dispatchObject[page]= valueObject
-  //console.log("actions.members.changeValueMember:...",dispatchObject);
-
-  //return dispatch => dispatch({type: ADD_MEMBER,payload: dispatchObject});
-
   return {type: CHANGE_VALUE_MEMBER,payload: {page,fieldName,value}}
-
 }
 
 export function createMember(): Action {
-  return dispatch => new Promise((resolve) => {
-    dispatch({
-      type: CREATE_MEMBER
+  return (dispatch,getState) => {
+    var user = getState().user;
+    var fatherProfile = null;
+    if(user.user && user.user.profile){
+      fatherProfile = user.user.profile;
+    }
+    return new Promise((resolve) => {
+      dispatch({
+        type: CREATE_MEMBER,
+        fatherProfile
+      });
+      resolve();
     });
-    resolve();
-  });
+  }
 }
 
+export function resetMemberToZeroForCreate(){
+  return({type: RESET_MEMBER_TO_ZERO_FOR_CREATE,payload:memberForm})
+}
 
 export function signupOrCreateMemberOrUpdateMember(): Action {
   //this function is used to signup and make a new member if signup object is not null and personId is null
@@ -74,12 +79,39 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
 
     //state.member.member.baseinfo.dob = state.member.member.baseinfo.dob.format("YYYY-MM-DDTHH:mm:ssZ")
     //state.member.member.gp.medicareExpired = state.member.member.gp.medicareExpired.format("YYYY-MM-DDTHH:mm:ssZ")
-    console.log("stateOrigin = ",stateOrigin," state = ",state);
+    ////console.log("stateOrigin = ",stateOrigin," state = ",state);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve,reject) => {
       if(!state.member.member.baseinfo.personId && state.member.member.signup.username){
-        postRequest2('api/v1/signup', state.member.member).then((response) => {
-          console.log("api/v1/signup = ",response);
+        postRequest2('api/v1/signup', state.member.member).then((res) => {
+          ////console.log("api/v1/signup = ",res);
+            dispatch({
+              type: USER_LOGIN,
+              payload: res.account,
+            });
+
+            dispatch({
+              type: LIST_MEMBER,
+              payload: res.account.account.profile,
+            });
+
+            res.account.account.profile.patientId = res.account.account.patientId;
+
+            dispatch({
+              type: SET_MEMBER,
+              payload: res.account.account.profile,
+            });
+
+            dispatch({
+              type: SET_FATHER_MEMBER,
+              payload: res.account.account.personId,
+            });
+
+            if(res.isSuccess){
+              resolve("OK");
+            }else{
+              reject();
+            }
             // dispatch({
             //   type: CREATE_MEMBER,
             //   payload: response.member,
@@ -87,7 +119,8 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
         });
       }else if (!state.member.member.baseinfo.personId && !state.member.member.signup.username){
         postRequest2('api/v1/newMember', state.member.member).then((response) => {
-          console.log("api/v1/newMember = ",response);
+          ////console.log("api/v1/newMember = ",response);
+            resolve("OK");
             // dispatch({
             //   type: CREATE_MEMBER,
             //   payload: response.member,
@@ -95,7 +128,8 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
         });
       }else{
         postRequest2('api/v1/updateMember', state.member.member).then((response) => {
-          console.log("api/v1/updateMember = ",response);
+          //console.log("api/v1/updateMember = ",response);
+            resolve("OK");
             // dispatch({
             //   type: CREATE_MEMBER,
             //   payload: response.member,
@@ -103,7 +137,7 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
         });
       }
 
-      resolve("OK");
+
     });
 
 
@@ -116,10 +150,10 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
 export function getMembers(): Action {
   return dispatch => getRequest('BookingCtrls/getMembers')
     .then((response) => {
-      dispatch({
-        type: LIST_MEMBER,
-        payload: response.members,
-      });
+      // dispatch({
+      //   type: LIST_MEMBER,
+      //   payload: response.members,
+      // });
     });
 }
 export function getMember(id): Action {

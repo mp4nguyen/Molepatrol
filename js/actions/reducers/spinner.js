@@ -1,5 +1,5 @@
 
-import { SHOW_SPINNER, HIDE_SPINNER } from '../actions/spinner';
+import { SHOW_SPINNER, HIDE_SPINNER } from '../spinner';
 
 const initialState = {
   isShowed: false,

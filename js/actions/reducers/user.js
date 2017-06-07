@@ -1,6 +1,6 @@
 
-import type { Action } from '../actions/types';
-import { USER_LOGIN, USER_LOGOUT } from '../actions/user';
+import type { Action } from '../types';
+import { USER_LOGIN, USER_LOGOUT } from '../user';
 import { AsyncStorage } from 'react-native'
 export type State = {
     user: object,

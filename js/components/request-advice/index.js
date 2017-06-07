@@ -11,9 +11,9 @@ import { setBackRoute } from '../../actions/member';
 import styles from './styles';
 import theme from '../../themes/base-theme';
 import HeaderContent from '../headerContent';
+import { setNextPageForMembers,goToPage } from '../../actions/nextPage';
 
-const bg = require('../../../images/BG.png');
-const logo = require('../../../images/logo.png');
+import {bg,logo} from '../../libs/images';
 const {
   reset,
   pushRoute,
@@ -45,8 +45,8 @@ class SignUp extends Component {
   }
 
   addMember() {
-    this.props.setBackRoute('requestadvice');
-    this.pushRoute('members');
+    this.props.setNextPageForMembers();
+    this.props.goToPage('members');
   }
 
   render() {
@@ -91,6 +91,8 @@ class SignUp extends Component {
 
 function bindAction(dispatch) {
   return {
+    setNextPageForMembers: () => dispatch(setNextPageForMembers('requestadvice')),
+    goToPage: (page) => dispatch(goToPage(page)),
     setBackRoute: route => dispatch(setBackRoute(route)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     reset: key => dispatch(reset([{ key: 'login' }], key, 0)),

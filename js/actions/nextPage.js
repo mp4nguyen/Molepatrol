@@ -25,13 +25,13 @@ function myPushRoute(route,key) {
 export function goToPage(nextPage) {
   return (dispatch,getState)=>{
     var state = getState();
-    console.log(" state = ",state);
+    //console.log(" state = ",state);
     var navigation = state.cardNavigation;
-    console.log(" navigation = ",navigation);
+    //console.log(" navigation = ",navigation);
     const index = _.findIndex(navigation.routes, { key: nextPage });
-    console.log("will go to page = ",nextPage," index = ",index);
+    //console.log("will go to page = ",nextPage," index = ",index);
     if(index == -1){
-      console.log("go to nextPage..........");
+      //console.log("go to nextPage..........");
       dispatch(pushRoute({ key: nextPage, index: 1 }, navigation.key))
     }else{
       for (let i = index; i < navigation.routes.length - 1; i++) {

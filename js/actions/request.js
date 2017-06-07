@@ -35,10 +35,10 @@ export const lesionForm = {
 
 
 export function getList(member): Action {
-  console.log(" ====> getList.member = ",member);
+  ////console.log(" ====> getList.member = ",member);
   return dispatch => postRequest2('/api/v1/getAppointments',member)
     .then((response) => {
-      console.log(" /api/v1/getAppointments = ",response);
+      ////console.log(" /api/v1/getAppointments = ",response);
 
       dispatch({
         type: LIST_REQUEST,
@@ -48,10 +48,10 @@ export function getList(member): Action {
 }
 
 export function getItem(apptId): Action {
-  console.log(" ======> getItem.apptId = ",apptId);
+  ////console.log(" ======> getItem.apptId = ",apptId);
   return dispatch => new Promise((resolve) => {
     postRequest2('/api/v1/getAppointment',{apptId}).then((response) => {
-      console.log(" /api/v1/getAppointment = ",response);
+      ////console.log(" /api/v1/getAppointment = ",response);
       dispatch({
         type: GET_REQUEST,
         payload: response,
@@ -100,7 +100,7 @@ export function setPhoto(value): Action {
 
 export function setLesion(): Action {
   return dispatch => new Promise((resolve) => {
-    //console.log("setLesion............value = ",value," finish = ",finish);
+    ////console.log("setLesion............value = ",value," finish = ",finish);
     dispatch({
       type: SET_OR_UPDATE_LESION
     });
@@ -178,21 +178,21 @@ export function submitRequest(items): Action {
         body.append('items', JSON.stringify(submitMoles))
         // if(value.resource.length > 0){
         //   RNFS.readFile(value.resource[0], "base64").then(image => {
-        //     console.log("base64 = ",image)
+        //     //console.log("base64 = ",image)
         //
         //     postRequest2('/api/v1/uploadPhoto',{image}).then(res=>{
-        //       console.log("uploadPhoto = ",res);
+        //       //console.log("uploadPhoto = ",res);
         //
         //     });
         //   })
         // }
-        console.log("send body to server = ",body);
+        ////console.log("send body to server = ",body);
         const config = {
               headers: { 'content-type': 'multipart/form-data' }
           }
 
         postRequest2('/api/v1/uploadPhoto',body,config).then(res=>{
-          console.log("uploadPhoto = ",res);
+          ////console.log("uploadPhoto = ",res);
           resolve();
         });
         /////////////////////

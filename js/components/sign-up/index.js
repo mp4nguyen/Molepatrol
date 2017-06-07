@@ -12,8 +12,7 @@ import { Container, Content, Text, Button, Icon, InputGroup, Input, View } from 
 import { setBackRoute } from '../../actions/member';
 import styles from './styles';
 import _ from 'lodash';
-const bg = require('../../../images/BG.png');
-const logo = require('../../../images/header-logo.png');
+import {bg,logo} from '../../libs/images';
 
 const {
   reset,
@@ -103,7 +102,7 @@ class SignUp extends Component {
     console.log("submit.........");
 
     //this.signUpSuccess('signupbaseinfo')
-    this.validate().then(() => {    
+    this.validate().then(() => {
         this.props.checkAvailableAccount(this.props.signup).then(res=>{this.signUpSuccess('signupbaseinfo')},err=>alert(err))
     }).catch(e => alert(e));
 

@@ -12,7 +12,7 @@ const {
   popRoute,
 } = actions;
 
-const headerLogo = require('../../../images/header-logo.png');
+import {headerLogo} from '../../libs/images';
 
 class HeaderContent extends Component {
 

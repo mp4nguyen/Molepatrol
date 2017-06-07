@@ -12,7 +12,7 @@ import HeaderContent from '../headerContent';
 import { Grid, Col } from 'react-native-easy-grid';
 import navigateTo from '../../actions/sideBarNav';
 import { popToRoute } from '../../actions/route';
-const bg = require('../../../images/BG.png');
+import {bg,logo} from '../../libs/images';
 import { setLesion, addAnotherLesion,changeValueLesion } from '../../actions/request';
 import {goToPage,setNextPageForSummary} from '../../actions/nextPage';
 const primary = require('../../themes/variable').brandPrimary;
@@ -58,30 +58,28 @@ class FundInformation extends Component {
     this.props.popToRoute(route);
   }
   changeValue(field, value) {
-    //console.log("this.props.changeValueLesion = ",this.props.changeValueLesion);
     this.props.changeValueLesion(field, value);
-    // this.setState({
-    //   ...this.state,
-    //   [field]: value,
-    // });
   }
   submitLesion() {
-    // const { setLesion } = this.props;
-    // setLesion().then(this.pushRoute.bind(this, this.props.nextPage));
-    this.props.setNextPageForSummary();
-    this.props.goToPage(this.props.nextPage);
+
+    this.props.setLesion().then(()=>{
+      this.props.setNextPageForSummary();
+      this.props.goToPage(this.props.nextPage);
+    });
+
   }
   newLesion() {
     const { navigation, item } = this.props;
-    this.props.addNew({ ...item, ...this.state })
-      .then(() => {
-        const index = _.findIndex(navigation.routes, { key: 'takepicture' });
-        for (let i = index; i < navigation.routes.length - 1; i++) {
-          this.popRoute();
-        }
-        //this.pushRoute('takepicture');
-      })
-      .catch(err => window.alert(err));
+    this.props.setLesion().then(()=>{
+      this.props.addNew({ ...item, ...this.state }).then(() => {
+          this.props.goToPage('takepicture');
+          // const index = _.findIndex(navigation.routes, { key: 'takepicture' });
+          // for (let i = index; i < navigation.routes.length - 1; i++) {
+          //   this.popRoute();
+          // }
+          //this.pushRoute('takepicture');
+        }).catch(err => window.alert(err));
+    });
   }
   render() {
     const {item } = this.props;
@@ -91,17 +89,17 @@ class FundInformation extends Component {
           <Content scrollEnabled={false}>
             <Header style={styles.header} >
               <Left>
-                <Button transparent onPress={() => this.popRoute()}>
-                  <Icon active name="arrow-back" />
-                </Button>
+                {
+                  this.props.pageControl.isBack &&
+                  <Button transparent onPress={() => this.popRoute()}>
+                    <Icon active name="arrow-back" />
+                  </Button>
+                }
               </Left>
               <Body>
                 <Text style={styles.textheader}>QUESTIONAIRE</Text>
               </Body>
               <Right>
-                <Button transparent >
-                  <Icon active name="arrow-forward" />
-                </Button>
               </Right>
             </Header>
 
@@ -306,7 +304,8 @@ function bindAction(dispatch) {
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   item: state.request.item,
-  nextPage: state.nextPage.questionaire
+  nextPage: state.nextPage.questionaire,
+  pageControl: state.pageControl.questionaire,
 });
 
 export default connect(mapStateToProps, bindAction)(FundInformation);

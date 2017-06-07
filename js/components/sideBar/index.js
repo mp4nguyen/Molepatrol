@@ -11,7 +11,7 @@ import { closeDrawer } from '../../actions/drawer';
 
 import navigateTo from '../../actions/sideBarNav';
 import styles from './style';
-import { setNextPageForMembers } from '../../actions/nextPage';
+import { setNextPageForMembers ,goToPage} from '../../actions/nextPage';
 
 
 
@@ -48,7 +48,7 @@ class SideBar extends Component {
                 <Text style={styles.welcomeText}>Welcome</Text>
                 <Text style={styles.username}> {`${firstName} ${lastName}`}</Text>
               </View>
-              <ListItem button onPress={() => { this.navigateTo('home'); }} iconLeft style={styles.links} >
+              <ListItem button onPress={() => { this.props.closeDrawer();this.props.goToHome(); }} iconLeft style={styles.links} >
                 <Icon name="ios-home-outline" />
                 <Text style={styles.linkText}> HOME</Text>
               </ListItem>
@@ -81,6 +81,8 @@ function bindAction(dispatch) {
     setNextPageForMembers: () => dispatch(setNextPageForMembers('baseinfo')),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     reset: key => dispatch(closeDrawer(), reset([{ key: 'login' }], key, 0)),
+    goToHome:()=>dispatch(goToPage('home')),
+    closeDrawer: () => dispatch(closeDrawer()),
   };
 }
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Content, Text, Item, Input, Button, Icon, View, Left, Right,InputGroup } from 'native-base';
 import { login } from '../../actions/user';
+import {resetMemberToZeroForCreate} from '../../actions/member';
 import styles from './styles';
 import theme from '../../themes/base-theme';
 const {
@@ -12,8 +13,8 @@ const {
   pushRoute,
 } = actions;
 
-const bg = require('../../../images/BG.png');
-const logo = require('../../../images/logo.png');
+import {bg,logo} from '../../libs/images';
+
 
 class Login extends Component {
 
@@ -33,6 +34,7 @@ class Login extends Component {
       password: '1234',
       errors: {}
     };
+
     this.constructor.childContextTypes = {
       theme: React.PropTypes.object,
     };
@@ -73,6 +75,7 @@ class Login extends Component {
   }
 
   login() {
+      this.props.resetMemberToZeroForCreate();
       this.validate().then(() => {
           this.props.login(this.state).then(() => {
               this.replaceRoute('home');
@@ -122,7 +125,7 @@ class Login extends Component {
             </Button>
 
             <View style={styles.otherLinksContainer}>
-              <Button transparent style={{ alignSelf: 'flex-start' }} onPress={() => this.pushRoute('signUp')}>
+              <Button transparent style={{ alignSelf: 'flex-start' }} onPress={() => {this.props.resetMemberToZeroForCreate();this.pushRoute('signUp');}}>
                 <Text style={styles.helpBtns}>
                   Create Account
                       </Text>
@@ -147,6 +150,7 @@ function bindActions(dispatch) {
     login: user => dispatch(login(user)),
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
+    resetMemberToZeroForCreate: () => dispatch(resetMemberToZeroForCreate()),
   };
 }
 

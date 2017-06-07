@@ -1,6 +1,6 @@
 
-import type { Action } from '../actions/types';
-import { OPEN_DRAWER, CLOSE_DRAWER } from '../actions/drawer';
+import type { Action } from '../types';
+import { OPEN_DRAWER, CLOSE_DRAWER } from '../drawer';
 
 export type State = {
     drawerState: string,

@@ -10,8 +10,7 @@ import { Container, Content, Text, Button, Icon, Item, Input, View } from 'nativ
 import theme from '../../themes/base-theme';
 import styles from './styles';
 
-const bg = require('../../../images/BG.png');
-const logo = require('../../../images/logo.png');
+import {bg,logo} from '../../libs/images';
 
 
 const {

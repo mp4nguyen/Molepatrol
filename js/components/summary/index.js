@@ -16,10 +16,12 @@ import { Grid, Col } from 'react-native-easy-grid';
 
 import {setCurrentLesion,removePhotoFromLesion,addAnotherLesion,setLesion,submitRequest} from '../../actions/request';
 import {setNextPageForAll,goToPage,resetSetPage} from '../../actions/nextPage';
+import {setQuestionareProps,setSelectLesionProps,setTakePictureProps} from '../../actions/pageControl';
+
 import Lesion from './lesion';
 import CustomTabBar from './CustomTabBar';
 
-const bg = require('../../../images/BG.png');
+import {bg,logo} from '../../libs/images';
 const deviceWidth = Dimensions.get('window').width;
 const primary = require('../../themes/variable').brandPrimary;
 
@@ -54,13 +56,17 @@ class Summary extends Component {
     this.submit = this.submit.bind(this);
     this.cancel = this.cancel.bind(this);
     this.removePhoto = this.removePhoto.bind(this);
+    this.backMyRequest = this.backMyRequest.bind(this);
+
     //this.goToPage = this.goToPage.bind(this);
   }
 
   componentWillMount(){
-    console.log("summary.js: componentWillMount is running .................");
     this.props.setLesion();
     this.props.setNextPageForAll();
+    this.props.setQuestionareProps('isBack',false);
+    this.props.setSelectLesionProps('isBack',false);
+    this.props.setTakePictureProps('isCancel',true);    
   }
 
   popRoute() {
@@ -72,12 +78,11 @@ class Summary extends Component {
   }
 
   onLesionChange(tab){
-    console.log("Summary.js:onLesionChange.tabIndex = ",tab);
     if(tab.i < this.props.items.length){
-      console.log("set lesion......");
+      //console.log("set lesion......");
       this.props.setCurrentLesion(tab.i);
     }else{
-      console.log("new lesion.....");
+      //console.log("new lesion.....");
       const { item,resetSetPage } = this.props;
       resetSetPage();
       this.props.addNew({ ...item}).then(() => {
@@ -87,18 +92,80 @@ class Summary extends Component {
 
   }
   removePhoto(item){
-    console.log("will remove the photo:",item);
+    //console.log("will remove the photo:",item);
     this.props.removePhotoFromLesion(item.lesionId,item.resourceIndex);
 
   }
   submit() {
     const { submitRequest, items, reset, navigation } = this.props;
     submitRequest(items).then(() => {
+      this.props.goToPage('home');
       //reset(navigation.key);
     }).catch(e => console.log(e));
   }
   cancel(){
     this.props.goToPage(this.props.nextPage)
+  }
+  backMyRequest(){
+    this.props.goToPage(this.props.nextPage)
+  }
+  renderHeaders(){
+    return(
+      <View>
+        <ScrollableTabView style={styles.tabView} onChangeTab={this.onLesionChange.bind(this)}  renderTabBar={() => <CustomTabBar someProp={'here'} />}>
+          {
+            this.props.items.map((item,index)=>{
+              return <Lesion key={index} tabLabel={"Lesion "+ (index+1)} lesion = {item} removePhoto={this.removePhoto} goToPage={this.props.goToPage.bind(this)}/>
+            })
+          }
+          {
+            this.props.nextPage == 'home'&&<Container tabLabel="+"/>
+          }
+        </ScrollableTabView>
+      </View>
+    )
+  }
+  renderButtons(){
+    if(this.props.nextPage == 'home'){
+      return(
+        <View style={styles.buttonsContainer}>
+          <Left style={{ marginRight: 5 }}>
+            <Button
+              rounded dark block large
+              onPress={this.cancel}
+              style={styles.CancelAndSubmitBtn}
+            >
+              <Text style={styles.CancelAndSubmitText}>Cancel</Text>
+            </Button>
+          </Left>
+          <Right style={{ marginLeft: 5 }}>
+            <Button
+              rounded dark block large
+              onPress={this.submit}
+              style={styles.CancelAndSubmitBtn}
+            >
+              <Text style={styles.CancelAndSubmitText}>Submit</Text>
+            </Button>
+          </Right>
+        </View>
+      )
+    }else{
+      return(
+        <View style={styles.buttonsContainer}>
+          <Body style={{ marginRight: 5 }}>
+            <Button
+              rounded dark block large
+              onPress={this.backMyRequest}
+              style={styles.CancelAndSubmitBtn}
+            >
+              <Text style={styles.CancelAndSubmitText}>Back</Text>
+            </Button>
+          </Body>
+        </View>
+      )
+    }
+
+
   }
   render() {
 
@@ -119,36 +186,12 @@ class Summary extends Component {
                 <Text style={styles.textheader}>SUMMARY</Text>
               </Body>
             </Header>
-            <View>
-              <ScrollableTabView style={styles.tabView} onChangeTab={this.onLesionChange.bind(this)}  >
-                {
-                  this.props.items.map((item,index)=>{
-                    return <Lesion key={index} tabLabel={"Lesion "+ (index+1)} lesion = {item} removePhoto={this.removePhoto} goToPage={this.props.goToPage.bind(this)}/>
-                  })
-                }
-                <Container tabLabel="+"/>
-              </ScrollableTabView>
-            </View>
-            <View style={styles.buttonsContainer}>
-              <Left style={{ marginRight: 5 }}>
-                <Button
-                  rounded dark block large
-                  onPress={this.cancel}
-                  style={styles.CancelAndSubmitBtn}
-                >
-                  <Text style={styles.CancelAndSubmitText}>Cancel</Text>
-                </Button>
-              </Left>
-              <Right style={{ marginLeft: 5 }}>
-                <Button
-                  rounded dark block large
-                  onPress={this.submit}
-                  style={styles.CancelAndSubmitBtn}
-                >
-                  <Text style={styles.CancelAndSubmitText}>Submit</Text>
-                </Button>
-              </Right>
-            </View>
+            {
+              this.renderHeaders()
+            }
+            {
+              this.renderButtons()
+            }
           </Content>
         </Image>
       </Container>
@@ -168,7 +211,10 @@ function bindAction(dispatch) {
     goToPage: (page) => dispatch(goToPage(page)),
     resetSetPage: () => dispatch(resetSetPage()),
     setLesion: () => dispatch(setLesion()),
-    submitRequest: (items) => dispatch(submitRequest(items))
+    submitRequest: (items) => dispatch(submitRequest(items)),
+    setQuestionareProps: (propName,propValue) => dispatch(setQuestionareProps({propName,propValue})),
+    setSelectLesionProps: (propName,propValue) => dispatch(setSelectLesionProps({propName,propValue})),
+    setTakePictureProps: (propName,propValue) => dispatch(setTakePictureProps({propName,propValue})),
   };
 }
 
@@ -180,34 +226,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindAction)(Summary);
-
-
-
-/*
-
-<View style={styles.wrapper}>
-  <Swiper
-    height={130}
-    width={(deviceWidth + 5) * resource.length}
-    loop
-    dot={<View style={styles.swiperDot} />}
-    activeDot={<View
-      style={styles.swiperActiveDot}
-      showsButtons
-    />}
-  >
-    {resources}
-  </Swiper>
-</View>
-
-
-
-<View style={styles.textContainer}>
-  <Text style={styles.textheader}>SUMMARY</Text>
-</View>
-{this.props.createRequest &&
-
-}
-
-
-*/
