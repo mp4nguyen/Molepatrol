@@ -6,6 +6,7 @@ import { actions } from 'react-native-navigation-redux-helpers';
 import { Container, Content, Text, Item, Input, Button, Icon, View, Left, Right,InputGroup } from 'native-base';
 import { login } from '../../actions/user';
 import {resetMemberToZeroForCreate} from '../../actions/member';
+import {setNextPageForNewMember}  from '../../actions/nextPage';
 import styles from './styles';
 import theme from '../../themes/base-theme';
 const {
@@ -125,7 +126,7 @@ class Login extends Component {
             </Button>
 
             <View style={styles.otherLinksContainer}>
-              <Button transparent style={{ alignSelf: 'flex-start' }} onPress={() => {this.props.resetMemberToZeroForCreate();this.pushRoute('signUp');}}>
+              <Button transparent style={{ alignSelf: 'flex-start' }} onPress={() => {this.props.setNextPageForNewMember();this.props.resetMemberToZeroForCreate();this.pushRoute('signUp');}}>
                 <Text style={styles.helpBtns}>
                   Create Account
                       </Text>
@@ -151,6 +152,7 @@ function bindActions(dispatch) {
     replaceAtIndex: (index, route, key) => dispatch(replaceAtIndex(index, route, key)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     resetMemberToZeroForCreate: () => dispatch(resetMemberToZeroForCreate()),
+    setNextPageForNewMember: () => dispatch(setNextPageForNewMember('home')),
   };
 }
 

@@ -5,7 +5,7 @@ const initialState = {
   selectlesion: {isBack:true,isNext:true},
   questionaire: {isBack:true,isNext:true},
   members: {},
-  summary: {},
+  summary: {isNew:true},
 };
 
 export default function reducer(state = initialState, action) {
@@ -19,6 +19,9 @@ export default function reducer(state = initialState, action) {
   }else if(action.type == SET_QUESTIONARE_PROPS){
     var questionaire = {...state.questionaire,[action.payload.propName]:action.payload.propValue};
     return {...state,questionaire}
+  }else if(action.type == SET_SUMMARY_PROPS){
+    var summary = {...state.summary,[action.payload.propName]:action.payload.propValue};
+    return {...state,summary}
   }else{
     return state;
   }

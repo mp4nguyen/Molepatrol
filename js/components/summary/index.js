@@ -66,7 +66,7 @@ class Summary extends Component {
     this.props.setNextPageForAll();
     this.props.setQuestionareProps('isBack',false);
     this.props.setSelectLesionProps('isBack',false);
-    this.props.setTakePictureProps('isCancel',true);    
+    this.props.setTakePictureProps('isCancel',true);
   }
 
   popRoute() {
@@ -119,14 +119,14 @@ class Summary extends Component {
             })
           }
           {
-            this.props.nextPage == 'home'&&<Container tabLabel="+"/>
+            this.props.pageControl.isNew&&<Container tabLabel="+"/>
           }
         </ScrollableTabView>
       </View>
     )
   }
   renderButtons(){
-    if(this.props.nextPage == 'home'){
+    if(this.props.pageControl.isNew){
       return(
         <View style={styles.buttonsContainer}>
           <Left style={{ marginRight: 5 }}>
@@ -222,7 +222,8 @@ const mapStateToProps = state => ({
   navigation: state.cardNavigation,
   item: state.request.item,
   items: state.request.items,
-  nextPage: state.nextPage.summary
+  nextPage: state.nextPage.summary,
+  pageControl: state.pageControl.summary
 });
 
 export default connect(mapStateToProps, bindAction)(Summary);

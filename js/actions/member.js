@@ -9,6 +9,7 @@ export const SET_INFO = 'SET_INFO';
 export const SET_BACK_ROUTE = 'SET_BACK_ROUTE';
 export const ADD_MEMBER = 'ADD_MEMBER';
 export const SET_MEMBER = 'SET_MEMBER';
+export const UPDATE_MEMBER = 'UPDATE_MEMBER';
 export const CHANGE_VALUE_MEMBER = 'CHANGE_VALUE_MEMBER';
 export const SET_FATHER_MEMBER = 'SET_FATHER_MEMBER';
 export const RESET_MEMBER_TO_ZERO_FOR_CREATE = 'RESET_MEMBER_TO_ZERO_FOR_CREATE';
@@ -119,21 +120,21 @@ export function signupOrCreateMemberOrUpdateMember(): Action {
         });
       }else if (!state.member.member.baseinfo.personId && !state.member.member.signup.username){
         postRequest2('api/v1/newMember', state.member.member).then((response) => {
-          ////console.log("api/v1/newMember = ",response);
+          console.log("api/v1/newMember = ",response);
             resolve("OK");
-            // dispatch({
-            //   type: CREATE_MEMBER,
-            //   payload: response.member,
-            // });
+            dispatch({
+              type: UPDATE_MEMBER,
+              payload: response,
+            });
         });
       }else{
         postRequest2('api/v1/updateMember', state.member.member).then((response) => {
-          //console.log("api/v1/updateMember = ",response);
+          console.log("api/v1/updateMember = ",response);
             resolve("OK");
-            // dispatch({
-            //   type: CREATE_MEMBER,
-            //   payload: response.member,
-            // });
+            dispatch({
+              type: UPDATE_MEMBER,
+              payload: response,
+            });
         });
       }
 

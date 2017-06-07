@@ -11,7 +11,8 @@ import { setBackRoute } from '../../actions/member';
 import styles from './styles';
 import theme from '../../themes/base-theme';
 import HeaderContent from '../headerContent';
-import { setNextPageForMembers,goToPage } from '../../actions/nextPage';
+import { setNextPageForMembers,setNextPageForNewMember,goToPage } from '../../actions/nextPage';
+import { newLesion } from '../../actions/request';
 
 import {bg,logo} from '../../libs/images';
 const {
@@ -23,6 +24,7 @@ class SignUp extends Component {
 
 
   static propTypes = {
+    newRequest: React.PropTypes.func,
     member: React.PropTypes.object,
     reset: React.PropTypes.func,
     setBackRoute: React.PropTypes.func,
@@ -35,6 +37,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.addMember = this.addMember.bind(this);
+    this.goToIntro = this.goToIntro.bind(this);
   }
 
   resetRoute(route) {
@@ -46,8 +49,15 @@ class SignUp extends Component {
 
   addMember() {
     this.props.setNextPageForMembers();
+    this.props.setNextPageForNewMember();
     this.props.goToPage('members');
   }
+
+  goToIntro(){
+    const { personId,patientId, gender } = this.props.member;
+    this.props.newRequest(personId, patientId,gender).then(this.pushRoute.bind(this, 'introduction'))
+  }
+
 
   render() {
     const { firstName, lastName } = this.props.member;
@@ -75,7 +85,7 @@ class SignUp extends Component {
 
               <Button
                 rounded bordered block
-                onPress={() => this.pushRoute('introduction')}
+                onPress={this.goToIntro}
                 style={styles.nextBtn}
               >
                 <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Next</Text>
@@ -91,7 +101,9 @@ class SignUp extends Component {
 
 function bindAction(dispatch) {
   return {
+    newRequest: (personId,patientId, gender) => dispatch(newLesion(personId, patientId,gender)),
     setNextPageForMembers: () => dispatch(setNextPageForMembers('requestadvice')),
+    setNextPageForNewMember: () => dispatch(setNextPageForNewMember('requestadvice')),
     goToPage: (page) => dispatch(goToPage(page)),
     setBackRoute: route => dispatch(setBackRoute(route)),
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),

@@ -64,10 +64,7 @@ class Lesion extends Component {
           <Row key={rowIndex}>
             {
               row.map((item,itemIndex)=>{
-                var base64Icon = 'data:image/png;base64,'+item.uri;
-                if(this.props.nextPage=='home'){
-                  var base64Icon = item.uri;
-                }
+                var base64Icon =  item.uri.length > 200 ? 'data:image/png;base64,'+item.uri : item.uri
                 //item.uri
                 return (
                   <Col key ={itemIndex}>
@@ -89,7 +86,7 @@ class Lesion extends Component {
 
   //<Image source={{ uri: this.props.lesion.lesion }} style={styles.bodyImg}/>
   renderButtons(){
-    if(this.props.nextPage=='home'){
+    if(this.props.pageControl.isNew){
       return(
         <Grid>
           <Col>
@@ -151,7 +148,8 @@ class Lesion extends Component {
 
 const mapStateToProps = state => ({
   navigation: state.cardNavigation,
-  nextPage: state.nextPage.summary
+  nextPage: state.nextPage.summary,
+  pageControl: state.pageControl.summary
 });
 
 export default connect(mapStateToProps)(Lesion);

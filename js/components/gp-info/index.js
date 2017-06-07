@@ -97,40 +97,25 @@ class GPInfo extends Component {
     }
     return Promise.resolve();
   }
+
   submitMember() {
     const { setInfo,signupOrCreateMemberOrUpdateMember, replaceAtIndex, navigation, member, backToRoute } = this.props;
-    if (setInfo) {
-      //const index = _.findIndex(navigation.routes, { key: backToRoute });
-
-
-
-      this.validate().then(() => {
-        signupOrCreateMemberOrUpdateMember().then(() => {
-          this.props.goToHome()
-        }).catch(err => window.alert(err));
-
-        //this.popRoute();
-        // createMember({ gp: this.state, ...member }).then(() => {
-        //   for (let i = index; i < navigation.routes.length - 1; i++) {
-        //     this.popRoute();
-        //   }
-        // }).catch(err => window.alert(err));
-
-      }).catch((e) => {
-        alert(e);
-      });
-    } else {
-      reset(navigation.key);
-    }
+    this.validate().then(() => {
+      signupOrCreateMemberOrUpdateMember().then(() => {
+        this.props.goToPage(this.props.nextPage);
+      }).catch(err => window.alert(err));
+    }).catch((e) => {
+      alert(e);
+    });
   }
+
   render() {
     const { gp } = this.state;
 
     let medicalExp;
-    if(this.props.gp.medicareExpired){
+    if(this.props.gp.medicareExpired && this.props.gp.medicareExpired.isAfter(moment())){
         medicalExp = this.props.gp.medicareExpired.format('MM-YYYY');
     }
-
 
     return (
       <Container>
@@ -232,7 +217,7 @@ class GPInfo extends Component {
                   confirmBtnText="Select"
                   cancelBtnText="Cancel"
                   minDate={new moment().format('MM-YYYY')}
-                  maxDate={new moment().add(10,'years').format('DD/MM/YYYY')}
+                  maxDate={new moment().add(10,'years').format('MM-YYYY')}
                   showIcon={false}
                   customStyles={{
                     dateInput: {
@@ -276,7 +261,7 @@ function bindAction(dispatch) {
     popRoute: key => dispatch(popRoute(key)),
     navigateTo: (route, signupRoute) => dispatch(navigateTo(route, signupRoute)),
     changeValueMember:(page,fieldName,value) => dispatch(changeValueMember(page,fieldName,value)),
-    goToHome: () => dispatch(goToPage('home')),
+    goToPage: (page) => dispatch(goToPage(page)),
   };
 }
 
@@ -285,6 +270,7 @@ const mapStateToProps = state => ({
   member: state.member.member,
   backToRoute: state.member.backToRoute,
   gp: state.member.member.gp,
+  nextPage: state.nextPage.newmember,
 });
 
 export default connect(mapStateToProps, bindAction)(GPInfo);

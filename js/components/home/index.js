@@ -11,9 +11,8 @@ import { openDrawer } from '../../actions/drawer';
 import styles from './styles';
 import navigateTo from '../../actions/sideBarNav';
 
-import { newLesion } from '../../actions/request';
-import {resetSetPage} from '../../actions/nextPage';
-import {setQuestionareProps,setSelectLesionProps,setTakePictureProps} from '../../actions/pageControl';
+import {resetSetPage,setNextPageForNewMember} from '../../actions/nextPage';
+import {setQuestionareProps,setSelectLesionProps,setTakePictureProps,setSummaryProps} from '../../actions/pageControl';
 
 const {
   reset,
@@ -28,7 +27,6 @@ class Home extends Component {
 
   static propTypes = {
     member: React.PropTypes.object,
-    newRequest: React.PropTypes.func,
     openDrawer: React.PropTypes.func,
     reset: React.PropTypes.func,
     addNewMember: React.PropTypes.func,
@@ -55,6 +53,7 @@ class Home extends Component {
     this.props.pushRoute({ key: route, index: 1 }, this.props.navigation.key);
   }
   addNewMember() {
+    this.props.setNextPageForNewMember();
     this.props.addNewMember();
     this.props.resetToHome(this.props.navigation.key)
     this.pushRoute('baseinfo');
@@ -64,13 +63,14 @@ class Home extends Component {
     this.props.resetToHome(this.props.navigation.key)
     this.props.setQuestionareProps('isBack',true);
     this.props.setSelectLesionProps('isBack',true);
-    this.props.setTakePictureProps('isCancel',false);    
-    const { personId,patientId, gender } = this.props.member;
+    this.props.setTakePictureProps('isCancel',false);
+    this.props.setSummaryProps('isNew',true);
     this.props.resetSetPage();
-    this.props.newRequest(personId, patientId,gender).then(this.pushRoute.bind(this, 'requestadvice'))
+    this.pushRoute('requestadvice')
   }
   trackRequests(){
     this.props.resetToHome(this.props.navigation.key)
+    this.props.setSummaryProps('isNew',false);
     this.pushRoute('myrequest');
   }
 
@@ -163,7 +163,6 @@ class Home extends Component {
 
 function bindAction(dispatch) {
   return {
-    newRequest: (personId,patientId, gender) => dispatch(newLesion(personId, patientId,gender)),
     setBackRoute: (route) => dispatch(setBackRoute(route)),
     navigateTo: (route, homeRoute) => dispatch(navigateTo(route, homeRoute)),
     openDrawer: () => dispatch(openDrawer()),
@@ -172,9 +171,12 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     addNewMember: () => dispatch(createMember()),
     resetSetPage: () => dispatch(resetSetPage()),
+    setNextPageForNewMember: () => dispatch(setNextPageForNewMember('home')),
     setQuestionareProps: (propName,propValue) => dispatch(setQuestionareProps({propName,propValue})),
     setSelectLesionProps: (propName,propValue) => dispatch(setSelectLesionProps({propName,propValue})),
     setTakePictureProps: (propName,propValue) => dispatch(setTakePictureProps({propName,propValue})),
+    setSummaryProps: (propName,propValue) => dispatch(setSummaryProps({propName,propValue})),
+
   };
 }
 

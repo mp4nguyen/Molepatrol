@@ -137,7 +137,7 @@ class BaseInfo extends Component {
     }else if (this.props.baseinfo.gender=='FEMALE'){
       genderValue = true
     }
-    console.log("Dob = ",dobValue,' this.props.baseinfo.dob = ',this.props.baseinfo.dob,moment(this.props.baseinfo.dob).format('DD/MM/YYYY'));
+    
 
     return (
       <Container>
