@@ -13,7 +13,7 @@ const instance = axios.create({
 //baseURL:"https://059b72d2.ngrok.io/onlinebooking/v1/"
 //"https://8dd1cf06.ngrok.io/"
 const instance2 = axios.create({
-  baseURL: "https://8dd1cf06.ngrok.io/"//"http://localhost:8000/"
+  baseURL: "http://localhost:8000/"
 });
 
 

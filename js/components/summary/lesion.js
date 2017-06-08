@@ -28,7 +28,7 @@ class Lesion extends Component {
   }
 
   renderImageBehavious(){
-    if(this.props.nextPage=='home'){
+    if(this.props.pageControl.isNew){
       return(
         <View style={styles.swiperTextContent}>
           <TouchableOpacity style={styles.newsPosterTypeView} onPress={() => this.props.removePhoto(item)}>
@@ -64,7 +64,7 @@ class Lesion extends Component {
           <Row key={rowIndex}>
             {
               row.map((item,itemIndex)=>{
-                var base64Icon =  item.uri.length > 200 ? 'data:image/png;base64,'+item.uri : item.uri
+                var base64Icon =  this.props.pageControl.isNew ? item.uri : 'data:image/png;base64,'+item.uri; 
                 //item.uri
                 return (
                   <Col key ={itemIndex}>

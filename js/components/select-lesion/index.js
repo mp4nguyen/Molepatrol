@@ -110,13 +110,13 @@ class TakePicture extends Component {
                 this.props.pageControl.isNext &&
                 <Button transparent onPress={this.saveImage} >
                   <Icon active name="arrow-forward" />
-                </Button>                
+                </Button>
               }
             </Right>
           </Header>
           <View collapsable={false} ref='imageView' >
             { item.lesion &&
-              <Image source={{uri:item.lesion.length > 200 ? 'data:image/png;base64,'+item.lesion : item.lesion}} style={styles.lesionImg} >
+              <Image source={{uri: this.props.summaryPageControl.isNew ?  item.lesion : 'data:image/png;base64,'+item.lesion }} style={styles.lesionImg} >
               </Image>
             }
             {
@@ -165,6 +165,7 @@ const mapStateToProps = state => ({
   item: state.request.item,
   nextPage: state.nextPage.selectlesion,
   pageControl: state.pageControl.selectlesion,
+  summaryPageControl: state.pageControl.summary,
 });
 
 export default connect(mapStateToProps, bindAction)(TakePicture);

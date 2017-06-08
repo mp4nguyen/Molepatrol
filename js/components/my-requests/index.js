@@ -21,7 +21,7 @@ const primary = require('../../themes/variable').brandPrimary;
 import {bg,headerLogo} from '../../libs/images';
 
 import { setNextPageForMembers,setNextPageForSummary,goToPage } from '../../actions/nextPage';
-import { getList, getItem } from '../../actions/request';
+import { getList, getItem ,setCurrentList } from '../../actions/request';
 
 const {
   popRoute,
@@ -57,11 +57,11 @@ class MyRequest extends Component {
   }
   componentWillMount() {
     const { getList, member } = this.props;
-    getList({personId:member.personId});
+    //getList({personId:member.personId});
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.member.personId != this.props.member.personId) {
-      this.props.getList({personId:nextProps.member.personId});
+      this.props.setCurrentList(nextProps.member.appointments);
     }
   }
   popRoute() {
@@ -150,6 +150,7 @@ function bindAction(dispatch) {
     pushRoute: (route, key) => dispatch(pushRoute(route, key)),
     getList: (member) => dispatch(getList(member)),
     getItem: (id) => dispatch(getItem(id)),
+    setCurrentList: (appts) => dispatch(setCurrentList(appts)),
   };
 }
 

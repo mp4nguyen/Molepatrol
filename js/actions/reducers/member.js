@@ -1,6 +1,6 @@
 import moment from 'moment'
 import type { Action } from '../types';
-import { LIST_MEMBER, SET_MEMBER, CREATE_MEMBER, ADD_MEMBER, UPDATE_MEMBER,GET_MEMBER, SET_INFO, SET_BACK_ROUTE, CHANGE_VALUE_MEMBER,SET_FATHER_MEMBER,RESET_MEMBER_TO_ZERO_FOR_CREATE} from '../member';
+import { LIST_MEMBER, SET_MEMBER, CREATE_MEMBER, ADD_MEMBER, UPDATE_MEMBER,GET_MEMBER, SET_INFO, SET_BACK_ROUTE, CHANGE_VALUE_MEMBER,SET_FATHER_MEMBER,RESET_MEMBER_TO_ZERO_FOR_CREATE,ADD_APPOINTMENT_TO_MEMBER} from '../member';
 import { USER_LOGIN } from '../user';
 
 export type State = {
@@ -24,6 +24,21 @@ const initialState = {
 export default function (state:State = initialState, action:Action): State {
 
 
+  if (action.type === ADD_APPOINTMENT_TO_MEMBER) {
+    var item = {...state.item,appointments:[...state.item.appointments,action.payload]};
+    var list = [...state.list];
+    for(var i = 0;i<list.length;i++){
+        if(list[i].patientId == item.patientId){
+          list[i] = item;
+        }
+    }
+
+    return {
+      ...state,
+      item,
+      list
+    };
+  }
 
   if (action.type === RESET_MEMBER_TO_ZERO_FOR_CREATE) {
     return initialState;

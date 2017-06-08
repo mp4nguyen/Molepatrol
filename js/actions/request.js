@@ -3,8 +3,9 @@ import type { Action } from './types';
 import { config } from '../global';
 import _ from 'lodash';
 import { postRequest, getRequest ,postRequest2} from '../libs/requests';
-import {NativeModules} from 'react-native'
-import RNFS from 'react-native-fs'
+import {ADD_APPOINTMENT_TO_MEMBER} from './member';
+import {NativeModules} from 'react-native';
+import RNFS from 'react-native-fs';
 
 export const LIST_REQUEST = 'LIST_REQUEST';
 export const CREATE_REQUEST = 'CREATE_REQUEST';
@@ -15,6 +16,8 @@ export const CHANGE_VALUE_LESION = 'CHANGE_VALUE_LESION';
 export const SET_PHOTO_VALUE = 'SET_PHOTO_VALUE';
 export const SET_CURRENT_LESION = 'SET_CURRENT_LESION';
 export const REMOVE_PHOTO_FROM_LESION = 'REMOVE_PHOTO_FROM_LESION';
+export const SET_CURRENT_REQUEST = 'SET_CURRENT_REQUEST';
+export const ADD_APPOINTMENT = 'ADD_APPOINTMENT';
 
 
 export const lesionForm = {
@@ -45,6 +48,13 @@ export function getList(member): Action {
         payload: response.appointments||[],
       });
     });
+}
+
+export function setCurrentList(appts): Action {
+  return({
+    type: SET_CURRENT_REQUEST,
+    payload: appts||[]
+  });
 }
 
 export function getItem(apptId): Action {
@@ -191,8 +201,19 @@ export function submitRequest(items): Action {
               headers: { 'content-type': 'multipart/form-data' }
           }
 
-        postRequest2('/api/v1/uploadPhoto',body,config).then(res=>{
-          ////console.log("uploadPhoto = ",res);
+        postRequest2('/api/v1/submitMoles',body,config).then(res=>{
+          console.log("/api/v1/submitMoles = ",res);
+
+          dispatch({
+            type: ADD_APPOINTMENT,
+            payload:res
+          });
+
+          dispatch({
+            type: ADD_APPOINTMENT_TO_MEMBER,
+            payload:res
+          });
+
           resolve();
         });
         /////////////////////

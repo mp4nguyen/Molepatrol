@@ -2,6 +2,7 @@
 import type { Action } from './types';
 import { postRequest,postRequest2 } from '../libs/requests';
 import {LIST_MEMBER,SET_MEMBER,SET_FATHER_MEMBER} from './member';
+import {LIST_REQUEST} from './request';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
@@ -59,6 +60,11 @@ export function login(user): Action {
         dispatch({
           type: SET_FATHER_MEMBER,
           payload: res.account.personId,
+        });
+
+        dispatch({
+          type: LIST_REQUEST,
+          payload: res.account.profile.appointments||[],
         });
 
         resolve('OK')

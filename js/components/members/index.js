@@ -56,14 +56,7 @@ class Member extends Component {
   select(member) {
     const { editMember } = this.props;
     this.props.setMember(member).then(() => {
-      //console.log('setmember has done..........');
       this.props.goToPage(this.props.nextPage);
-      //this.pushRoute('baseinfo')
-      // if (editMember) {
-      //   this.props.getMember(member.id).then(this.pushRoute.bind(this, 'baseinfo'));
-      // } else {
-      //   this.popRoute();
-      // }
     });
   }
   addMember() {

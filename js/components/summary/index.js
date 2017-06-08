@@ -99,7 +99,7 @@ class Summary extends Component {
   submit() {
     const { submitRequest, items, reset, navigation } = this.props;
     submitRequest(items).then(() => {
-      this.props.goToPage('home');
+      //this.props.goToPage('home');
       //reset(navigation.key);
     }).catch(e => console.log(e));
   }
