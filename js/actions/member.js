@@ -1,7 +1,9 @@
 
 import type { PromiseAction } from './types';
 import { postRequest, getRequest ,postRequest2} from '../libs/requests';
+import {SET_CURRENT_REQUEST} from './request'
 import moment from 'moment'
+
 export const LIST_MEMBER = 'LIST_MEMBER';
 export const GET_MEMBER = 'GET_MEMBER';
 export const CREATE_MEMBER = 'CREATE_MEMBER';
@@ -196,6 +198,13 @@ export function setMember(member): Action {
       type: SET_MEMBER,
       payload: member,
     });
+
+    dispatch({
+      type: SET_CURRENT_REQUEST,
+      payload: member.appointments||[],
+    });
+
+
     resolve();
   });
 }

@@ -27,7 +27,7 @@ class Lesion extends Component {
   componentWillMount(){
   }
 
-  renderImageBehavious(){
+  renderImageBehavious(item){
     if(this.props.pageControl.isNew){
       return(
         <View style={styles.swiperTextContent}>
@@ -64,14 +64,14 @@ class Lesion extends Component {
           <Row key={rowIndex}>
             {
               row.map((item,itemIndex)=>{
-                var base64Icon =  this.props.pageControl.isNew ? item.uri : 'data:image/png;base64,'+item.uri; 
+                var base64Icon =  this.props.pageControl.isNew ? item.uri : 'data:image/png;base64,'+item.uri;
                 //item.uri
                 return (
                   <Col key ={itemIndex}>
                     <TouchableOpacity >
                       <Image source={{uri:base64Icon}} style={styles.channelImg}>
                         {
-                          this.renderImageBehavious()
+                          this.renderImageBehavious(item)
                         }
                       </Image>
                     </TouchableOpacity>

@@ -10,7 +10,7 @@ import logger from 'redux-logger';
 
 export default function configureStore(onCompletion:()=>void):any {
   const enhancer = compose(
-    applyMiddleware(thunk, promise,logger),
+    applyMiddleware(thunk, promise),
     devTools({
       name: 'flatappseed', realtime: true,
     }),

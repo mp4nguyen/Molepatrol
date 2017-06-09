@@ -111,7 +111,7 @@ class FundInformation extends Component {
                 <Col style={styles.aswitchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -124,7 +124,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
@@ -136,7 +136,7 @@ class FundInformation extends Component {
                 <Col style={styles.aswitchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -149,7 +149,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
@@ -164,7 +164,7 @@ class FundInformation extends Component {
                 <Col style={styles.switchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -177,7 +177,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
@@ -189,7 +189,7 @@ class FundInformation extends Component {
                 <Col style={styles.switchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -202,7 +202,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
@@ -214,7 +214,7 @@ class FundInformation extends Component {
                 <Col style={styles.switchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -227,7 +227,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
@@ -239,7 +239,7 @@ class FundInformation extends Component {
                 <Col style={styles.switchContainer}>
                   <Grid>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>YES</Text>
+                      <Text style={styles.yn}>NO</Text>
                     </Col>
                     <Col>
                       <Switch
@@ -252,7 +252,7 @@ class FundInformation extends Component {
                       />
                     </Col>
                     <Col style={styles.colwrap}>
-                      <Text style={styles.yn}>NO</Text>
+                      <Text style={styles.yn}>YES</Text>
                     </Col>
                   </Grid>
                 </Col>
